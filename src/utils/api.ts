@@ -1,6 +1,6 @@
 import { getAuthHeader } from './auth';
 
-export const BASE_URL = import.meta.env.VITE_API_URL || '';
+export const BASE_URL = import.meta.env.VITE_API_URL || 'https://victor-softwave-backend-production.up.railway.app';
 
 export class ApiError extends Error {
   status: number;

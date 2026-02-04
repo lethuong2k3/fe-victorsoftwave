@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { User, Lock, ArrowRight, ShieldCheck, Loader2 } from 'lucide-react';
 import { setTokens } from '../utils/auth';
+import { api } from '../utils/api';
 
 const AdminLogin: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -17,34 +18,21 @@ const AdminLogin: React.FC = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:8080/api/auth/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const data = await api.post('/api/auth/signin', { username, password });
 
-      const data = await response.json();
+      // Login successful
+      // Lưu token vào Cookies
+      setTokens(data.token, data.refreshToken);
+      
+      // Lưu thông tin user (trừ token) vào localStorage để hiển thị
+      const { token, refreshToken, ...userProfile } = data;
+      localStorage.setItem('user', JSON.stringify(userProfile));
 
-      if (response.ok) {
-        // Login successful
-        // Lưu token vào Cookies
-        setTokens(data.token, data.refreshToken);
-        
-        // Lưu thông tin user (trừ token) vào localStorage để hiển thị
-        const { token, refreshToken, ...userProfile } = data;
-        localStorage.setItem('user', JSON.stringify(userProfile));
-
-        // Mock navigate to dashboard (create dashboard route later)
-        // alert(`Đăng nhập thành công!\nXin chào ${data.username}`);
-        navigate('/admin/dashboard'); 
-      } else {
-        // Login failed
-        setError(data.message || 'Thông tin đăng nhập không chính xác');
-      }
-    } catch (err) {
-      setError('Lỗi kết nối đến server. Vui lòng thử lại sau.');
+      // Mock navigate to dashboard (create dashboard route later)
+      // alert(`Đăng nhập thành công!\nXin chào ${data.username}`);
+      navigate('/admin/dashboard'); 
+    } catch (err: any) {
+      setError(err.message || 'Thông tin đăng nhập không chính xác');
       console.error('Login error:', err);
     } finally {
       setIsLoading(false);

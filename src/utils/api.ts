@@ -13,11 +13,15 @@ export class ApiError extends Error {
 }
 
 const request = async (endpoint: string, options: RequestInit = {}) => {
-  const headers = {
-    'Content-Type': 'application/json',
+  const headers: Record<string, string> = {
     ...getAuthHeader(),
-    ...options.headers,
+    ...(options.headers as Record<string, string>),
   };
+
+  // Only add Content-Type for non-GET requests or when body is present
+  if (options.method !== 'GET' && options.method !== 'HEAD' && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
 
   const config: RequestInit = {
     ...options,
@@ -40,11 +44,14 @@ const request = async (endpoint: string, options: RequestInit = {}) => {
 };
 
 const requestBlob = async (endpoint: string, options: RequestInit = {}) => {
-  const headers = {
-    'Content-Type': 'application/json',
+  const headers: Record<string, string> = {
     ...getAuthHeader(),
-    ...options.headers,
+    ...(options.headers as Record<string, string>),
   };
+
+  if (options.method !== 'GET' && options.method !== 'HEAD' && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
 
   const config: RequestInit = {
     ...options,
@@ -63,6 +70,7 @@ const requestBlob = async (endpoint: string, options: RequestInit = {}) => {
 
 export const api = {
   get: (endpoint: string) => request(endpoint, { method: 'GET' }),
+  getBlob: (endpoint: string) => requestBlob(endpoint, { method: 'GET' }),
   post: (endpoint: string, body: any) => request(endpoint, { method: 'POST', body: JSON.stringify(body) }),
   put: (endpoint: string, body: any) => request(endpoint, { method: 'PUT', body: JSON.stringify(body) }),
   delete: (endpoint: string) => request(endpoint, { method: 'DELETE' }),

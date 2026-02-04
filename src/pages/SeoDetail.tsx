@@ -53,7 +53,7 @@ const SeoDetail: React.FC = () => {
 
   const { data: content, isLoading: loading } = useQuery({
     queryKey: ['seo-overall-content', lang],
-    queryFn: () => fetcher<any>('/api/pages/seo-overall', { 'Accept-Language': lang }),
+    queryFn: () => fetcher<any>(`/api/pages/seo-overall?lang=${lang}`),
     select: (data) => ({
       heroTitlePrefix: data.heroTitlePrefix || 'Dịch vụ SEO Tổng Thể',
       heroTitleHighlight: data.heroTitleHighlight || 'Lên Top Bền Vững',

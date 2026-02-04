@@ -43,7 +43,7 @@ const GoogleAdsDetail: React.FC = () => {
 
   const { data: content, isLoading: loading } = useQuery({
     queryKey: ['google-ads-content', lang],
-    queryFn: () => fetcher<any>('/api/pages/google-ads', { 'Accept-Language': lang }),
+    queryFn: () => fetcher<any>(`/api/pages/google-ads?lang=${lang}`),
     select: (data) => ({
       heroTitlePrefix: data.heroTitlePrefix || '',
       heroTitleHighlight: data.heroTitleHighlight || '',

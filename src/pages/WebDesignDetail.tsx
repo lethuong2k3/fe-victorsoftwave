@@ -54,7 +54,7 @@ const WebDesignDetail: React.FC = () => {
 
   const { data: content, isLoading: loading } = useQuery({
     queryKey: ['web-design-content', lang],
-    queryFn: () => fetcher<any>('/api/pages/web-design', { 'Accept-Language': lang }),
+    queryFn: () => fetcher<any>(`/api/pages/web-design?lang=${lang}`),
     select: (data) => ({
       heroTitlePrefix: data.heroTitlePrefix || 'Giải Pháp Thiết Kế Website',
       heroTitleHighlight: data.heroTitleHighlight || 'Chuyên Nghiệp',

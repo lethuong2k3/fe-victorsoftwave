@@ -104,9 +104,7 @@ type ProjectsPageContent = {
 
   const { data: pageContent, isLoading: contentLoading } = useQuery({
     queryKey: ['projects-page-content', lang],
-    queryFn: () => fetcher<ProjectsPageContent>('/api/pages/projects', {
-      headers: { 'Accept-Language': lang }
-    }),
+    queryFn: () => fetcher<ProjectsPageContent>(`/api/pages/projects?lang=${lang}`),
   });
 
   const isLoading = projectsLoading || contentLoading;

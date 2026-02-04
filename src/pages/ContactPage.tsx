@@ -92,7 +92,7 @@ const ContactPage: React.FC = () => {
   // Reuse home data fetching to get contact info
   const { data: rawHomeData } = useQuery({
     queryKey: ['home-data', lang],
-    queryFn: () => fetcher<any>('/api/pages/home'),
+    queryFn: () => fetcher<any>(`/api/pages/home?lang=${lang}`),
   });
 
   // Process data

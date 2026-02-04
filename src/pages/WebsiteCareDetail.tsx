@@ -64,9 +64,7 @@ const WebsiteCareDetail: React.FC = () => {
   
   const { data: content, isLoading: loading } = useQuery({
     queryKey: ['website-care-content', lang],
-    queryFn: () => fetcher<any>('/api/pages/website-care', {
-      headers: { 'Accept-Language': lang }
-    }),
+    queryFn: () => fetcher<any>(`/api/pages/website-care?lang=${lang}`),
     select: (data) => ({
       heroTitlePrefix: data.heroTitlePrefix || 'Chăm sóc Website',
       heroTitleHighlight: data.heroTitleHighlight || 'Ổn Định & An Toàn',

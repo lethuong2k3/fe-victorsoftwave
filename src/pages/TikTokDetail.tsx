@@ -69,11 +69,7 @@ const TikTokDetail: React.FC = () => {
   const { data: content, isLoading: loading } = useQuery({
     queryKey: ['tiktok-ads-content', lang],
     queryFn: () =>
-      fetcher<any>('/api/pages/tiktok-ads', {
-        headers: {
-          'Accept-Language': lang,
-        },
-      }),
+      fetcher<any>(`/api/pages/tiktok-ads?lang=${lang}`),
     select: (data) => ({
       heroTitlePrefix: data.heroTitlePrefix || 'Quảng Cáo TikTok',
       heroTitleHighlight: data.heroTitleHighlight || 'Tăng Trưởng Nhanh',

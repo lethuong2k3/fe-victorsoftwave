@@ -373,12 +373,7 @@ export const ArticlesManagement: React.FC<ArticlesManagementProps> = ({ onToast 
     if (!articleToDelete) return;
     try {
       setIsDeleting(true);
-      const res = await fetch(`/api/admin/articles/${articleToDelete.id}`, {
-        method: 'DELETE',
-        headers: { ...getAuthHeader() }
-      });
-
-      if (!res.ok) throw new Error('Failed to delete');
+      await api.delete(`/api/admin/articles/${articleToDelete.id}`);
 
       onToast({ type: 'success', text: 'Xóa bài viết thành công' });
       setShowDeleteConfirm(false);

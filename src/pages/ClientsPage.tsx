@@ -77,8 +77,8 @@ const ClientsPage: React.FC = () => {
 
   // Fetch Page Content (SEO, Title, Description)
   const { data: pageContent } = useQuery({
-    queryKey: ['clients-page-content'],
-    queryFn: () => fetcher<ClientsPageContent>('/api/pages/clients'),
+    queryKey: ['clients-page-content', lang],
+    queryFn: () => fetcher<ClientsPageContent>(`/api/pages/clients?lang=${lang}`),
   });
 
   // Fetch Categories

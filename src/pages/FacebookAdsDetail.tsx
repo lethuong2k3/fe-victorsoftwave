@@ -68,11 +68,7 @@ const FacebookAdsDetail: React.FC = () => {
 
   const { data: content, isLoading: loading } = useQuery({
     queryKey: ['facebook-ads-content', lang],
-    queryFn: () => fetcher<any>('/api/pages/facebook-ads', {
-      headers: {
-        'Accept-Language': lang,
-      },
-    }),
+    queryFn: () => fetcher<any>(`/api/pages/facebook-ads?lang=${lang}`),
     select: (data) => ({
       heroTitlePrefix: data.heroTitlePrefix || '',
       heroTitleHighlight: data.heroTitleHighlight || '',

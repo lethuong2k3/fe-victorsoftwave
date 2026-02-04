@@ -148,7 +148,7 @@ const Home: React.FC = () => {
 
   const { data: rawHomeData, isLoading: loading } = useQuery({
     queryKey: ['home-data', lang],
-    queryFn: () => fetcher<any>('/api/pages/home'),
+    queryFn: () => fetcher<any>(`/api/pages/home?lang=${lang}`),
   });
 
   const { data: featuredArticlesData } = useQuery({

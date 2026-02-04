@@ -329,25 +329,8 @@ const AdminDashboard: React.FC = () => {
     }
     try {
       setIsExportingProjects(true);
-      const res = await fetch('/api/admin/export/projects', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(selectedProjectIds),
-      });
+      const blob = await api.postBlob('/api/admin/export/projects', selectedProjectIds);
       
-      if (res.status === 401) {
-        setToast({ text: 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.', type: 'error' });
-        // Optional: redirect to login or clear tokens
-        clearTokens();
-        navigate('/admin/login');
-        return;
-      }
-
-      if (!res.ok) throw new Error('Export failed');
-      const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -357,6 +340,12 @@ const AdminDashboard: React.FC = () => {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error(error);
+      if (error instanceof Error && (error as any).status === 401) {
+        setToast({ text: 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.', type: 'error' });
+        clearTokens();
+        navigate('/admin/login');
+        return;
+      }
       setToast({ text: 'Lỗi khi xuất danh sách dự án', type: 'error' });
     } finally {
       setIsExportingProjects(false);
@@ -366,24 +355,8 @@ const AdminDashboard: React.FC = () => {
   const handleExportClients = async () => {
     try {
       setIsExportingClients(true);
-      const res = await fetch(`${BASE_URL}/api/admin/export/clients`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(selectedClientIds),
-      });
+      const blob = await api.postBlob('/api/admin/export/clients', selectedClientIds);
 
-      if (res.status === 401) {
-        setToast({ text: 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.', type: 'error' });
-        clearTokens();
-        navigate('/admin/login');
-        return;
-      }
-
-      if (!res.ok) throw new Error('Export failed');
-      const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -393,6 +366,12 @@ const AdminDashboard: React.FC = () => {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error(error);
+      if (error instanceof Error && (error as any).status === 401) {
+        setToast({ text: 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.', type: 'error' });
+        clearTokens();
+        navigate('/admin/login');
+        return;
+      }
       setToast({ text: 'Lỗi khi xuất danh sách khách hàng', type: 'error' });
     } finally {
       setIsExportingClients(false);
@@ -530,16 +509,7 @@ const AdminDashboard: React.FC = () => {
         if (projectFilterStatus) params.set('status', projectFilterStatus);
         if (projectFilterPriority) params.set('priority', projectFilterPriority);
         if (projectSearchDebounced) params.set('q', projectSearchDebounced);
-        const res = await fetch(`/api/admin/projects?${params.toString()}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeader(),
-          },
-        });
-        if (!res.ok) {
-          throw new Error('Không thể tải dự án');
-        }
-        const data = await res.json();
+        const data = await api.get(`/api/admin/projects?${params.toString()}`);
         setProjects(Array.isArray(data.content) ? data.content : []);
         setSelectedProjectIds([]);
         setProjectTotalElements(typeof data.totalElements === 'number' ? data.totalElements : 0);
@@ -2104,20 +2074,14 @@ const AdminDashboard: React.FC = () => {
                                 method === 'POST'
                                   ? '/api/admin/projects'
                                   : `/api/admin/projects/${payload.id}`;
-                              const res = await fetch(url, {
-                                method,
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                  ...getAuthHeader(),
-                                },
-                                body: JSON.stringify(payload),
-                              });
-                              if (!res.ok) {
-                                const data = await res.json().catch(() => ({}));
-                                setToast({ type: 'error', text: data.message || 'Lưu dự án thất bại' });
-                                return;
+                              
+                              let saved;
+                              if (method === 'POST') {
+                                saved = await api.post(url, payload);
+                              } else {
+                                saved = await api.put(url, payload);
                               }
-                              const saved = await res.json();
+                              
                               setShowProjectModal(false);
                               setEditingProject(null);
                               setProjects((prev) => {
@@ -2128,8 +2092,8 @@ const AdminDashboard: React.FC = () => {
                                 return [saved, ...prev];
                               });
                               setToast({ type: 'success', text: 'Lưu dự án thành công!' });
-                            } catch {
-                              setToast({ type: 'error', text: 'Lỗi kết nối server' });
+                            } catch (e: any) {
+                              setToast({ type: 'error', text: e.message || 'Lỗi kết nối server' });
                             } finally {
                               setIsSavingProject(false);
                             }
@@ -2193,21 +2157,12 @@ const AdminDashboard: React.FC = () => {
                             onClick={async () => {
                               try {
                                 setIsDeleting(true);
-                                const res = await fetch(`/api/admin/projects/${projectToDelete.id}`, {
-                                  method: 'DELETE',
-                                  headers: {
-                                    ...getAuthHeader(),
-                                  },
-                                });
-                                if (res.status === 204) {
-                                  setProjects((prev) => prev.filter((item) => item.id !== projectToDelete.id));
-                                  setProjectTotalElements((prev) => (prev > 0 ? prev - 1 : 0));
-                                  setShowDeleteConfirm(false);
-                                  setProjectToDelete(null);
-                                } else {
-                                  setProjectError('Có lỗi xảy ra khi xóa dự án');
-                                  setShowDeleteConfirm(false);
-                                }
+                                await api.delete(`/api/admin/projects/${projectToDelete.id}`);
+
+                                setProjects((prev) => prev.filter((item) => item.id !== projectToDelete.id));
+                                setProjectTotalElements((prev) => (prev > 0 ? prev - 1 : 0));
+                                setShowDeleteConfirm(false);
+                                setProjectToDelete(null);
                               } catch (err) {
                                 setProjectError('Có lỗi kết nối khi xóa dự án');
                                 setShowDeleteConfirm(false);
@@ -2793,19 +2748,14 @@ const AdminDashboard: React.FC = () => {
                                 method === 'POST'
                                   ? '/api/admin/clients'
                                   : `/api/admin/clients/${payload.id}`;
-                              const res = await fetch(url, {
-                                method,
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                  ...getAuthHeader(),
-                                },
-                                body: JSON.stringify(payload),
-                              });
-                              if (!res.ok) {
-                                setToast({ type: 'error', text: 'Lưu khách hàng thất bại' });
-                                return;
+                              
+                              let saved;
+                              if (method === 'POST') {
+                                saved = await api.post(url, payload);
+                              } else {
+                                saved = await api.put(url, payload);
                               }
-                              const saved = await res.json();
+
                               setShowClientModal(false);
                               setEditingClient(null);
                               setClients((prev) => {
@@ -2881,22 +2831,12 @@ const AdminDashboard: React.FC = () => {
                             onClick={async () => {
                               try {
                                 setIsDeletingClient(true);
-                                const res = await fetch(`/api/admin/clients/${clientToDelete.id}`, {
-                                  method: 'DELETE',
-                                  headers: {
-                                    ...getAuthHeader(),
-                                  },
-                                });
-                                if (res.status === 204) {
-                                  setClients((prev) => prev.filter((item) => item.id !== clientToDelete.id));
-                                  setClientTotalElements((prev) => (prev > 0 ? prev - 1 : 0));
-                                  setShowDeleteClientConfirm(false);
-                                  setClientToDelete(null);
-                                  setToast({ type: 'success', text: 'Xóa khách hàng thành công' });
-                                } else {
-                                  setToast({ type: 'error', text: 'Có lỗi xảy ra khi xóa khách hàng' });
-                                  setShowDeleteClientConfirm(false);
-                                }
+                                await api.delete(`/api/admin/clients/${clientToDelete.id}`);
+                                setClients((prev) => prev.filter((item) => item.id !== clientToDelete.id));
+                                setClientTotalElements((prev) => (prev > 0 ? prev - 1 : 0));
+                                setShowDeleteClientConfirm(false);
+                                setClientToDelete(null);
+                                setToast({ type: 'success', text: 'Xóa khách hàng thành công' });
                               } catch (err) {
                                 setToast({ type: 'error', text: 'Có lỗi kết nối khi xóa khách hàng' });
                                 setShowDeleteClientConfirm(false);

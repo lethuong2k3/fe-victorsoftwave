@@ -18,6 +18,8 @@ interface HeroProps {
   };
 }
 
+import { ImageWithFallback } from './ImageWithFallback';
+
 const Hero: React.FC<HeroProps> = ({ data }) => {
   // Default values if data is not provided or fields are missing
   const badgeText = data?.badgeText || "";
@@ -109,7 +111,7 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
                   <div className="w-3 h-3 rounded-full bg-green-400"></div>
                 </div>
                 <div className="p-6 flex-1 relative bg-dot-pattern">
-                    <img src={heroImageUrl} alt="Dashboard Preview" className="w-full h-48 object-cover rounded-lg mb-4 opacity-90 hover:scale-105 transition-transform duration-500" />
+                    <ImageWithFallback src={heroImageUrl} alt="Dashboard Preview" className="w-full h-48 object-cover rounded-lg mb-4 opacity-90 hover:scale-105 transition-transform duration-500" />
                     <div className="space-y-3">
                         <div className="h-4 w-3/4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
                         <div className="h-4 w-1/2 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>

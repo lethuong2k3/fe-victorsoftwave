@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { SLUG_MAPPING } from '../utils/localization';
+import { ImageWithFallback } from './ImageWithFallback';
 
 interface Article {
   id: number;
@@ -58,7 +59,7 @@ const Blog: React.FC<BlogProps> = ({ data, posts = [], lang = 'vi' }) => {
                  return (
                   <Link key={post.id} to={`/${lang}/${articlesSlug}/${postSlug}`} className="group cursor-pointer block">
                       <div className="rounded-xl overflow-hidden mb-4 border border-slate-100 dark:border-slate-800 shadow-sm aspect-video">
-                          <img 
+                          <ImageWithFallback 
                               src={post.image || 'https://placehold.co/600x400?text=No+Image'} 
                               alt={postTitle} 
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 

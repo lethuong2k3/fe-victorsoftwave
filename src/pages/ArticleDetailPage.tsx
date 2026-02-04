@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetcher } from '../utils/api';
 import { Helmet } from 'react-helmet-async';
 import DOMPurify from 'dompurify';
+import { ImageWithFallback } from '../components/ImageWithFallback';
 
 interface Article {
   id: number;
@@ -197,7 +198,7 @@ const ArticleDetailPage: React.FC = () => {
 
           {/* Featured Image */}
           <div className="mb-12 rounded-2xl overflow-hidden shadow-lg">
-            <img 
+            <ImageWithFallback 
               src={article.image || 'https://via.placeholder.com/1200x600'} 
               alt={title}
               className="w-full h-auto object-cover max-h-[600px]"

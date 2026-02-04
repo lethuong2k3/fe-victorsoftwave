@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Loader2, Save, Upload, Link as LinkIcon, ImageIcon, Trash2 } from 'lucide-react';
-import { getAuthHeader } from '../utils/auth';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import { Toast, ToastMessage } from './Toast';
 import { getLocalizedSlug } from '../utils/localization';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
+import { api } from '../utils/api';
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string;
@@ -78,7 +77,7 @@ export const GoogleAdsContentForm: React.FC = () => {
 
   const { data: fetchedData, isLoading } = useQuery({
     queryKey: ['google-ads-content'],
-    queryFn: () => fetcher<GoogleAdsContent>('/api/pages/google-ads'),
+    queryFn: () => api.get('/api/pages/google-ads'),
   });
 
   useEffect(() => {
@@ -109,21 +108,6 @@ export const GoogleAdsContentForm: React.FC = () => {
     }
   }, [activeLang, editor, formData.serviceDescriptionHtml, formData.serviceDescriptionHtmlEn]);
 
-  const fetchContent = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch('/api/pages/google-ads');
-      if (res.ok) {
-        const data = await res.json();
-        setFormData(data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch Google Ads content:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -131,14 +115,7 @@ export const GoogleAdsContentForm: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: GoogleAdsContent) => {
-      return fetcher<GoogleAdsContent>('/api/pages/google-ads', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(data),
-      });
+      return api.post('/api/pages/google-ads', data);
     },
     onSuccess: (savedData) => {
       setFormData(savedData);

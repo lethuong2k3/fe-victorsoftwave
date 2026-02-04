@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { clearCache } from '../utils/cache';
 import { Loader2, Save, Home, Image as ImageIcon, Upload, Link as LinkIcon, Trash2 } from 'lucide-react';
 import { z } from 'zod';
-import { getAuthHeader } from '../utils/auth';
+import { api, ApiError } from '../utils/api';
 import { Toast } from './Toast';
 
 type ServiceItem = {
@@ -231,22 +231,17 @@ const HomeContentForm: React.FC = () => {
     const fetchContent = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/pages/home?_t=${Date.now()}`, {
-          headers: {
-            ...getAuthHeader(),
-          },
+        const data = await api.get(`/api/pages/home?_t=${Date.now()}`);
+        setFormData({
+          ...emptyContent,
+          ...data,
         });
-        if (response.ok) {
-          const data = await response.json();
-          setFormData({
-            ...emptyContent,
-            ...data,
-          });
-        } else if (response.status === 401) {
-          setMessage({ type: 'error', text: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.' });
-        }
       } catch (error) {
-        console.error('Failed to fetch content:', error);
+        if (error instanceof ApiError && error.status === 401) {
+          setMessage({ type: 'error', text: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.' });
+        } else {
+          console.error('Failed to fetch content:', error);
+        }
       } finally {
         setLoading(false);
       }
@@ -503,37 +498,19 @@ const HomeContentForm: React.FC = () => {
     setSaving(true);
     setMessage(null);
     try {
-      const response = await fetch('/api/pages/home', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
-        const savedData = await response.json();
-        setFormData((prev) => ({ ...prev, ...savedData }));
-        setErrors({});
-        clearCache();
-      } else {
-        if (response.headers.get('content-type')?.includes('application/json')) {
-          const data = await response.json();
-          if (data && typeof data === 'object') {
-            setErrors(data as Record<string, string>);
-            setMessage({ type: 'error', text: 'Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.' });
-          } else {
-            setMessage({ type: 'error', text: 'Có lỗi xảy ra khi lưu.' });
-          }
-        } else {
-          setMessage({ type: 'error', text: 'Có lỗi xảy ra khi lưu.' });
-        }
-      }
+      const savedData = await api.post('/api/pages/home', formData);
+      setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
+      setFormData((prev) => ({ ...prev, ...savedData }));
+      setErrors({});
+      clearCache();
     } catch (error) {
-      console.error('Save error:', error);
-      setMessage({ type: 'error', text: 'Lỗi kết nối đến server.' });
+      if (error instanceof ApiError && error.data && typeof error.data === 'object') {
+        setErrors(error.data as Record<string, string>);
+        setMessage({ type: 'error', text: 'Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.' });
+      } else {
+        console.error('Save error:', error);
+        setMessage({ type: 'error', text: 'Lỗi kết nối đến server.' });
+      }
     } finally {
       setSaving(false);
     }

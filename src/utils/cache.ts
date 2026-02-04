@@ -1,3 +1,5 @@
+import { BASE_URL } from './api';
+
 const CACHE_PREFIX = 'victor_cache_';
 const DEFAULT_TTL = 5 * 60 * 1000; // 5 minutes
 
@@ -59,9 +61,11 @@ export const fetchWithCache = async <T>(
   options?: RequestInit, 
   ttl: number = DEFAULT_TTL
 ): Promise<T> => {
+  const fullUrl = url.startsWith('/') ? `${BASE_URL}${url}` : url;
+
   // Only cache GET requests
   if (options?.method && options.method !== 'GET') {
-    const response = await fetch(url, options);
+    const response = await fetch(fullUrl, options);
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     return response.json();
   }
@@ -85,7 +89,7 @@ export const fetchWithCache = async <T>(
     return cachedData;
   }
 
-  const response = await fetch(url, options);
+  const response = await fetch(fullUrl, options);
   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   
   const data = await response.json();

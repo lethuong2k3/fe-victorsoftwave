@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Plus, Trash2, FileSpreadsheet, Download, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getAuthHeader } from '../utils/auth';
+import { api } from '../utils/api';
 
 interface QuoteItem {
   description: string;
@@ -28,10 +29,8 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, selecte
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const res = await fetch('/api/pages/web-design?lang=vi');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.pricingJsonVi) {
+        const data = await api.get('/api/pages/web-design?lang=vi');
+        if (data.pricingJsonVi) {
             try {
               const parsed = JSON.parse(data.pricingJsonVi);
               if (Array.isArray(parsed) && parsed.length > 0) {
@@ -41,7 +40,6 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, selecte
             } catch (e) {
               console.error('Failed to parse pricingJsonVi', e);
             }
-          }
         }
       } catch (error) {
         console.error('Failed to fetch web design content', error);
@@ -94,26 +92,16 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, selecte
   const handleExport = async () => {
     try {
       setLoading(true);
-      const res = await fetch('/api/admin/export/quote', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify({
-          customerName,
-          companyName,
-          email,
-          phone,
-          language: 'vi',
-          items,
-          note
-        }),
+      const blob = await api.postBlob('/api/admin/export/quote', {
+        customerName,
+        companyName,
+        email,
+        phone,
+        language: 'vi',
+        items,
+        note
       });
 
-      if (!res.ok) throw new Error('Export failed');
-
-      const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;

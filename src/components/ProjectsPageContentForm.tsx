@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Loader2, Save } from 'lucide-react';
-import { getAuthHeader } from '../utils/auth';
+import { api } from '../utils/api';
 import { Toast } from './Toast';
 
 import { clearCache } from '../utils/cache';
@@ -50,11 +50,8 @@ const ProjectsPageContentForm: React.FC = () => {
   const fetchContent = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/pages/projects');
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data);
-      }
+      const data = await api.get('/api/pages/projects');
+      setFormData(data);
     } catch (error) {
       console.error('Failed to fetch content:', error);
       setMessage({ type: 'error', text: 'Không thể tải dữ liệu.' });
@@ -74,22 +71,9 @@ const ProjectsPageContentForm: React.FC = () => {
     setMessage(null);
 
     try {
-      const response = await fetch('/api/pages/projects', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data);
-        setMessage({ type: 'success', text: 'Đã lưu nội dung thành công!' });
-      } else {
-        setMessage({ type: 'error', text: 'Lưu thất bại.' });
-      }
+      const data = await api.post('/api/pages/projects', formData);
+      setFormData(data);
+      setMessage({ type: 'success', text: 'Đã lưu nội dung thành công!' });
     } catch (error) {
       console.error('Failed to save content:', error);
       setMessage({ type: 'error', text: 'Lỗi kết nối server.' });

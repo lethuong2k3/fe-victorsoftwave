@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Loader2, Save, FileText } from 'lucide-react';
 import { getAuthHeader } from '../utils/auth';
+import { api } from '../utils/api';
 import { getLocalizedSlug } from '../utils/localization';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -95,37 +96,36 @@ const WebsiteCareContentForm: React.FC = () => {
     const fetchContent = async () => {
       setLoading(true);
       try {
-        const response = await fetch('/api/pages/website-care');
-        if (response.ok) {
-          const data = await response.json();
-          const serviceHtmlVi =
-            data.serviceDescriptionHtml || `<p>${data.serviceIntro || ''}</p><p>${data.serviceSecondary || ''}</p>`;
-          const serviceHtmlEn = data.serviceDescriptionHtmlEn || '';
-          setFormData({
-            heroTitlePrefix: data.heroTitlePrefix || '',
-            heroTitleHighlight: data.heroTitleHighlight || '',
-            heroDescription: data.heroDescription || '',
-            heroImageUrl: data.heroImageUrl || '',
-            serviceDescriptionHtml: serviceHtmlVi,
-            suitableFor: data.suitableFor || '',
-            suggestionText: data.suggestionText || '',
-            heroTitlePrefixEn: data.heroTitlePrefixEn || '',
-            heroTitleHighlightEn: data.heroTitleHighlightEn || '',
-            heroDescriptionEn: data.heroDescriptionEn || '',
-            heroImageUrlEn: data.heroImageUrlEn || '',
-            serviceDescriptionHtmlEn: serviceHtmlEn,
-            suitableForEn: data.suitableForEn || '',
-            suggestionTextEn: data.suggestionTextEn || '',
-            seoTitle: data.seoTitle || '',
-            seoKeywords: data.seoKeywords || '',
-            seoDescription: data.seoDescription || '',
-            primaryKeyword: data.primaryKeyword || '',
-            seoTitleEn: data.seoTitleEn || '',
-            seoKeywordsEn: data.seoKeywordsEn || '',
-            seoDescriptionEn: data.seoDescriptionEn || '',
-            primaryKeywordEn: data.primaryKeywordEn || '',
-          });
-        }
+        const data = await api.get('/api/pages/website-care');
+        const serviceHtmlVi =
+          data.serviceDescriptionHtml || `<p>${data.serviceIntro || ''}</p><p>${data.serviceSecondary || ''}</p>`;
+        const serviceHtmlEn = data.serviceDescriptionHtmlEn || '';
+        setFormData({
+          heroTitlePrefix: data.heroTitlePrefix || '',
+          heroTitleHighlight: data.heroTitleHighlight || '',
+          heroDescription: data.heroDescription || '',
+          heroImageUrl: data.heroImageUrl || '',
+          serviceDescriptionHtml: serviceHtmlVi,
+          suitableFor: data.suitableFor || '',
+          suggestionText: data.suggestionText || '',
+          heroTitlePrefixEn: data.heroTitlePrefixEn || '',
+          heroTitleHighlightEn: data.heroTitleHighlightEn || '',
+          heroDescriptionEn: data.heroDescriptionEn || '',
+          heroImageUrlEn: data.heroImageUrlEn || '',
+          serviceDescriptionHtmlEn: serviceHtmlEn,
+          suitableForEn: data.suitableForEn || '',
+          suggestionTextEn: data.suggestionTextEn || '',
+          seoTitle: data.seoTitle || '',
+          seoKeywords: data.seoKeywords || '',
+          seoDescription: data.seoDescription || '',
+          primaryKeyword: data.primaryKeyword || '',
+          seoTitleEn: data.seoTitleEn || '',
+          seoKeywordsEn: data.seoKeywordsEn || '',
+          seoDescriptionEn: data.seoDescriptionEn || '',
+          primaryKeywordEn: data.primaryKeywordEn || '',
+        });
+      } catch (error) {
+        console.error('Failed to fetch content', error);
       } finally {
         setLoading(false);
       }
@@ -237,21 +237,10 @@ const WebsiteCareContentForm: React.FC = () => {
         if (activeLangRef.current === 'vi') payload.serviceDescriptionHtml = editor.getHTML();
         else payload.serviceDescriptionHtmlEn = editor.getHTML();
       }
-      const response = await fetch('/api/pages/website-care', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(payload),
-      });
-      if (response.ok) {
-        clearCache();
-        setMessage({ type: 'success', text: 'Đã lưu nội dung Chăm sóc Website.' });
-      } else {
-        setMessage({ type: 'error', text: 'Lưu thất bại. Vui lòng thử lại.' });
-      }
-    } catch {
+      await api.post('/api/pages/website-care', payload);
+      clearCache();
+      setMessage({ type: 'success', text: 'Đã lưu nội dung trang Chăm sóc Website.' });
+    } catch (error) {
       setMessage({ type: 'error', text: 'Lỗi kết nối server.' });
     } finally {
       setSaving(false);

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Loader2, Save, FileText } from 'lucide-react';
 import { getAuthHeader, isAuthenticated } from '../utils/auth';
+import { api } from '../utils/api';
 import { clearCache } from '../utils/cache';
 import { getLocalizedSlug } from '../utils/localization';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -89,36 +90,35 @@ const SeoOverallContentForm: React.FC = () => {
     const fetchContent = async () => {
       setLoading(true);
       try {
-        const response = await fetch('/api/pages/seo-overall');
-        if (response.ok) {
-          const data = await response.json();
-          const serviceHtmlVi =
-            data.serviceDescriptionHtml ||
-            `<p>${data.serviceIntro || ''}</p><p>${data.serviceSecondary || ''}</p>`;
-          const serviceHtmlEn = data.serviceDescriptionHtmlEn || '';
-          setFormData({
-            heroTitlePrefix: data.heroTitlePrefix || '',
-            heroTitleHighlight: data.heroTitleHighlight || '',
-            heroDescription: data.heroDescription || '',
-            serviceDescriptionHtml: serviceHtmlVi,
-            suitableFor: data.suitableFor || '',
-            suggestionText: data.suggestionText || '',
-            heroTitlePrefixEn: data.heroTitlePrefixEn || '',
-            heroTitleHighlightEn: data.heroTitleHighlightEn || '',
-            heroDescriptionEn: data.heroDescriptionEn || '',
-            serviceDescriptionHtmlEn: serviceHtmlEn,
-            suitableForEn: data.suitableForEn || '',
-            suggestionTextEn: data.suggestionTextEn || '',
-            seoTitle: data.seoTitle || '',
-            seoKeywords: data.seoKeywords || '',
-            seoDescription: data.seoDescription || '',
-            primaryKeyword: data.primaryKeyword || '',
-            seoTitleEn: data.seoTitleEn || '',
-            seoKeywordsEn: data.seoKeywordsEn || '',
-            seoDescriptionEn: data.seoDescriptionEn || '',
-            primaryKeywordEn: data.primaryKeywordEn || '',
-          });
-        }
+        const data = await api.get('/api/pages/seo-overall');
+        const serviceHtmlVi =
+          data.serviceDescriptionHtml ||
+          `<p>${data.serviceIntro || ''}</p><p>${data.serviceSecondary || ''}</p>`;
+        const serviceHtmlEn = data.serviceDescriptionHtmlEn || '';
+        setFormData({
+          heroTitlePrefix: data.heroTitlePrefix || '',
+          heroTitleHighlight: data.heroTitleHighlight || '',
+          heroDescription: data.heroDescription || '',
+          serviceDescriptionHtml: serviceHtmlVi,
+          suitableFor: data.suitableFor || '',
+          suggestionText: data.suggestionText || '',
+          heroTitlePrefixEn: data.heroTitlePrefixEn || '',
+          heroTitleHighlightEn: data.heroTitleHighlightEn || '',
+          heroDescriptionEn: data.heroDescriptionEn || '',
+          serviceDescriptionHtmlEn: serviceHtmlEn,
+          suitableForEn: data.suitableForEn || '',
+          suggestionTextEn: data.suggestionTextEn || '',
+          seoTitle: data.seoTitle || '',
+          seoKeywords: data.seoKeywords || '',
+          seoDescription: data.seoDescription || '',
+          primaryKeyword: data.primaryKeyword || '',
+          seoTitleEn: data.seoTitleEn || '',
+          seoKeywordsEn: data.seoKeywordsEn || '',
+          seoDescriptionEn: data.seoDescriptionEn || '',
+          primaryKeywordEn: data.primaryKeywordEn || '',
+        });
+      } catch (error) {
+        console.error('Failed to fetch content', error);
       } finally {
         setLoading(false);
       }
@@ -167,20 +167,9 @@ const SeoOverallContentForm: React.FC = () => {
         if (activeLangRef.current === 'vi') payload.serviceDescriptionHtml = editor.getHTML();
         else payload.serviceDescriptionHtmlEn = editor.getHTML();
       }
-      const response = await fetch('/api/pages/seo-overall', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(payload),
-      });
-      if (response.ok) {
-        setMessage({ type: 'success', text: 'Đã lưu nội dung Dịch vụ SEO Tổng Thể.' });
-        clearCache();
-      } else {
-        setMessage({ type: 'error', text: 'Lưu thất bại. Vui lòng thử lại.' });
-      }
+      await api.post('/api/pages/seo-overall', payload);
+      setMessage({ type: 'success', text: 'Đã lưu nội dung Dịch vụ SEO Tổng Thể.' });
+      clearCache();
     } catch (error) {
       console.error('Save error:', error);
       setMessage({ type: 'error', text: `Lỗi kết nối server: ${error instanceof Error ? error.message : String(error)}` });

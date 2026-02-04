@@ -41,6 +41,7 @@ import {
 import { clearTokens, getRefreshToken, getAuthHeader } from '../utils/auth';
 import { SLUG_MAPPING } from '../utils/localization';
 import { Toast, ToastMessage } from '../components/Toast';
+import { api, BASE_URL } from '../utils/api';
 
 import WebDesignContentForm from '../components/WebDesignContentForm';
 import SeoOverallContentForm from '../components/SeoOverallContentForm';
@@ -140,13 +141,8 @@ const AdminDashboard: React.FC = () => {
 
   const fetchLatestUnreadContacts = async () => {
     try {
-      const res = await fetch(`/api/admin/contacts?status=UNREAD&size=5`, {
-        headers: getAuthHeader()
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setLatestUnreadContacts(data.content || []);
-      }
+      const data = await api.get(`/api/admin/contacts?status=UNREAD&size=5`);
+      setLatestUnreadContacts(data.content || []);
     } catch (error) {
       console.error('Failed to fetch unread contacts', error);
     }
@@ -239,13 +235,8 @@ const AdminDashboard: React.FC = () => {
         url += `?${params.toString()}`;
       }
 
-      const res = await fetch(url, {
-        headers: getAuthHeader()
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setDashboardStats(data);
-      }
+      const data = await api.get(url);
+      setDashboardStats(data);
     } catch (error) {
       console.error('Failed to fetch dashboard stats', error);
     }
@@ -276,16 +267,13 @@ const AdminDashboard: React.FC = () => {
       if (params.toString()) {
         url += `?${params.toString()}`;
       }
-      const res = await fetch(url, { headers: getAuthHeader() });
-      if (res.ok) {
-        const data = await res.json();
-        setVisitSeries(
-          (Array.isArray(data) ? data : []).map((d: any) => ({
-            date: d.date,
-            count: d.count || 0
-          }))
-        );
-      }
+      const data = await api.get(url);
+      setVisitSeries(
+        (Array.isArray(data) ? data : []).map((d: any) => ({
+          date: d.date,
+          count: d.count || 0
+        }))
+      );
     } catch (e) {
       console.error('Failed to fetch visit series', e);
     }
@@ -302,13 +290,8 @@ const AdminDashboard: React.FC = () => {
   const fetchRecentProjects = async () => {
     try {
       // Assuming the backend supports sort, otherwise defaults to ID desc usually
-      const res = await fetch('/api/admin/projects?page=0&size=5', {
-        headers: getAuthHeader()
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setRecentProjects(data.content || []);
-      }
+      const data = await api.get('/api/admin/projects?page=0&size=5');
+      setRecentProjects(data.content || []);
     } catch (error) {
       console.error('Failed to fetch recent projects', error);
     }
@@ -323,13 +306,8 @@ const AdminDashboard: React.FC = () => {
 
   const fetchUnreadContactCount = async () => {
     try {
-      const res = await fetch('/api/admin/contacts/unread-count', {
-        headers: getAuthHeader(),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setUnreadContactCount(data.count || 0);
-      }
+      const data = await api.get('/api/admin/contacts/unread-count');
+      setUnreadContactCount(data.count || 0);
     } catch (e) {
       console.error('Failed to fetch unread contact count', e);
     }
@@ -388,7 +366,7 @@ const AdminDashboard: React.FC = () => {
   const handleExportClients = async () => {
     try {
       setIsExportingClients(true);
-      const res = await fetch('/api/admin/export/clients', {
+      const res = await fetch(`${BASE_URL}/api/admin/export/clients`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -443,40 +421,21 @@ const AdminDashboard: React.FC = () => {
 
   const handleToggleFeatured = async (project: any, featured: boolean) => {
     try {
-      const res = await fetch(`/api/admin/projects/${project.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
-        body: JSON.stringify({ ...project, featured }),
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        setToast({ type: 'error', text: data.message || 'Không thể cập nhật trạng thái nổi bật' });
-        return;
-      }
-      const saved = await res.json();
+      const saved = await api.put(`/api/admin/projects/${project.id}`, { ...project, featured });
       setProjects((prev) => prev.map((p) => (p.id === saved.id ? saved : p)));
       setToast({ type: 'success', text: 'Cập nhật trạng thái nổi bật thành công' });
-    } catch (err) {
-      setToast({ type: 'error', text: 'Lỗi kết nối' });
+    } catch (err: any) {
+      setToast({ type: 'error', text: err.message || 'Lỗi kết nối' });
     }
   };
 
   const handleToggleClientFeatured = async (client: any, featured: boolean) => {
     try {
-      const res = await fetch(`/api/admin/clients/${client.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
-        body: JSON.stringify({ ...client, featured }),
-      });
-      if (!res.ok) {
-        setToast({ type: 'error', text: 'Không thể cập nhật trạng thái nổi bật' });
-        return;
-      }
-      const saved = await res.json();
+      const saved = await api.put(`/api/admin/clients/${client.id}`, { ...client, featured });
       setClients((prev) => prev.map((c) => (c.id === saved.id ? saved : c)));
       setToast({ type: 'success', text: 'Cập nhật trạng thái nổi bật thành công' });
-    } catch (err) {
-      setToast({ type: 'error', text: 'Lỗi kết nối' });
+    } catch (err: any) {
+      setToast({ type: 'error', text: err.message || 'Lỗi kết nối' });
     }
   };
 
@@ -598,13 +557,7 @@ const AdminDashboard: React.FC = () => {
     if (activeTab !== 'projects') return;
     const fetchCategories = async () => {
       try {
-        const res = await fetch('/api/admin/projects/categories', {
-          headers: {
-            ...getAuthHeader(),
-          },
-        });
-        if (!res.ok) return;
-        const data = await res.json();
+        const data = await api.get('/api/admin/projects/categories');
         if (Array.isArray(data)) {
           setProjectCategories(data);
         }
@@ -625,16 +578,7 @@ const AdminDashboard: React.FC = () => {
         params.set('size', String(clientSize));
         if (clientFilterCat) params.set('cat', clientFilterCat);
         if (clientSearchDebounced) params.set('q', clientSearchDebounced);
-        const res = await fetch(`/api/admin/clients?${params.toString()}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeader(),
-          },
-        });
-        if (!res.ok) {
-          throw new Error('Không thể tải khách hàng');
-        }
-        const data = await res.json();
+        const data = await api.get(`/api/admin/clients?${params.toString()}`);
         setClients(Array.isArray(data.content) ? data.content : []);
         setSelectedClientIds([]);
         setClientTotalElements(typeof data.totalElements === 'number' ? data.totalElements : 0);
@@ -652,13 +596,7 @@ const AdminDashboard: React.FC = () => {
     if (activeTab !== 'customers') return;
     const fetchCategories = async () => {
       try {
-        const res = await fetch('/api/admin/clients/categories', {
-          headers: {
-            ...getAuthHeader(),
-          },
-        });
-        if (!res.ok) return;
-        const data = await res.json();
+        const data = await api.get('/api/admin/clients/categories');
         if (Array.isArray(data)) {
           setClientCategories(data);
         }
@@ -674,13 +612,7 @@ const AdminDashboard: React.FC = () => {
     try {
       const refreshToken = getRefreshToken();
       if (refreshToken) {
-        await fetch('/api/auth/logout', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ refreshToken }),
-        });
+        await api.post('/api/auth/logout', { refreshToken });
       }
     } catch {
     } finally {

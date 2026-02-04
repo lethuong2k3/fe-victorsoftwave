@@ -29,6 +29,7 @@ import StarterKit from '@tiptap/starter-kit';
 import ImageExtension from '@tiptap/extension-image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getAuthHeader } from '../utils/auth';
+import { api } from '../utils/api';
 import { Toast, ToastMessage } from './Toast';
 
 // Helper for slugs
@@ -282,13 +283,8 @@ export const ArticlesManagement: React.FC<ArticlesManagementProps> = ({ onToast 
       if (filterStatus) params.set('status', filterStatus);
       if (filterCategory) params.set('category', filterCategory);
 
-      const res = await fetch(`/api/admin/articles?${params.toString()}`, {
-        headers: { ...getAuthHeader() }
-      });
-
-      if (!res.ok) throw new Error('Failed to fetch articles');
+      const data = await api.get(`/api/admin/articles?${params.toString()}`);
       
-      const data = await res.json();
       setArticles(data.content || []);
       setTotalElements(data.totalElements || 0);
       setTotalPages(data.totalPages || 0);
@@ -335,13 +331,9 @@ export const ArticlesManagement: React.FC<ArticlesManagementProps> = ({ onToast 
 
       // Validate featured count
       if (articleToSave.featured) {
-        // Fetch all featured articles
-        const featuredRes = await fetch('/api/admin/articles?featured=true&size=100', {
-          headers: { ...getAuthHeader() }
-        });
-        
-        if (featuredRes.ok) {
-          const featuredData = await featuredRes.json();
+        try {
+          // Fetch all featured articles
+          const featuredData = await api.get('/api/admin/articles?featured=true&size=100');
           const featuredArticles = featuredData.content || [];
           
           // Check if we are exceeding the limit (3)
@@ -354,24 +346,16 @@ export const ArticlesManagement: React.FC<ArticlesManagementProps> = ({ onToast 
             setIsSaving(false);
             return;
           }
+        } catch (error) {
+           console.error('Failed to check featured count', error);
         }
       }
 
-      const method = articleToSave.id ? 'PUT' : 'POST';
-      const url = articleToSave.id 
-        ? `/api/admin/articles/${articleToSave.id}`
-        : '/api/admin/articles';
-
-      const res = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(articleToSave),
-      });
-
-      if (!res.ok) throw new Error('Failed to save article');
+      if (articleToSave.id) {
+        await api.put(`/api/admin/articles/${articleToSave.id}`, articleToSave);
+      } else {
+        await api.post('/api/admin/articles', articleToSave);
+      }
 
       onToast({ type: 'success', text: articleToSave.id ? 'Cập nhật bài viết thành công' : 'Thêm bài viết mới thành công' });
       setShowModal(false);

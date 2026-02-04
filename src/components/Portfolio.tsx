@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { SLUG_MAPPING, getLocalizedSlug } from '../utils/localization';
+import { api } from '../utils/api';
 
 interface PortfolioProps {
   data?: {
@@ -21,8 +22,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ data, lang = 'vi' }) => {
   const description = data?.portfolioDescription || "Hơn 500+ khách hàng đã tin tưởng và đồng hành cùng Victor Software.";
 
   useEffect(() => {
-    fetch('/api/projects/featured')
-      .then((res) => res.json())
+    api.get('/api/projects/featured')
       .then((data) => {
         if (Array.isArray(data)) {
           setProjects(data);

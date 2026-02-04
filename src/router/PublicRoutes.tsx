@@ -17,6 +17,7 @@ import ContactPage from '../pages/ContactPage';
 import NotFound from '../pages/NotFound';
 import { SLUG_MAPPING, getLang, getLocalizedSlug } from '../utils/localization';
 import FloatingContact from '../components/FloatingContact';
+import { api } from '../utils/api';
 
 const PublicRoutes: React.FC = () => {
   const location = useLocation();
@@ -24,9 +25,7 @@ const PublicRoutes: React.FC = () => {
   useEffect(() => {
     const recordVisit = async () => {
       try {
-        await fetch('/api/analytics/visit?pageUrl=' + encodeURIComponent(window.location.href), {
-          method: 'POST',
-        });
+        await api.post('/api/analytics/visit?pageUrl=' + encodeURIComponent(window.location.href), undefined);
       } catch (e) {
         // Silently fail for analytics
         console.error("Analytics error", e);

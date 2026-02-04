@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { clearCache } from '../utils/cache';
 import { Loader2, Save, ImageIcon, Link as LinkIcon, Upload, Trash2 } from 'lucide-react';
-import { getAuthHeader } from '../utils/auth';
+import { api } from '../utils/api';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Toast } from './Toast';
@@ -109,11 +109,8 @@ const FacebookAdsContentForm: React.FC = () => {
   const fetchContent = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/pages/facebook-ads');
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data);
-      }
+      const data = await api.get('/api/pages/facebook-ads');
+      setFormData(data);
     } catch (error) {
       setMessage({ type: 'error', text: 'Không thể tải dữ liệu.' });
     } finally {
@@ -134,23 +131,10 @@ const FacebookAdsContentForm: React.FC = () => {
     setMessage(null);
 
     try {
-      const response = await fetch('/api/pages/facebook-ads', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const saved = await response.json();
-        setFormData(saved);
-        setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
-        clearCache();
-      } else {
-        setMessage({ type: 'error', text: 'Có lỗi xảy ra khi lưu.' });
-      }
+      const saved = await api.post('/api/pages/facebook-ads', formData);
+      setFormData(saved);
+      setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
+      clearCache();
     } catch (error) {
       setMessage({ type: 'error', text: 'Lỗi kết nối đến server.' });
     } finally {

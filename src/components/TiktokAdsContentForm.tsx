@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { clearCache } from '../utils/cache';
 import { Loader2, Save, ImageIcon, Link as LinkIcon, Upload, Trash2 } from 'lucide-react';
-import { getAuthHeader } from '../utils/auth';
+import { api } from '../utils/api';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -110,11 +110,8 @@ const TiktokAdsContentForm: React.FC = () => {
   const fetchContent = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/pages/tiktok-ads');
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data);
-      }
+      const data = await api.get('/api/pages/tiktok-ads');
+      setFormData(data);
     } catch (error) {
       console.error('Failed to fetch content:', error);
       setMessage({ type: 'error', text: 'Không thể tải dữ liệu.' });
@@ -129,23 +126,10 @@ const TiktokAdsContentForm: React.FC = () => {
     setMessage(null);
 
     try {
-      const response = await fetch('/api/pages/tiktok-ads', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const saved = await response.json();
-        setFormData(saved);
-        setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
-        clearCache();
-      } else {
-        setMessage({ type: 'error', text: 'Có lỗi xảy ra khi lưu.' });
-      }
+      const saved = await api.post('/api/pages/tiktok-ads', formData);
+      setFormData(saved);
+      setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
+      clearCache();
     } catch (error) {
       console.error('Save error:', error);
       setMessage({ type: 'error', text: 'Lỗi kết nối đến server.' });

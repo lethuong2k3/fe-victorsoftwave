@@ -1,20 +1,29 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import PublicRoutes from './router/PublicRoutes';
-import PrivateRoutes from './router/PrivateRoutes';
+
+const PrivateRoutes = lazy(() => import('./router/PrivateRoutes'));
+
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+  </div>
+);
 
 const App: React.FC = () => {
   return (
     <>
       <ScrollToTop />
-      <Routes>
-        {/* Admin Routes - Private/Protected Area */}
-        <Route path="/admin/*" element={<PrivateRoutes />} />
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          {/* Admin Routes - Private/Protected Area */}
+          <Route path="/admin/*" element={<PrivateRoutes />} />
 
-        {/* Public Routes - Main Website Area */}
-        <Route path="/*" element={<PublicRoutes />} />
-      </Routes>
+          {/* Public Routes - Main Website Area */}
+          <Route path="/*" element={<PublicRoutes />} />
+        </Routes>
+      </Suspense>
     </>
   );
 };

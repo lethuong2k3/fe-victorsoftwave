@@ -1,23 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
-import Home from '@/pages/Home';
-import WebDesignDetail from '@/pages/WebDesignDetail';
-import SeoDetail from '@/pages/SeoDetail';
-import WebsiteCareDetail from '@/pages/WebsiteCareDetail';
-import TikTokDetail from '@/pages/TikTokDetail';
-import FacebookAdsDetail from '@/pages/FacebookAdsDetail';
-import GoogleAdsDetail from '@/pages/GoogleAdsDetail';
-import PortfolioPage from '@/pages/PortfolioPage';
-import ClientsPage from '@/pages/ClientsPage';
-import ClientDetail from '@/pages/ClientDetail';
-import ProjectDetail from '@/pages/ProjectDetail';
-import ArticlesPage from '@/pages/ArticlesPage';
-import ArticleDetailPage from '@/pages/ArticleDetailPage';
-import ContactPage from '@/pages/ContactPage';
-import NotFound from '@/pages/NotFound';
 import { SLUG_MAPPING, getLang, getLocalizedSlug } from '@/utils/localization';
-import FloatingContact from '@/components/FloatingContact';
 import { api } from '@/utils/api';
+
+// Lazy load pages
+const Home = lazy(() => import('@/pages/Home'));
+const WebDesignDetail = lazy(() => import('@/pages/WebDesignDetail'));
+const SeoDetail = lazy(() => import('@/pages/SeoDetail'));
+const WebsiteCareDetail = lazy(() => import('@/pages/WebsiteCareDetail'));
+const TikTokDetail = lazy(() => import('@/pages/TikTokDetail'));
+const FacebookAdsDetail = lazy(() => import('@/pages/FacebookAdsDetail'));
+const GoogleAdsDetail = lazy(() => import('@/pages/GoogleAdsDetail'));
+const PortfolioPage = lazy(() => import('@/pages/PortfolioPage'));
+const ClientsPage = lazy(() => import('@/pages/ClientsPage'));
+const ProjectDetail = lazy(() => import('@/pages/ProjectDetail'));
+// const ClientDetail = lazy(() => import('@/pages/ClientDetail')); // Unused in original
+// const ArticlesPage = lazy(() => import('@/pages/ArticlesPage')); // Unused in original
+// const ArticleDetailPage = lazy(() => import('@/pages/ArticleDetailPage')); // Unused in original
+// const ContactPage = lazy(() => import('@/pages/ContactPage')); // Unused in original
+// const NotFound = lazy(() => import('@/pages/NotFound')); // Unused in original
+
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+  </div>
+);
 
 const PublicRoutes: React.FC = () => {
   const location = useLocation();
@@ -56,7 +63,7 @@ const PublicRoutes: React.FC = () => {
   };
 
   return (
-    <>
+    <Suspense fallback={<LoadingFallback />}>
       <Routes>
         <Route path="/" element={<LanguageRedirect />} />
         <Route path="/:lang" element={<Home />} />
@@ -132,9 +139,9 @@ const PublicRoutes: React.FC = () => {
 
         {/* 404 - Not Found */}
         <Route path="*" element={<NotFound />} />
-    </Routes>
+      </Routes>
       <FloatingContact />
-    </>
+    </Suspense>
   );
 };
 

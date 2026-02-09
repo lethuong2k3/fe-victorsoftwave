@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Moon, Sun, Monitor, Smartphone, Globe, Search, BarChart, PenTool } from 'lucide-react';
+import { Menu, X, ChevronDown, Moon, Sun, Monitor, Smartphone, Globe, Search, BarChart, PenTool, DollarSign } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { getLocalizedSlug, getSlugKey, getLang as getGlobalLang } from '@/utils/localization';
 
@@ -152,6 +152,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       websiteCare: 'Chăm sóc Website',
       consultNow: 'Tư vấn ngay',
       freeConsult: 'Nhận tư vấn miễn phí',
+      priceList: 'Bảng giá',
     },
     en: {
       home: 'Home',
@@ -166,6 +167,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       websiteCare: 'Website Care',
       consultNow: 'Consult now',
       freeConsult: 'Free consultation',
+      priceList: 'Price List',
     },
   }[lang];
 
@@ -183,6 +185,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       id: 'design',
       path: `/${lang}/${getLocalizedSlug('thiet-ke-website', lang)}`,
       dropdown: [
+        { label: labels.priceList, icon: <DollarSign size={18} />, target: `/${lang}/${getLocalizedSlug('thiet-ke-website', lang)}` },
         { label: labels.catalog, icon: <Monitor size={18} />, target: `/${lang}/${getLocalizedSlug('danh-muc-website', lang)}` },
         { label: labels.featuredCustomers, icon: <Globe size={18} />, target: `/${lang}/${getLocalizedSlug('khach-hang', lang)}` },
       ],

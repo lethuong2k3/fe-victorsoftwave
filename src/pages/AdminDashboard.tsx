@@ -438,25 +438,18 @@ const AdminDashboard: React.FC = () => {
   }, [isDarkMode]);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
     const handleResize = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        const desktop = window.innerWidth >= 1024;
-        setIsDesktop(desktop);
-        if (desktop) {
-          setIsSidebarOpen(true);
-        } else {
-          setIsSidebarOpen(false);
-        }
-      }, 150);
+      const desktop = window.innerWidth >= 1024;
+      setIsDesktop(desktop);
+      if (desktop) {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
+      }
     };
 
     window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(timeoutId);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {

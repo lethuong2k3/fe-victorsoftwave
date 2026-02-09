@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 export const useDarkMode = () => {
   const [isDark, setIsDark] = useState(false);
@@ -14,7 +14,7 @@ export const useDarkMode = () => {
     }
   }, []);
 
-  const toggleTheme = useCallback(() => {
+  const toggleTheme = () => {
     if (isDark) {
       document.documentElement.classList.remove('dark');
       localStorage.theme = 'light';
@@ -24,7 +24,7 @@ export const useDarkMode = () => {
       localStorage.theme = 'dark';
       setIsDark(true);
     }
-  }, [isDark]);
+  };
 
   return { isDark, toggleTheme };
 };

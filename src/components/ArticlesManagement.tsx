@@ -28,9 +28,8 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import ImageExtension from '@tiptap/extension-image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getAuthHeader } from '../utils/auth';
-import { api } from '../utils/api';
-import { Toast, ToastMessage } from './Toast';
+import { api } from '@/utils/api';
+import { Toast, ToastMessage } from '@/components/Toast';
 
 // Helper for slugs
 const toSlug = (str: string) => {
@@ -331,8 +330,8 @@ export const ArticlesManagement: React.FC<ArticlesManagementProps> = ({ onToast 
 
       // Validate featured count
       if (articleToSave.featured) {
+        // Fetch all featured articles
         try {
-          // Fetch all featured articles
           const featuredData = await api.get('/api/admin/articles?featured=true&size=100');
           const featuredArticles = featuredData.content || [];
           
@@ -346,15 +345,19 @@ export const ArticlesManagement: React.FC<ArticlesManagementProps> = ({ onToast 
             setIsSaving(false);
             return;
           }
-        } catch (error) {
-           console.error('Failed to check featured count', error);
+        } catch (e) {
+          console.error("Failed to validate featured articles", e);
         }
       }
 
+      const url = articleToSave.id 
+        ? `/api/admin/articles/${articleToSave.id}`
+        : '/api/admin/articles';
+
       if (articleToSave.id) {
-        await api.put(`/api/admin/articles/${articleToSave.id}`, articleToSave);
+         await api.put(url, articleToSave);
       } else {
-        await api.post('/api/admin/articles', articleToSave);
+         await api.post(url, articleToSave);
       }
 
       onToast({ type: 'success', text: articleToSave.id ? 'Cập nhật bài viết thành công' : 'Thêm bài viết mới thành công' });

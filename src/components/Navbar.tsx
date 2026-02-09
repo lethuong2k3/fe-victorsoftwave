@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, Moon, Sun, Monitor, Smartphone, Globe, Search, BarChart, PenTool } from 'lucide-react';
-import logo from '../assets/logo.png';
-import { getLocalizedSlug, getSlugKey, getLang as getGlobalLang } from '../utils/localization';
+import logo from '@/assets/logo.png';
+import { getLocalizedSlug, getSlugKey, getLang as getGlobalLang } from '@/utils/localization';
 
 interface NavbarProps {
   isDark: boolean;

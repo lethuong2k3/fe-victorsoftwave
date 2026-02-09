@@ -1,23 +1,23 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
-import Home from '../pages/Home';
-import WebDesignDetail from '../pages/WebDesignDetail';
-import SeoDetail from '../pages/SeoDetail';
-import WebsiteCareDetail from '../pages/WebsiteCareDetail';
-import TikTokDetail from '../pages/TikTokDetail';
-import FacebookAdsDetail from '../pages/FacebookAdsDetail';
-import GoogleAdsDetail from '../pages/GoogleAdsDetail';
-import PortfolioPage from '../pages/PortfolioPage';
-import ClientsPage from '../pages/ClientsPage';
-import ClientDetail from '../pages/ClientDetail';
-import ProjectDetail from '../pages/ProjectDetail';
-import ArticlesPage from '../pages/ArticlesPage';
-import ArticleDetailPage from '../pages/ArticleDetailPage';
-import ContactPage from '../pages/ContactPage';
-import NotFound from '../pages/NotFound';
-import { SLUG_MAPPING, getLang, getLocalizedSlug } from '../utils/localization';
-import FloatingContact from '../components/FloatingContact';
-import { api } from '../utils/api';
+import Home from '@/pages/Home';
+import WebDesignDetail from '@/pages/WebDesignDetail';
+import SeoDetail from '@/pages/SeoDetail';
+import WebsiteCareDetail from '@/pages/WebsiteCareDetail';
+import TikTokDetail from '@/pages/TikTokDetail';
+import FacebookAdsDetail from '@/pages/FacebookAdsDetail';
+import GoogleAdsDetail from '@/pages/GoogleAdsDetail';
+import PortfolioPage from '@/pages/PortfolioPage';
+import ClientsPage from '@/pages/ClientsPage';
+import ClientDetail from '@/pages/ClientDetail';
+import ProjectDetail from '@/pages/ProjectDetail';
+import ArticlesPage from '@/pages/ArticlesPage';
+import ArticleDetailPage from '@/pages/ArticleDetailPage';
+import ContactPage from '@/pages/ContactPage';
+import NotFound from '@/pages/NotFound';
+import { SLUG_MAPPING, getLang, getLocalizedSlug } from '@/utils/localization';
+import FloatingContact from '@/components/FloatingContact';
+import { api } from '@/utils/api';
 
 const PublicRoutes: React.FC = () => {
   const location = useLocation();
@@ -25,7 +25,7 @@ const PublicRoutes: React.FC = () => {
   useEffect(() => {
     const recordVisit = async () => {
       try {
-        await api.post('/api/analytics/visit?pageUrl=' + encodeURIComponent(window.location.href), undefined);
+        await api.post('/api/analytics/visit?pageUrl=' + encodeURIComponent(window.location.href), {});
       } catch (e) {
         // Silently fail for analytics
         console.error("Analytics error", e);

@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { clearCache } from '../utils/cache';
+//
 import { Loader2, Save, FileText } from 'lucide-react';
-import { getAuthHeader, isAuthenticated } from '../utils/auth';
-import { api } from '../utils/api';
-import { getLocalizedSlug } from '../utils/localization';
+import { isAuthenticated } from '@/utils/auth';
+import { api } from '@/utils/api';
+import { getLocalizedSlug } from '@/utils/localization';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { z } from 'zod';
-import { Toast } from './Toast';
+import { Toast } from '@/components/Toast';
 
 
 
@@ -106,7 +106,7 @@ const WebDesignContentForm: React.FC = () => {
     const fetchContent = async () => {
       setLoading(true);
       try {
-        const data = await api.get('/api/pages/web-design');
+        const data = await api.get<any>('/api/pages/web-design');
         const serviceHtmlVi =
           data.serviceDescriptionHtml ||
           `<p>${data.serviceIntro || ''}</p><p>${data.serviceSecondary || ''}</p>`;
@@ -137,8 +137,6 @@ const WebDesignContentForm: React.FC = () => {
           pricingJsonVi: data.pricingJsonVi || '[]',
           pricingJsonEn: data.pricingJsonEn || '[]',
         });
-      } catch (error) {
-        console.error('Failed to fetch content', error);
       } finally {
         setLoading(false);
       }
@@ -231,7 +229,6 @@ const WebDesignContentForm: React.FC = () => {
       }
       await api.post('/api/pages/web-design', payload);
       setMessage({ type: 'success', text: 'Đã lưu nội dung trang Thiết kế Website.' });
-      clearCache();
     } catch (error) {
       console.error('Save error:', error);
       setMessage({ type: 'error', text: `Lỗi kết nối server: ${error instanceof Error ? error.message : String(error)}` });

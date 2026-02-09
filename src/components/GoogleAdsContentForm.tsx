@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Loader2, Save, Upload, Link as LinkIcon, ImageIcon, Trash2 } from 'lucide-react';
+
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import { Toast, ToastMessage } from './Toast';
-import { getLocalizedSlug } from '../utils/localization';
+import { getLocalizedSlug } from '@/utils/localization';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../utils/api';
+import { api } from '@/utils/api';
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string;
@@ -67,6 +68,7 @@ export const GoogleAdsContentForm: React.FC = () => {
   const [formData, setFormData] = useState<GoogleAdsContent>(emptyContent);
   const [activeLang, setActiveLang] = useState<'vi' | 'en'>('vi');
   const activeLangRef = useRef<'vi' | 'en'>('vi');
+  const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<ToastMessage | null>(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -77,7 +79,7 @@ export const GoogleAdsContentForm: React.FC = () => {
 
   const { data: fetchedData, isLoading } = useQuery({
     queryKey: ['google-ads-content'],
-    queryFn: () => api.get('/api/pages/google-ads'),
+    queryFn: () => api.get<GoogleAdsContent>('/api/pages/google-ads'),
   });
 
   useEffect(() => {
@@ -107,6 +109,8 @@ export const GoogleAdsContentForm: React.FC = () => {
       }
     }
   }, [activeLang, editor, formData.serviceDescriptionHtml, formData.serviceDescriptionHtmlEn]);
+
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

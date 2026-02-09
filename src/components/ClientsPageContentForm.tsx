@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Loader2, Save } from 'lucide-react';
-import { getAuthHeader } from '../utils/auth';
+import { api } from '@/utils/api';
 import { Toast } from './Toast';
-import { api } from '../utils/api';
 
 type ClientsPageContent = {
   id?: number | null;
@@ -45,7 +44,7 @@ const ClientsPageContentForm: React.FC = () => {
   const fetchContent = async () => {
     try {
       setLoading(true);
-      const data = await api.get('/api/pages/clients');
+      const data = await api.get<ClientsPageContent>('/api/pages/clients');
       setFormData(data);
     } catch (error) {
       console.error('Failed to fetch content:', error);
@@ -62,16 +61,13 @@ const ClientsPageContentForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSaving(true);
-    setMessage(null);
-
     try {
-      const data = await api.post('/api/pages/clients', formData);
-      setFormData(data);
-      setMessage({ type: 'success', text: 'Đã lưu nội dung thành công!' });
+      setSaving(true);
+      await api.post('/api/pages/clients', formData);
+      setMessage({ type: 'success', text: 'Content saved successfully' });
     } catch (error) {
-      console.error('Failed to save content:', error);
-      setMessage({ type: 'error', text: 'Lỗi kết nối server.' });
+      console.error('Error saving content:', error);
+      setMessage({ type: 'error', text: 'Failed to save content' });
     } finally {
       setSaving(false);
     }
@@ -87,6 +83,7 @@ const ClientsPageContentForm: React.FC = () => {
 
   return (
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm mb-6">
+      <Toast message={message} onClose={() => setMessage(null)} />
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-bold text-slate-900 dark:text-white">Quản lý nội dung trang khách hàng</h3>
         <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">

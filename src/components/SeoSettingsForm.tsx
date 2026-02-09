@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Save, Globe, Loader2 } from 'lucide-react';
-import { getAuthHeader } from '../utils/auth';
-import { api } from '../utils/api';
+
+import { api } from '@/utils/api';
 
 const SeoSettingsForm: React.FC = () => {
   const [activeLang, setActiveLang] = useState<'vi' | 'en'>('vi');
@@ -39,17 +39,17 @@ const SeoSettingsForm: React.FC = () => {
   const fetchSeoSettings = async () => {
     setLoading(true);
     try {
-      const data = await api.get('/api/settings/seo');
+      const data = await api.get<any>('/api/settings/seo');
       // Merge with default empty strings to avoid uncontrolled input warnings
       setFormData({
-          seoTitleVi: data.seoTitleVi || '',
-          seoTitleEn: data.seoTitleEn || '',
-          seoKeywordsVi: data.seoKeywordsVi || '',
-          seoKeywordsEn: data.seoKeywordsEn || '',
-          seoDescriptionVi: data.seoDescriptionVi || '',
-          seoDescriptionEn: data.seoDescriptionEn || '',
-          mainKeywordVi: data.mainKeywordVi || '',
-          mainKeywordEn: data.mainKeywordEn || ''
+        seoTitleVi: data.seoTitleVi || '',
+        seoTitleEn: data.seoTitleEn || '',
+        seoKeywordsVi: data.seoKeywordsVi || '',
+        seoKeywordsEn: data.seoKeywordsEn || '',
+        seoDescriptionVi: data.seoDescriptionVi || '',
+        seoDescriptionEn: data.seoDescriptionEn || '',
+        mainKeywordVi: data.mainKeywordVi || '',
+        mainKeywordEn: data.mainKeywordEn || ''
       });
     } catch (error) {
       console.error('Failed to fetch SEO settings:', error);

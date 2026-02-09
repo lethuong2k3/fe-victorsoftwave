@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Layout, Search, ShieldCheck, ArrowRight } from 'lucide-react';
-import { getLocalizedSlug, getSlugKey } from '../utils/localization';
+import { getLocalizedSlug, getSlugKey } from '@/utils/localization';
 
 const services = [
   {

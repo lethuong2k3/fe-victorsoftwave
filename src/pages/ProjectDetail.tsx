@@ -1,41 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
-import { SLUG_MAPPING, getLocalizedSlug } from '../utils/localization';
+import { api } from '@/utils/api';
+import { SLUG_MAPPING, getLocalizedSlug } from '@/utils/localization';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Calendar, User, Code, CheckCircle2 } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import NotFound from './NotFound';
-
-const useDarkMode = () => {
-  const [isDark, setIsDark] = React.useState(false);
-
-  useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import NotFound from '@/pages/NotFound';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 type Project = {
   id: number;
@@ -78,7 +51,7 @@ const ProjectDetail: React.FC = () => {
     queryFn: async () => {
       if (!slug) return null;
       try {
-        return await fetcher<Project>(`/api/projects/${slug}`);
+        return await api.get<Project>(`/api/projects/${slug}`);
       } catch (err: any) {
         if (err.message && err.message.includes('404')) {
           return null;

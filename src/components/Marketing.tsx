@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Facebook, TrendingUp, Target, Users, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { getLang, getLocalizedSlug } from '../utils/localization';
+import { getLang, getLocalizedSlug } from '@/utils/localization';
 
 interface MarketingProps {
   data?: {
@@ -39,7 +39,13 @@ const Marketing: React.FC<MarketingProps> = ({ data }) => {
   const badge = data?.marketingBadge || "Digital Marketing";
   const title = data?.marketingTitle || "Bùng nổ doanh số đa nền tảng";
   const platforms = data?.marketingPlatforms || [];
-  const findPlatform = (key: string) => platforms.find(p => p.key === key) || {};
+  
+  const defaultPlatform = { key: '', title: '', description: '', imageUrl: '' };
+  const findPlatform = (key: string) => {
+    const found = platforms.find(p => p.key === key);
+    return found || { ...defaultPlatform, key };
+  };
+
   const tiktok = findPlatform('tiktok');
   const facebook = findPlatform('facebook');
   const google = findPlatform('google');

@@ -2,39 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang, getLocalizedSlug } from '../utils/localization';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
-
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
+import { api } from '@/utils/api';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 const categories = ["Tất cả", "Doanh nghiệp", "Bán hàng", "Landing Page", "Nội thất", "Giáo dục", "Thời trang"];
 
@@ -94,17 +67,19 @@ type ProjectsPageContent = {
 
   const queryCat = getFilterCategory(activeCat);
 
-  const { data: projectPage, isLoading: projectsLoading, error } = useQuery({
+  const { data: projectPage, isLoading: projectsLoading, error } = useQuery<ProjectPageResponse>({
     queryKey: ['projects', page, queryCat],
-    queryFn: () => fetcher<ProjectPageResponse>(`/api/projects?page=${page}&size=9&category=${encodeURIComponent(queryCat)}`),
-    keepPreviousData: true,
+    queryFn: () => api.get<ProjectPageResponse>(`/api/projects?page=${page}&size=9&category=${encodeURIComponent(queryCat)}`),
+    placeholderData: (prev) => prev,
   });
 
   const projects: Project[] = projectPage?.content || [];
 
   const { data: pageContent, isLoading: contentLoading } = useQuery({
     queryKey: ['projects-page-content', lang],
-    queryFn: () => fetcher<ProjectsPageContent>(`/api/pages/projects?lang=${lang}`),
+    queryFn: () => api.get<ProjectsPageContent>('/api/pages/projects', {
+      headers: { 'Accept-Language': lang }
+    }),
   });
 
   const isLoading = projectsLoading || contentLoading;

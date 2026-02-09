@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Loader2, Save, FileText } from 'lucide-react';
-import { getAuthHeader, isAuthenticated } from '../utils/auth';
-import { api } from '../utils/api';
-import { clearCache } from '../utils/cache';
-import { getLocalizedSlug } from '../utils/localization';
+import { isAuthenticated } from '@/utils/auth';
+import { api } from '@/utils/api';
+import { getLocalizedSlug } from '@/utils/localization';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Toast } from './Toast';
+import { Toast } from '@/components/Toast';
 
 type SeoOverallContent = {
   id?: number | null;
@@ -90,7 +89,7 @@ const SeoOverallContentForm: React.FC = () => {
     const fetchContent = async () => {
       setLoading(true);
       try {
-        const data = await api.get('/api/pages/seo-overall');
+        const data = await api.get<any>('/api/pages/seo-overall');
         const serviceHtmlVi =
           data.serviceDescriptionHtml ||
           `<p>${data.serviceIntro || ''}</p><p>${data.serviceSecondary || ''}</p>`;
@@ -117,8 +116,6 @@ const SeoOverallContentForm: React.FC = () => {
           seoDescriptionEn: data.seoDescriptionEn || '',
           primaryKeywordEn: data.primaryKeywordEn || '',
         });
-      } catch (error) {
-        console.error('Failed to fetch content', error);
       } finally {
         setLoading(false);
       }
@@ -169,7 +166,6 @@ const SeoOverallContentForm: React.FC = () => {
       }
       await api.post('/api/pages/seo-overall', payload);
       setMessage({ type: 'success', text: 'Đã lưu nội dung Dịch vụ SEO Tổng Thể.' });
-      clearCache();
     } catch (error) {
       console.error('Save error:', error);
       setMessage({ type: 'error', text: `Lỗi kết nối server: ${error instanceof Error ? error.message : String(error)}` });

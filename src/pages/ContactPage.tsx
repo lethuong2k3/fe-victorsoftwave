@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { useQuery } from '@tanstack/react-query';
-import { fetcher, api } from '../utils/api';
-import { getLang } from '../utils/localization';
+import { api } from '@/utils/api';
+import { getLang } from '@/utils/localization';
 import { Helmet } from 'react-helmet-async';
 import { Mail, Phone, MapPin, Send, Clock, MessageSquare, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Toast, ToastMessage } from '../components/Toast';
-import { contactSchema, ContactFormData } from '../utils/validation';
+import { Toast, ToastMessage } from '@/components/Toast';
+import { contactSchema, ContactFormData } from '@/utils/validation';
+import { ZodIssue } from 'zod';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 const ContactPage: React.FC = () => {
   const lang = getLang();
+  const { isDark, toggleTheme } = useDarkMode();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     phone: '',
@@ -31,7 +34,7 @@ const ContactPage: React.FC = () => {
     const validation = contactSchema.safeParse(formData);
     if (!validation.success) {
       const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
-      validation.error.errors.forEach(err => {
+      validation.error.errors.forEach((err: ZodIssue) => {
         if (err.path[0]) {
           newErrors[err.path[0] as keyof ContactFormData] = err.message;
         }
@@ -82,7 +85,7 @@ const ContactPage: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev: ContactFormData) => ({ ...prev, [name]: value }));
     // Clear error when user types
     if (errors[name as keyof ContactFormData]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
@@ -92,7 +95,7 @@ const ContactPage: React.FC = () => {
   // Reuse home data fetching to get contact info
   const { data: rawHomeData } = useQuery({
     queryKey: ['home-data', lang],
-    queryFn: () => fetcher<any>(`/api/pages/home?lang=${lang}`),
+    queryFn: () => api.get<any>('/api/pages/home'),
   });
 
   // Process data
@@ -144,7 +147,7 @@ const ContactPage: React.FC = () => {
       </Helmet>
       
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300 flex flex-col">
-        <Navbar />
+        <Navbar isDark={isDark} toggleTheme={toggleTheme} />
         
         <main className="flex-grow pt-24 pb-20">
             {/* Hero Section */}

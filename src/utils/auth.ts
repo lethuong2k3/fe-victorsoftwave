@@ -27,9 +27,3 @@ export const clearTokens = () => {
 export const isAuthenticated = () => {
   return !!getAccessToken();
 };
-
-export const getAuthHeader = () => {
-  const accessToken = getAccessToken();
-  if (!accessToken) return {};
-  return { Authorization: `Bearer ${accessToken}` };
-};

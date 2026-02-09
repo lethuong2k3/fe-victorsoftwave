@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Plus, Trash2, FileSpreadsheet, Download, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getAuthHeader } from '../utils/auth';
-import { api } from '../utils/api';
+import { api } from '@/utils/api';
 
 interface QuoteItem {
   description: string;
@@ -30,16 +29,16 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, selecte
     const fetchPackages = async () => {
       try {
         const data = await api.get('/api/pages/web-design?lang=vi');
-        if (data.pricingJsonVi) {
-            try {
-              const parsed = JSON.parse(data.pricingJsonVi);
-              if (Array.isArray(parsed) && parsed.length > 0) {
-                setPackages(parsed);
-                return;
-              }
-            } catch (e) {
-              console.error('Failed to parse pricingJsonVi', e);
+        if (data && data.pricingJsonVi) {
+          try {
+            const parsed = JSON.parse(data.pricingJsonVi);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              setPackages(parsed);
+              return;
             }
+          } catch (e) {
+            console.error('Failed to parse pricingJsonVi', e);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch web design content', error);
@@ -92,14 +91,17 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, selecte
   const handleExport = async () => {
     try {
       setLoading(true);
-      const blob = await api.postBlob('/api/admin/export/quote', {
-        customerName,
-        companyName,
-        email,
-        phone,
-        language: 'vi',
-        items,
-        note
+      const blob = await api.download('/api/admin/export/quote', {
+        method: 'POST',
+        body: JSON.stringify({
+          customerName,
+          companyName,
+          email,
+          phone,
+          language: 'vi',
+          items,
+          note
+        }),
       });
 
       const url = window.URL.createObjectURL(blob);

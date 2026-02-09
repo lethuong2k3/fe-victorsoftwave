@@ -38,24 +38,25 @@ import {
   Layers,
   Filter
 } from 'lucide-react';
-import { clearTokens, getRefreshToken, getAuthHeader } from '../utils/auth';
-import { SLUG_MAPPING } from '../utils/localization';
-import { Toast, ToastMessage } from '../components/Toast';
-import { api, BASE_URL } from '../utils/api';
+import { clearTokens, getRefreshToken } from '@/utils/auth';
+import { api } from '@/utils/api';
+import { SLUG_MAPPING } from '@/utils/localization';
+import { Toast, ToastMessage } from '@/components/Toast';
 
-import WebDesignContentForm from '../components/WebDesignContentForm';
-import SeoOverallContentForm from '../components/SeoOverallContentForm';
-import HomeContentForm from '../components/HomeContentForm';
-import WebsiteCareContentForm from '../components/WebsiteCareContentForm';
-import TiktokAdsContentForm from '../components/TiktokAdsContentForm';
-import FacebookAdsContentForm from '../components/FacebookAdsContentForm';
-import { GoogleAdsContentForm } from '../components/GoogleAdsContentForm';
-import ProjectsPageContentForm from '../components/ProjectsPageContentForm';
-import ClientsPageContentForm from '../components/ClientsPageContentForm';
-import { QuoteModal } from '../components/QuoteModal';
-import { ArticlesManagement } from '../components/ArticlesManagement';
-import { ContactManagement } from '../components/ContactManagement';
-import { Mail } from 'lucide-react';
+import WebDesignContentForm from '@/components/WebDesignContentForm';
+import SeoOverallContentForm from '@/components/SeoOverallContentForm';
+import HomeContentForm from '@/components/HomeContentForm';
+import WebsiteCareContentForm from '@/components/WebsiteCareContentForm';
+import TiktokAdsContentForm from '@/components/TiktokAdsContentForm';
+import FacebookAdsContentForm from '@/components/FacebookAdsContentForm';
+import { GoogleAdsContentForm } from '@/components/GoogleAdsContentForm';
+import ProjectsPageContentForm from '@/components/ProjectsPageContentForm';
+import ClientsPageContentForm from '@/components/ClientsPageContentForm';
+import { QuoteModal } from '@/components/QuoteModal';
+import { ArticlesManagement } from '@/components/ArticlesManagement';
+import { ContactManagement } from '@/components/ContactManagement';
+import { GoogleReviewsManagement } from '@/components/GoogleReviewsManagement';
+import { Mail, Star } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 const toSlug = (str: string) => {
@@ -141,7 +142,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchLatestUnreadContacts = async () => {
     try {
-      const data = await api.get(`/api/admin/contacts?status=UNREAD&size=5`);
+      const data = await api.get('/api/admin/contacts?status=UNREAD&size=5');
       setLatestUnreadContacts(data.content || []);
     } catch (error) {
       console.error('Failed to fetch unread contacts', error);
@@ -269,11 +270,11 @@ const AdminDashboard: React.FC = () => {
       }
       const data = await api.get(url);
       setVisitSeries(
-        (Array.isArray(data) ? data : []).map((d: any) => ({
-          date: d.date,
-          count: d.count || 0
-        }))
-      );
+          (Array.isArray(data) ? data : []).map((d: any) => ({
+            date: d.date,
+            count: d.count || 0
+          }))
+        );
     } catch (e) {
       console.error('Failed to fetch visit series', e);
     }
@@ -329,7 +330,10 @@ const AdminDashboard: React.FC = () => {
     }
     try {
       setIsExportingProjects(true);
-      const blob = await api.postBlob('/api/admin/export/projects', selectedProjectIds);
+      const blob = await api.download('/api/admin/export/projects', {
+        method: 'POST',
+        body: JSON.stringify(selectedProjectIds),
+      });
       
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -340,12 +344,6 @@ const AdminDashboard: React.FC = () => {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error(error);
-      if (error instanceof Error && (error as any).status === 401) {
-        setToast({ text: 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.', type: 'error' });
-        clearTokens();
-        navigate('/admin/login');
-        return;
-      }
       setToast({ text: 'Lỗi khi xuất danh sách dự án', type: 'error' });
     } finally {
       setIsExportingProjects(false);
@@ -355,7 +353,10 @@ const AdminDashboard: React.FC = () => {
   const handleExportClients = async () => {
     try {
       setIsExportingClients(true);
-      const blob = await api.postBlob('/api/admin/export/clients', selectedClientIds);
+      const blob = await api.download('/api/admin/export/clients', {
+        method: 'POST',
+        body: JSON.stringify(selectedClientIds),
+      });
 
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -366,12 +367,6 @@ const AdminDashboard: React.FC = () => {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error(error);
-      if (error instanceof Error && (error as any).status === 401) {
-        setToast({ text: 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.', type: 'error' });
-        clearTokens();
-        navigate('/admin/login');
-        return;
-      }
       setToast({ text: 'Lỗi khi xuất danh sách khách hàng', type: 'error' });
     } finally {
       setIsExportingClients(false);
@@ -725,6 +720,12 @@ const AdminDashboard: React.FC = () => {
             active={activeTab === 'articles'}
             onClick={() => changeTab('articles')}
           />
+          <SidebarItem 
+            icon={Star} 
+            label="Đánh giá Google" 
+            active={activeTab === 'google-reviews'}
+            onClick={() => changeTab('google-reviews')}
+          />
           <div className="pt-6 pb-2 px-4">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Nội dung</p>
           </div>
@@ -1035,6 +1036,8 @@ const AdminDashboard: React.FC = () => {
                     ? 'Quảng cáo Facebook'
                     : activeTab === 'static-google-ads'
                     ? 'Quảng cáo Google'
+                    : activeTab === 'google-reviews'
+                    ? 'Quản lý đánh giá Google'
                     : 'Quản lý bài viết'}
                 </h1>
                 {activeTab === 'static-webdesign' ||
@@ -2069,17 +2072,11 @@ const AdminDashboard: React.FC = () => {
                             const payload = { ...editingProject };
                             try {
                               setIsSavingProject(true);
-                              const method = payload.id ? 'PUT' : 'POST';
-                              const url =
-                                method === 'POST'
-                                  ? '/api/admin/projects'
-                                  : `/api/admin/projects/${payload.id}`;
-                              
                               let saved;
-                              if (method === 'POST') {
-                                saved = await api.post(url, payload);
+                              if (payload.id) {
+                                saved = await api.put(`/api/admin/projects/${payload.id}`, payload);
                               } else {
-                                saved = await api.put(url, payload);
+                                saved = await api.post('/api/admin/projects', payload);
                               }
                               
                               setShowProjectModal(false);
@@ -2092,8 +2089,8 @@ const AdminDashboard: React.FC = () => {
                                 return [saved, ...prev];
                               });
                               setToast({ type: 'success', text: 'Lưu dự án thành công!' });
-                            } catch (e: any) {
-                              setToast({ type: 'error', text: e.message || 'Lỗi kết nối server' });
+                            } catch (error: any) {
+                              setToast({ type: 'error', text: error.message || 'Lỗi kết nối server' });
                             } finally {
                               setIsSavingProject(false);
                             }
@@ -2158,7 +2155,6 @@ const AdminDashboard: React.FC = () => {
                               try {
                                 setIsDeleting(true);
                                 await api.delete(`/api/admin/projects/${projectToDelete.id}`);
-
                                 setProjects((prev) => prev.filter((item) => item.id !== projectToDelete.id));
                                 setProjectTotalElements((prev) => (prev > 0 ? prev - 1 : 0));
                                 setShowDeleteConfirm(false);
@@ -2600,7 +2596,7 @@ const AdminDashboard: React.FC = () => {
                                   if (!e.target.files?.length) return;
                                   try {
                                     setIsUploading(true);
-                                    const newUrls = [];
+                                    const newUrls: string[] = [];
                                     for (let i = 0; i < e.target.files.length; i++) {
                                       const url = await handleImageUpload(e.target.files[i]);
                                       newUrls.push(url);
@@ -2743,17 +2739,11 @@ const AdminDashboard: React.FC = () => {
                             } catch {}
                             try {
                               setIsSavingClient(true);
-                              const method = payload.id ? 'PUT' : 'POST';
-                              const url =
-                                method === 'POST'
-                                  ? '/api/admin/clients'
-                                  : `/api/admin/clients/${payload.id}`;
-                              
                               let saved;
-                              if (method === 'POST') {
-                                saved = await api.post(url, payload);
+                              if (payload.id) {
+                                saved = await api.put(`/api/admin/clients/${payload.id}`, payload);
                               } else {
-                                saved = await api.put(url, payload);
+                                saved = await api.post('/api/admin/clients', payload);
                               }
 
                               setShowClientModal(false);
@@ -2864,7 +2854,11 @@ const AdminDashboard: React.FC = () => {
             )}
 
             {activeTab === 'articles' && (
-              <ArticlesManagement onToast={(msg) => setToast(msg)} />
+              <ArticlesManagement onToast={(msg: ToastMessage) => setToast(msg)} />
+            )}
+
+            {activeTab === 'google-reviews' && (
+              <GoogleReviewsManagement />
             )}
 
             {activeTab === 'contacts' && (

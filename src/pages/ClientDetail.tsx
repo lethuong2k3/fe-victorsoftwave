@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang, SLUG_MAPPING } from '../utils/localization';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { getLang, SLUG_MAPPING } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
+import { api } from '@/utils/api';
 import { ArrowLeft, ExternalLink, CheckCircle2, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -57,7 +57,7 @@ const ClientDetail: React.FC = () => {
     queryKey: ['client-detail', slug],
     queryFn: async () => {
       try {
-        return await fetcher<Client>(`/api/clients/${slug}`);
+        return await api.get<Client>(`/api/clients/${slug}`);
       } catch (error: any) {
         if (error.message.includes('404')) return null;
         throw error;

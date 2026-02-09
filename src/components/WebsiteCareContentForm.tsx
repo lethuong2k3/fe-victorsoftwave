@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Loader2, Save, FileText } from 'lucide-react';
-import { getAuthHeader } from '../utils/auth';
-import { api } from '../utils/api';
-import { getLocalizedSlug } from '../utils/localization';
+
+import { api } from '@/utils/api';
+import { getLocalizedSlug } from '@/utils/localization';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import { Toast } from './Toast';
 
-import { clearCache } from '../utils/cache';
+//
 
 type WebsiteCareContent = {
   id?: number | null;
@@ -34,7 +34,13 @@ type WebsiteCareContent = {
   seoKeywordsEn: string;
   seoDescriptionEn: string;
   primaryKeywordEn: string;
+  // Legacy fields for migration
+  serviceIntro?: string;
+  serviceSecondary?: string;
 };
+
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
 const emptyContent: WebsiteCareContent = {
   heroTitlePrefix: '',
@@ -64,7 +70,7 @@ const emptyContent: WebsiteCareContent = {
 const WebsiteCareContentForm: React.FC = () => {
   const [activeLang, setActiveLang] = useState<'vi' | 'en'>('vi');
   const [formData, setFormData] = useState<WebsiteCareContent>(emptyContent);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const activeLangRef = useRef<'vi' | 'en'>('vi');
@@ -94,9 +100,9 @@ const WebsiteCareContentForm: React.FC = () => {
 
   useEffect(() => {
     const fetchContent = async () => {
-      setLoading(true);
       try {
-        const data = await api.get('/api/pages/website-care');
+        setLoading(true);
+        const data = await api.get<WebsiteCareContent>('/api/pages/website-care');
         const serviceHtmlVi =
           data.serviceDescriptionHtml || `<p>${data.serviceIntro || ''}</p><p>${data.serviceSecondary || ''}</p>`;
         const serviceHtmlEn = data.serviceDescriptionHtmlEn || '';
@@ -125,7 +131,7 @@ const WebsiteCareContentForm: React.FC = () => {
           primaryKeywordEn: data.primaryKeywordEn || '',
         });
       } catch (error) {
-        console.error('Failed to fetch content', error);
+        console.error('Error fetching content:', error);
       } finally {
         setLoading(false);
       }
@@ -238,9 +244,8 @@ const WebsiteCareContentForm: React.FC = () => {
         else payload.serviceDescriptionHtmlEn = editor.getHTML();
       }
       await api.post('/api/pages/website-care', payload);
-      clearCache();
-      setMessage({ type: 'success', text: 'Đã lưu nội dung trang Chăm sóc Website.' });
-    } catch (error) {
+      setMessage({ type: 'success', text: 'Đã lưu nội dung Chăm sóc Website.' });
+    } catch {
       setMessage({ type: 'error', text: 'Lỗi kết nối server.' });
     } finally {
       setSaving(false);
@@ -259,6 +264,7 @@ const WebsiteCareContentForm: React.FC = () => {
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+      <Toast message={message} onClose={() => setMessage(null)} />
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">

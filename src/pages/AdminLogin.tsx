@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { User, Lock, ArrowRight, ShieldCheck, Loader2 } from 'lucide-react';
-import { setTokens } from '../utils/auth';
-import { api } from '../utils/api';
+import { setTokens } from '@/utils/auth';
+import { api } from '@/utils/api';
 
 const AdminLogin: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -32,7 +32,7 @@ const AdminLogin: React.FC = () => {
       // alert(`Đăng nhập thành công!\nXin chào ${data.username}`);
       navigate('/admin/dashboard'); 
     } catch (err: any) {
-      setError(err.message || 'Thông tin đăng nhập không chính xác');
+      setError(err.message || 'Lỗi kết nối đến server. Vui lòng thử lại sau.');
       console.error('Login error:', err);
     } finally {
       setIsLoading(false);

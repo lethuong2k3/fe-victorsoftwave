@@ -1,41 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
+import { api } from '@/utils/api';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Monitor, Smartphone, Globe, Zap, Shield, TrendingUp } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang, getLocalizedSlug, getSlugKey } from '../utils/localization';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { getLang, getLocalizedSlug, getSlugKey } from '@/utils/localization';
 
-// A simple hook to manage dark mode
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
+import { useDarkMode } from '@/hooks/useDarkMode';
 
-  useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
+interface PricingPackage {
+  name: string;
+  price: string;
+  desc: string;
+  features: string[];
+  popular?: boolean;
+  link?: string;
+}
 
 const WebDesignDetail: React.FC = () => {
   const { isDark, toggleTheme } = useDarkMode();
@@ -54,7 +36,7 @@ const WebDesignDetail: React.FC = () => {
 
   const { data: content, isLoading: loading } = useQuery({
     queryKey: ['web-design-content', lang],
-    queryFn: () => fetcher<any>(`/api/pages/web-design?lang=${lang}`),
+    queryFn: () => api.get<any>('/api/pages/web-design', { headers: { 'Accept-Language': lang } }),
     select: (data) => ({
       heroTitlePrefix: data.heroTitlePrefix || 'Giải Pháp Thiết Kế Website',
       heroTitleHighlight: data.heroTitleHighlight || 'Chuyên Nghiệp',
@@ -204,7 +186,7 @@ const WebDesignDetail: React.FC = () => {
         ])
   ];
 
-  const safeParse = (s?: string) => {
+  const safeParse = (s?: string): PricingPackage[] => {
     try {
       const v = JSON.parse(s || '[]');
       return Array.isArray(v) ? v : [];
@@ -364,7 +346,7 @@ const WebDesignDetail: React.FC = () => {
                     <p className={`text-sm mb-6 ${pkg.popular ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>{pkg.desc}</p> 
                     
                     <div className="space-y-4 mb-8"> 
-                      {pkg.features.map((feat, i) => ( 
+                      {pkg.features.map((feat: string, i: number) => ( 
                         <div key={i} className="flex items-start gap-3"> 
                           <CheckCircle2 size={18} className={`mt-0.5 flex-shrink-0 ${pkg.popular ? 'text-blue-400' : 'text-blue-600'}`} /> 
                           <span className={`text-sm ${pkg.popular ? 'text-slate-200' : 'text-slate-600 dark:text-slate-300'}`}>{feat}</span> 
@@ -437,9 +419,9 @@ const WebDesignDetail: React.FC = () => {
                     {(suitableFor || '')
                       .replace(/\r\n/g, '\n')
                       .split('\n')
-                      .map((s) => s.trim())
+                      .map((s: string) => s.trim())
                       .filter(Boolean)
-                      .map((item, idx) => (
+                      .map((item: string, idx: number) => (
                       <div key={idx} className="flex items-start gap-3">
                         <CheckCircle2 size={18} className="mt-0.5 flex-shrink-0 text-blue-600 dark:text-blue-400" />
                         <span className="text-slate-700 dark:text-slate-300">{item}</span>

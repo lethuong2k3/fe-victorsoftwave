@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2 } from 'lucide-react';
-import { api } from '../utils/api';
-import { Toast, ToastMessage } from './Toast';
-import { contactSchema, ContactFormData } from '../utils/validation';
+import { api } from '@/utils/api';
+import { Toast, ToastMessage } from '@/components/Toast';
+import { contactSchema, ContactFormData } from '@/utils/validation';
 
 interface ContactProps {
   data?: {

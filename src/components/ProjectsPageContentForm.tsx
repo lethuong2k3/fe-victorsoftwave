@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Loader2, Save } from 'lucide-react';
-import { api } from '../utils/api';
-import { Toast } from './Toast';
 
-import { clearCache } from '../utils/cache';
+import { api } from '@/utils/api';
+import { Toast } from '@/components/Toast';
 
 type ProjectsPageContent = {
   id?: number | null;
@@ -50,7 +49,7 @@ const ProjectsPageContentForm: React.FC = () => {
   const fetchContent = async () => {
     try {
       setLoading(true);
-      const data = await api.get('/api/pages/projects');
+      const data = await api.get<any>('/api/pages/projects');
       setFormData(data);
     } catch (error) {
       console.error('Failed to fetch content:', error);
@@ -71,7 +70,7 @@ const ProjectsPageContentForm: React.FC = () => {
     setMessage(null);
 
     try {
-      const data = await api.post('/api/pages/projects', formData);
+      const data = await api.post<any>('/api/pages/projects', formData);
       setFormData(data);
       setMessage({ type: 'success', text: 'Đã lưu nội dung thành công!' });
     } catch (error) {

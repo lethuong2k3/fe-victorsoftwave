@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MessageCircle, MessagesSquare, X, MessageSquareText } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
+import { api } from '@/utils/api';
 
 interface HomeContent {
   zaloUrl?: string;
@@ -15,7 +15,7 @@ const FloatingContact = () => {
   // Fetch home content to get links
   const { data } = useQuery({
     queryKey: ['home-content'],
-    queryFn: () => fetcher<HomeContent>('/api/pages/home'),
+    queryFn: () => api.get<HomeContent>('/api/pages/home'),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 

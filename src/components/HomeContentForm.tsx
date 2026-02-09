@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { clearCache } from '../utils/cache';
 import { Loader2, Save, Home, Image as ImageIcon, Upload, Link as LinkIcon, Trash2 } from 'lucide-react';
 import { z } from 'zod';
-import { api, ApiError } from '../utils/api';
-import { Toast } from './Toast';
+import { api } from '@/utils/api';
+import { Toast } from '@/components/Toast';
 
 type ServiceItem = {
   id: string;
@@ -231,17 +230,14 @@ const HomeContentForm: React.FC = () => {
     const fetchContent = async () => {
       setLoading(true);
       try {
-        const data = await api.get(`/api/pages/home?_t=${Date.now()}`);
+        const data = await api.get<HomeContent>(`/api/pages/home?_t=${Date.now()}`);
         setFormData({
           ...emptyContent,
           ...data,
         });
       } catch (error) {
-        if (error instanceof ApiError && error.status === 401) {
-          setMessage({ type: 'error', text: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.' });
-        } else {
-          console.error('Failed to fetch content:', error);
-        }
+        console.error('Failed to fetch content:', error);
+        setMessage({ type: 'error', text: 'Không thể tải nội dung. Vui lòng thử lại.' });
       } finally {
         setLoading(false);
       }
@@ -498,18 +494,18 @@ const HomeContentForm: React.FC = () => {
     setSaving(true);
     setMessage(null);
     try {
-      const savedData = await api.post('/api/pages/home', formData);
+      const savedData = await api.post<HomeContent>('/api/pages/home', formData);
       setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
       setFormData((prev) => ({ ...prev, ...savedData }));
       setErrors({});
-      clearCache();
-    } catch (error) {
-      if (error instanceof ApiError && error.data && typeof error.data === 'object') {
-        setErrors(error.data as Record<string, string>);
-        setMessage({ type: 'error', text: 'Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.' });
+    } catch (error: any) {
+      console.error('Save error:', error);
+      if (error.message && typeof error.message === 'string') {
+          // Attempt to parse validation errors if they come as a JSON string message (unlikely but possible depending on backend)
+           // Or if the backend returns a specific structure caught by api.ts
+           setMessage({ type: 'error', text: error.message || 'Có lỗi xảy ra khi lưu.' });
       } else {
-        console.error('Save error:', error);
-        setMessage({ type: 'error', text: 'Lỗi kết nối đến server.' });
+           setMessage({ type: 'error', text: 'Lỗi kết nối đến server.' });
       }
     } finally {
       setSaving(false);

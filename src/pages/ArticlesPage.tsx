@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, User, ArrowRight, Tag } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang, getLocalizedSlug } from '../utils/localization';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
+import { api } from '@/utils/api';
 import { Helmet } from 'react-helmet-async';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 interface Article {
   id: number;
@@ -34,6 +35,7 @@ interface ArticlePageResponse {
 const ArticlesPage: React.FC = () => {
   const navigate = useNavigate();
   const lang = getLang();
+  const { isDark, toggleTheme } = useDarkMode();
   const [page, setPage] = useState(0);
   
   // SEO Metadata
@@ -42,10 +44,10 @@ const ArticlesPage: React.FC = () => {
     ? 'Latest updates, technology news, and insights from Victor Softwave.' 
     : 'Cập nhật tin tức công nghệ, hoạt động và kiến thức mới nhất từ Victor Softwave.';
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<ArticlePageResponse>({
     queryKey: ['articles', page],
-    queryFn: () => fetcher<ArticlePageResponse>(`/api/articles?page=${page}&size=9&status=PUBLISHED&sort=createdAt,desc`),
-    keepPreviousData: true
+    queryFn: () => api.get<ArticlePageResponse>(`/api/articles?page=${page}&size=9&status=PUBLISHED&sort=createdAt,desc`),
+    placeholderData: (prev) => prev
   });
 
   const formatDate = (dateString: string) => {
@@ -64,7 +66,7 @@ const ArticlesPage: React.FC = () => {
       </Helmet>
 
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
-        <Navbar />
+        <Navbar isDark={isDark} toggleTheme={toggleTheme} />
         
         <main className="pt-24 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
           {/* Header */}

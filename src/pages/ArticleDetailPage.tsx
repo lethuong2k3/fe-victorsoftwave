@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, User, ArrowLeft, Share2, Tag, Instagram } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { Toast, ToastMessage } from '../components/Toast';
-import { getLang, getLocalizedSlug } from '../utils/localization';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { Toast, ToastMessage } from '@/components/Toast';
+import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
+import { api } from '@/utils/api';
 import { Helmet } from 'react-helmet-async';
 import DOMPurify from 'dompurify';
-import { ImageWithFallback } from '../components/ImageWithFallback';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 interface Article {
   id: number;
@@ -38,11 +38,12 @@ const ArticleDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const lang = getLang();
+  const { isDark, toggleTheme } = useDarkMode();
   const [toast, setToast] = useState<ToastMessage | null>(null);
 
   const { data: article, isLoading, error } = useQuery({
     queryKey: ['article', slug],
-    queryFn: () => fetcher<Article>(`/api/articles/slug/${slug}`),
+    queryFn: () => api.get<Article>(`/api/articles/slug/${slug}`),
     enabled: !!slug,
     retry: false
   });
@@ -111,7 +112,7 @@ const ArticleDetailPage: React.FC = () => {
       </Helmet>
 
       <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
-        <Navbar />
+        <Navbar isDark={isDark} toggleTheme={toggleTheme} />
 
         <main className="pt-28 pb-20 px-4 md:px-8 max-w-5xl mx-auto">
           {/* Breadcrumb & Back */}
@@ -198,7 +199,7 @@ const ArticleDetailPage: React.FC = () => {
 
           {/* Featured Image */}
           <div className="mb-12 rounded-2xl overflow-hidden shadow-lg">
-            <ImageWithFallback 
+            <img 
               src={article.image || 'https://via.placeholder.com/1200x600'} 
               alt={title}
               className="w-full h-auto object-cover max-h-[600px]"

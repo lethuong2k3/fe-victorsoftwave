@@ -10,11 +10,11 @@ export default defineConfig(({ mode }) => {
         host: '0.0.0.0',
         proxy: {
           '/api': {
-            target: env.VITE_API_URL || 'http://localhost:8080',
+            target: 'http://localhost:8080',
             changeOrigin: true,
           },
           '/uploads': {
-            target: env.VITE_API_URL || 'http://localhost:8080',
+            target: 'http://localhost:8080',
             changeOrigin: true,
           },
         },
@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
       },
       resolve: {
         alias: {
-          '@': path.resolve(__dirname, '.'),
+          '@': path.resolve(__dirname, './src'),
         }
       }
     };

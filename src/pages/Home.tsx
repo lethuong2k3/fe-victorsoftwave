@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import Services from '../components/Services';
-import Marketing from '../components/Marketing';
-import Portfolio from '../components/Portfolio';
-import Blog from '../components/Blog';
-import Contact from '../components/Contact';
-import Footer from '../components/Footer';
-import { fetcher } from '../utils/api';
-import { getLang as getStoredLang } from '../utils/localization';
+import Navbar from '@/components/Navbar';
+import Hero from '@/components/Hero';
+import Services from '@/components/Services';
+import Marketing from '@/components/Marketing';
+import Portfolio from '@/components/Portfolio';
+import Blog from '@/components/Blog';
+import Contact from '@/components/Contact';
+import GoogleReviews from '@/components/GoogleReviews';
+import Footer from '@/components/Footer';
+import { api } from '@/utils/api';
+import { getLang as getStoredLang } from '@/utils/localization';
 
 const HeroSkeleton = () => (
   <section className="relative overflow-hidden">
@@ -148,12 +149,12 @@ const Home: React.FC = () => {
 
   const { data: rawHomeData, isLoading: loading } = useQuery({
     queryKey: ['home-data', lang],
-    queryFn: () => fetcher<any>(`/api/pages/home?lang=${lang}`),
+    queryFn: () => api.get<any>('/api/pages/home'),
   });
 
   const { data: featuredArticlesData } = useQuery({
     queryKey: ['featured-articles', lang],
-    queryFn: () => fetcher<any>('/api/articles?featured=true&status=PUBLISHED&size=3&sort=createdAt,desc'),
+    queryFn: () => api.get<any>('/api/articles?featured=true&status=PUBLISHED&size=3&sort=createdAt,desc'),
   });
   
   const homeContent = useMemo(() => {
@@ -253,7 +254,9 @@ const Home: React.FC = () => {
         {loading || !homeContent ? <HeroSkeleton /> : <Hero data={homeContent} />}
         {loading || !homeContent ? <ServicesSkeleton /> : <Services data={homeContent} />}
         {loading || !homeContent ? <MarketingSkeleton /> : <Marketing data={homeContent} />}
+        {loading || !homeContent ? <PortfolioSkeleton /> : <Portfolio data={homeContent} lang={lang} />}
         {loading || !homeContent ? <BlogSkeleton /> : <Blog data={homeContent} posts={featuredArticlesData?.content || []} lang={lang} />}
+        <GoogleReviews />
         {loading || !homeContent ? <ContactSkeleton /> : <Contact data={homeContent} />}
       </main>
 

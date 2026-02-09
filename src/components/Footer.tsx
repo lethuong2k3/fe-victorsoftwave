@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
-import logo from '../assets/logo.png';
-import { getLang, getLocalizedSlug } from '../utils/localization';
+import logo from '@/assets/logo.png';
+import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
+import { api } from '@/utils/api';
 
 const Footer: React.FC = () => {
   const lang = getLang();
   
   const { data: homeData } = useQuery({
     queryKey: ['home-content'],
-    queryFn: () => fetcher('/api/pages/home'),
+    queryFn: () => api.get('/api/pages/home'),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 

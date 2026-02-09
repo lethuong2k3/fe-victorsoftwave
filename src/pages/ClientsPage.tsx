@@ -2,39 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Search, ArrowLeft } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang, getLocalizedSlug } from '../utils/localization';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
-
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
+import { api } from '@/utils/api';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 type Client = {
   id: number;
@@ -76,15 +49,15 @@ const ClientsPage: React.FC = () => {
   const [page, setPage] = useState(0);
 
   // Fetch Page Content (SEO, Title, Description)
-  const { data: pageContent } = useQuery({
-    queryKey: ['clients-page-content', lang],
-    queryFn: () => fetcher<ClientsPageContent>(`/api/pages/clients?lang=${lang}`),
+  const { data: pageContent } = useQuery<ClientsPageContent>({
+    queryKey: ['clients-page-content'],
+    queryFn: () => api.get<ClientsPageContent>('/api/pages/clients'),
   });
 
   // Fetch Categories
-  const { data: categoriesData } = useQuery({
+  const { data: categoriesData } = useQuery<string[]>({
     queryKey: ['client-categories'],
-    queryFn: () => fetcher<string[]>('/api/clients/categories'),
+    queryFn: () => api.get<string[]>('/api/clients/categories'),
   });
 
   const categories = ['All', ...(categoriesData || [])];
@@ -96,10 +69,10 @@ const ClientsPage: React.FC = () => {
   const queryCat = activeCat === 'All' ? '' : activeCat;
 
   // Fetch Clients
-  const { data: clientPage, isLoading: clientsLoading } = useQuery({
+  const { data: clientPage, isLoading: clientsLoading } = useQuery<ClientPageResponse>({
     queryKey: ['clients', page, queryCat],
-    queryFn: () => fetcher<ClientPageResponse>(`/api/clients?page=${page}&size=12&cat=${encodeURIComponent(queryCat)}`),
-    keepPreviousData: true,
+    queryFn: () => api.get<ClientPageResponse>(`/api/clients?page=${page}&size=12&cat=${encodeURIComponent(queryCat)}`),
+    placeholderData: (prev) => prev,
   });
 
   const clients = clientPage?.content || [];

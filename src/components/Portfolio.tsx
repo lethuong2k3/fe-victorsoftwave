@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { SLUG_MAPPING, getLocalizedSlug } from '../utils/localization';
-import { api } from '../utils/api';
-import { ImageWithFallback } from './ImageWithFallback';
+import { SLUG_MAPPING, getLocalizedSlug } from '@/utils/localization';
+import { api } from '@/utils/api';
 
 interface PortfolioProps {
   data?: {

@@ -1,40 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
+import { api } from '@/utils/api';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Search, TrendingUp, BarChart3, FileText, Target, Link2, CheckCircle2, ArrowRight } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang } from '../utils/localization';
-
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { getLang } from '@/utils/localization';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 const SeoDetail: React.FC = () => {
   const { isDark, toggleTheme } = useDarkMode();
@@ -53,7 +26,7 @@ const SeoDetail: React.FC = () => {
 
   const { data: content, isLoading: loading } = useQuery({
     queryKey: ['seo-overall-content', lang],
-    queryFn: () => fetcher<any>(`/api/pages/seo-overall?lang=${lang}`),
+    queryFn: () => api.get<any>('/api/pages/seo-overall', { headers: { 'Accept-Language': lang } }),
     select: (data) => ({
       heroTitlePrefix: data.heroTitlePrefix || 'Dịch vụ SEO Tổng Thể',
       heroTitleHighlight: data.heroTitleHighlight || 'Lên Top Bền Vững',
@@ -434,9 +407,9 @@ const SeoDetail: React.FC = () => {
                     {((lang === 'en' ? content?.suitableForEn : content?.suitableFor) || '')
                       .replace(/\r\n/g, '\n')
                       .split('\n')
-                      .map((s) => s.trim())
+                      .map((s: string) => s.trim())
                       .filter(Boolean)
-                      .map((item, idx) => (
+                      .map((item: string, idx: number) => (
                         <div key={idx} className="flex items-start gap-3">
                           <CheckCircle2 size={18} className="mt-0.5 flex-shrink-0 text-orange-600 dark:text-orange-400" />
                           <span className="text-slate-700 dark:text-slate-300">{item}</span>

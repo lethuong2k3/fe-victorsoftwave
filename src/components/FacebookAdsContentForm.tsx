@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { clearCache } from '../utils/cache';
 import { Loader2, Save, ImageIcon, Link as LinkIcon, Upload, Trash2 } from 'lucide-react';
-import { api } from '../utils/api';
+import { api } from '@/utils/api';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Toast } from './Toast';
-import { getLocalizedSlug } from '../utils/localization';
+import { Toast } from '@/components/Toast';
+import { getLocalizedSlug } from '@/utils/localization';
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string;
@@ -109,7 +108,7 @@ const FacebookAdsContentForm: React.FC = () => {
   const fetchContent = async () => {
     try {
       setLoading(true);
-      const data = await api.get('/api/pages/facebook-ads');
+      const data = await api.get<any>('/api/pages/facebook-ads');
       setFormData(data);
     } catch (error) {
       setMessage({ type: 'error', text: 'Không thể tải dữ liệu.' });
@@ -131,12 +130,11 @@ const FacebookAdsContentForm: React.FC = () => {
     setMessage(null);
 
     try {
-      const saved = await api.post('/api/pages/facebook-ads', formData);
+      const saved = await api.post<any>('/api/pages/facebook-ads', formData);
       setFormData(saved);
       setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
-      clearCache();
     } catch (error) {
-      setMessage({ type: 'error', text: 'Lỗi kết nối đến server.' });
+      setMessage({ type: 'error', text: 'Có lỗi xảy ra khi lưu.' });
     } finally {
       setSaving(false);
     }

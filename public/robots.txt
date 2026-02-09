@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://victorsoftwave.com/sitemap.xml

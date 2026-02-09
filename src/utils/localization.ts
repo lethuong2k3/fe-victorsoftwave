@@ -83,5 +83,5 @@ export const getLang = (): Lang => {
   if (seg === 'en') return 'en';
   const stored = (localStorage.getItem('lang') || localStorage.getItem('language') || '').toLowerCase();
   if (stored === 'en' || stored === 'vi') return stored as Lang;
-  return (navigator.language || '').toLowerCase().startsWith('en') ? 'en' : 'vi';
+  return 'vi';
 };

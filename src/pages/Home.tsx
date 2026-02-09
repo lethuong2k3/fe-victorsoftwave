@@ -148,8 +148,9 @@ const Home: React.FC = () => {
   }, []);
 
   const { data: rawHomeData, isLoading: loading } = useQuery({
-    queryKey: ['home-data', lang],
+    queryKey: ['home-content'],
     queryFn: () => api.get<any>('/api/pages/home'),
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   const { data: featuredArticlesData } = useQuery({

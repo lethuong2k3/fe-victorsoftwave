@@ -28,6 +28,18 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, './src'),
         }
+      },
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+              'ui-vendor': ['framer-motion', 'lucide-react'],
+              'editor-vendor': ['@tiptap/react', '@tiptap/starter-kit', '@tiptap/extension-image', '@tiptap/extension-underline', 'dompurify'],
+              'chart-vendor': ['recharts'],
+            }
+          }
+        }
       }
     };
 });

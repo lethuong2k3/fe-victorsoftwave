@@ -12,6 +12,7 @@ import GoogleReviews from '@/components/GoogleReviews';
 import Footer from '@/components/Footer';
 import { api } from '@/utils/api';
 import { getLang as getStoredLang } from '@/utils/localization';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 const HeroSkeleton = () => (
   <section className="relative overflow-hidden">
@@ -81,36 +82,6 @@ const ContactSkeleton = () => (
     <div className="h-48 bg-slate-200 dark:bg-slate-800 rounded-2xl animate-pulse" />
   </section>
 );
-
-// A simple hook to manage dark mode
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    // Check system preference or local storage on mount
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
 
 const Home: React.FC = () => {
   const { isDark, toggleTheme } = useDarkMode();

@@ -183,7 +183,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       key: 'design',
       title: labels.design,
       id: 'design',
-      path: `/${lang}/${getLocalizedSlug('thiet-ke-website', lang)}`,
       dropdown: [
         { label: labels.priceList, icon: <DollarSign size={18} />, target: `/${lang}/${getLocalizedSlug('thiet-ke-website', lang)}` },
         { label: labels.catalog, icon: <Monitor size={18} />, target: `/${lang}/${getLocalizedSlug('danh-muc-website', lang)}` },

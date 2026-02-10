@@ -71,6 +71,10 @@ const ArticleDetailPage: React.FC = () => {
   const seoDesc = lang === 'en' ? (article.seoDescriptionEn || description) : (article.seoDescription || description);
   const seoKeywords = lang === 'en' ? article.seoKeywordsEn : article.seoKeywords;
 
+  const fullImageUrl = article.image 
+    ? (article.image.startsWith('http') ? article.image : `${window.location.origin}${article.image.startsWith('/') ? '' : '/'}${article.image}`)
+    : '';
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString(lang === 'en' ? 'en-US' : 'vi-VN', {
       year: 'numeric',
@@ -98,9 +102,12 @@ const ArticleDetailPage: React.FC = () => {
         {seoKeywords && <meta name="keywords" content={seoKeywords} />}
         
         {/* Open Graph */}
+        <meta property="og:site_name" content="Victor Software" />
         <meta property="og:title" content={seoTitle} />
         <meta property="og:description" content={seoDesc} />
-        <meta property="og:image" content={article.image} />
+        <meta property="og:image" content={fullImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:type" content="article" />
         
@@ -108,7 +115,7 @@ const ArticleDetailPage: React.FC = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={seoTitle} />
         <meta name="twitter:description" content={seoDesc} />
-        <meta name="twitter:image" content={article.image} />
+        <meta name="twitter:image" content={fullImageUrl} />
       </Helmet>
 
       <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">

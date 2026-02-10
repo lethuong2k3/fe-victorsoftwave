@@ -105,14 +105,22 @@ type ProjectsPageContent = {
     "provider": {
       "@type": "Organization",
       "name": "Victor Software",
+<<<<<<< HEAD:src/pages/PortfolioPage.tsx
       "url": "https://victorsoftwave.com"
+=======
+      "url": "https://www.victorsoftwave.com"
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/PortfolioPage.tsx
     },
     "mainEntity": {
       "@type": "ItemList",
       "itemListElement": projects?.map((project, index) => ({
         "@type": "ListItem",
         "position": index + 1,
+<<<<<<< HEAD:src/pages/PortfolioPage.tsx
         "url": `https://victorsoftwave.com/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${lang === 'en' && project.slugEn ? project.slugEn : project.slug}`,
+=======
+        "url": `https://www.victorsoftwave.com/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${lang === 'en' && project.slugEn ? project.slugEn : project.slug}`,
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/PortfolioPage.tsx
         "name": lang === 'en' && project.titleEn ? project.titleEn : project.title
       })) || []
     }

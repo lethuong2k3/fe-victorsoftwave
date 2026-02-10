@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Home as HomeIcon, Search as SearchIcon } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
 import { getLang, Lang } from '@/utils/localization';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
@@ -85,7 +86,7 @@ const NotFound: React.FC = () => {
                       <div className="w-2 h-2 rounded-full bg-amber-400" />
                       <div className="w-2 h-2 rounded-full bg-emerald-400" />
                     </div>
-                    <span className="text-[10px] text-slate-400">victorsoftwave.com</span>
+                    <span className="text-[10px] text-slate-400">www.victorsoftwave.com</span>
                   </div>
                   <div className="space-y-2">
                     <div className="h-4 w-5/6 rounded-full bg-slate-200 dark:bg-slate-800" />

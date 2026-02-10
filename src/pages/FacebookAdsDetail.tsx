@@ -101,7 +101,11 @@ const FacebookAdsDetail: React.FC = () => {
     "provider": {
       "@type": "Organization",
       "name": "Victor Software",
+<<<<<<< HEAD:src/pages/FacebookAdsDetail.tsx
       "url": "https://victorsoftwave.com"
+=======
+      "url": "https://www.victorsoftwave.com"
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/FacebookAdsDetail.tsx
     },
     "serviceType": "Facebook Ads Management",
     "areaServed": "Global",

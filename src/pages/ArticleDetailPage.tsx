@@ -72,7 +72,11 @@ const ArticleDetailPage: React.FC = () => {
   const seoKeywords = lang === 'en' ? article.seoKeywordsEn : article.seoKeywords;
 
   const fullImageUrl = article.image 
+<<<<<<< HEAD:src/pages/ArticleDetailPage.tsx
     ? (article.image.startsWith('http') ? article.image : `${window.location.origin}${article.image.startsWith('/') ? '' : '/'}${article.image}`)
+=======
+    ? (article.image.startsWith('http') ? article.image : `https://www.victorsoftwave.com${article.image.startsWith('/') ? '' : '/'}${article.image}`)
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/ArticleDetailPage.tsx
     : '';
 
   const structuredData = {
@@ -90,13 +94,21 @@ const ArticleDetailPage: React.FC = () => {
       "name": "Victor Software",
       "logo": {
         "@type": "ImageObject",
+<<<<<<< HEAD:src/pages/ArticleDetailPage.tsx
         "url": "https://victorsoftwave.com/logo.png"
+=======
+        "url": "https://www.victorsoftwave.com/logo.png"
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/ArticleDetailPage.tsx
       }
     },
     "description": description,
     "mainEntityOfPage": {
       "@type": "WebPage",
+<<<<<<< HEAD:src/pages/ArticleDetailPage.tsx
       "@id": window.location.href
+=======
+      "@id": `https://www.victorsoftwave.com/${lang}/${getLocalizedSlug('tin-tuc', lang)}/${slug}`
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/ArticleDetailPage.tsx
     }
   };
 

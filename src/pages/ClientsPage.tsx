@@ -108,14 +108,22 @@ const ClientsPage: React.FC = () => {
     "provider": {
       "@type": "Organization",
       "name": "Victor Software",
+<<<<<<< HEAD:src/pages/ClientsPage.tsx
       "url": "https://victorsoftwave.com"
+=======
+      "url": "https://www.victorsoftwave.com"
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/ClientsPage.tsx
     },
     "mainEntity": {
       "@type": "ItemList",
       "itemListElement": clients.map((client, index) => ({
         "@type": "ListItem",
         "position": index + 1,
+<<<<<<< HEAD:src/pages/ClientsPage.tsx
         "url": `https://victorsoftwave.com/${lang}/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`,
+=======
+        "url": `https://www.victorsoftwave.com/${lang}/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`,
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/ClientsPage.tsx
         "name": client.name
       }))
     }

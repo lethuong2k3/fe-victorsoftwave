@@ -106,7 +106,11 @@ const TikTokDetail: React.FC = () => {
     "provider": {
       "@type": "Organization",
       "name": "Victor Software",
+<<<<<<< HEAD:src/pages/TikTokDetail.tsx
       "url": "https://victorsoftwave.com"
+=======
+      "url": "https://www.victorsoftwave.com"
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/TikTokDetail.tsx
     },
     "serviceType": "TikTok Ads Management",
     "areaServed": "Global",

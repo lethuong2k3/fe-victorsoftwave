@@ -108,7 +108,6 @@ const WebDesignDetail: React.FC = () => {
           description={seoDescription}
           keywords={seoKeywords}
           type="article"
-          structuredData={structuredData}
         />
         <div className="fixed inset-0 pointer-events-none z-[-1]">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/20 rounded-full blur-[100px] animate-pulse" />
@@ -197,7 +196,11 @@ const WebDesignDetail: React.FC = () => {
     "provider": {
       "@type": "Organization",
       "name": "Victor Software",
+<<<<<<< HEAD:src/pages/WebDesignDetail.tsx
       "url": "https://victorsoftwave.com"
+=======
+      "url": "https://www.victorsoftwave.com"
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/WebDesignDetail.tsx
     },
     "serviceType": "Web Design and Development",
     "areaServed": "Global",

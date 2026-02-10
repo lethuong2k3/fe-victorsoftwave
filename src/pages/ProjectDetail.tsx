@@ -175,11 +175,19 @@ const ProjectDetail: React.FC = () => {
     "creator": {
       "@type": "Organization",
       "name": "Victor Software",
+<<<<<<< HEAD:src/pages/ProjectDetail.tsx
       "url": "https://victorsoftwave.com"
     },
     "dateCreated": project.completionDate,
     "keywords": project.technologies?.join(", "),
     "url": window.location.href,
+=======
+      "url": "https://www.victorsoftwave.com"
+    },
+    "dateCreated": project.completionDate,
+    "keywords": project.technologies?.join(", "),
+    "url": `https://www.victorsoftwave.com/${currentLang}/${getLocalizedSlug('danh-muc-website', currentLang)}/${currentLang === 'en' && project.slugEn ? project.slugEn : project.slug}`,
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/ProjectDetail.tsx
     ...(project.demoLink && { "sameAs": project.demoLink })
   };
 

@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
 import { getLang } from '@/utils/localization';
-import { Helmet } from 'react-helmet-async';
+import SEO from '@/components/SEO';
 import { Mail, Phone, MapPin, Send, Clock, MessageSquare, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Toast, ToastMessage } from '@/components/Toast';
@@ -147,7 +147,11 @@ const ContactPage: React.FC = () => {
     "mainEntity": {
       "@type": "Organization",
       "name": "Victor Software",
+<<<<<<< HEAD:src/pages/ContactPage.tsx
       "url": "https://victorsoftwave.com",
+=======
+      "url": "https://www.victorsoftwave.com",
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/ContactPage.tsx
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": contactData?.contactHotline || defaults.hotline,

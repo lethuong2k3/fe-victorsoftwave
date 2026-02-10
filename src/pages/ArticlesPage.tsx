@@ -66,7 +66,11 @@ const ArticlesPage: React.FC = () => {
     "provider": {
       "@type": "Organization",
       "name": "Victor Software",
+<<<<<<< HEAD:src/pages/ArticlesPage.tsx
       "url": "https://victorsoftwave.com"
+=======
+      "url": "https://www.victorsoftwave.com"
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/ArticlesPage.tsx
     },
     "blogPost": data?.content?.map(article => ({
       "@type": "BlogPosting",
@@ -78,7 +82,11 @@ const ArticlesPage: React.FC = () => {
         "@type": "Person",
         "name": article.author || "Victor Software"
       },
+<<<<<<< HEAD:src/pages/ArticlesPage.tsx
       "url": `https://victorsoftwave.com/${lang}/${getLocalizedSlug('tin-tuc', lang)}/${lang === 'en' && article.slugEn ? article.slugEn : article.slug}`
+=======
+      "url": `https://www.victorsoftwave.com/${lang}/${getLocalizedSlug('tin-tuc', lang)}/${lang === 'en' && article.slugEn ? article.slugEn : article.slug}`
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/ArticlesPage.tsx
     })) || []
   };
 

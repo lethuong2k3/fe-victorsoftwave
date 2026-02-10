@@ -1,3 +1,7 @@
 User-agent: *
 Allow: /
+<<<<<<< HEAD:public/robots.txt
 Sitemap: https://victorsoftwave.com/sitemap.xml
+=======
+Sitemap: https://www.victorsoftwave.com/sitemap.xml
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/public/robots.txt

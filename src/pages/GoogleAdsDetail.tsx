@@ -72,7 +72,11 @@ const GoogleAdsDetail = () => {
     "provider": {
       "@type": "Organization",
       "name": "Victor Software",
+<<<<<<< HEAD:src/pages/GoogleAdsDetail.tsx
       "url": "https://victorsoftwave.com"
+=======
+      "url": "https://www.victorsoftwave.com"
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/GoogleAdsDetail.tsx
     },
     "serviceType": "Google Ads Management",
     "areaServed": "Global",

@@ -136,7 +136,11 @@ const WebsiteCareDetail: React.FC = () => {
     "provider": {
       "@type": "Organization",
       "name": "Victor Software",
+<<<<<<< HEAD:src/pages/WebsiteCareDetail.tsx
       "url": "https://victorsoftwave.com"
+=======
+      "url": "https://www.victorsoftwave.com"
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/WebsiteCareDetail.tsx
     },
     "serviceType": "Website Maintenance and Care",
     "areaServed": "Global",

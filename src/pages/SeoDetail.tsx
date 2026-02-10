@@ -70,7 +70,11 @@ const SeoDetail: React.FC = () => {
     "provider": {
       "@type": "Organization",
       "name": "Victor Software",
+<<<<<<< HEAD:src/pages/SeoDetail.tsx
       "url": "https://victorsoftwave.com"
+=======
+      "url": "https://www.victorsoftwave.com"
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/pages/SeoDetail.tsx
     },
     "serviceType": "Search Engine Optimization",
     "areaServed": "Global",

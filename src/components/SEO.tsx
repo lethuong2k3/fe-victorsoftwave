@@ -24,12 +24,21 @@ const SEO: React.FC<SEOProps> = ({
   structuredData
 }) => {
   const location = useLocation();
+<<<<<<< HEAD:src/components/SEO.tsx
   const currentUrl = url || `${window.location.origin}${location.pathname}`;
+=======
+  const DOMAIN = 'https://www.victorsoftwave.com';
+  const currentUrl = url || `${DOMAIN}${location.pathname}`;
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/components/SEO.tsx
   
   // Ensure absolute URL for image
   const fullImageUrl = image?.startsWith('http') 
     ? image 
+<<<<<<< HEAD:src/components/SEO.tsx
     : `${window.location.origin}${image?.startsWith('/') ? '' : '/'}${image}`;
+=======
+    : `${DOMAIN}${image?.startsWith('/') ? '' : '/'}${image}`;
+>>>>>>> 539f2cc (Update_domain_and_backend_files):frontend/src/components/SEO.tsx
 
   return (
     <Helmet>

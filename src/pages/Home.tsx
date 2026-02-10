@@ -205,6 +205,8 @@ const Home: React.FC = () => {
       contactEmailLabel: lang === 'en' ? data.contactEmailLabelEn : data.contactEmailLabel,
       contactAddressLabel: lang === 'en' ? data.contactAddressLabelEn : data.contactAddressLabel,
       contactAddressValue: lang === 'en' ? data.contactAddressValueEn : data.contactAddressValue,
+      contactHotline: data.contactHotline,
+      contactEmail: data.contactEmail,
     };
   }, [rawHomeData, lang]);
 

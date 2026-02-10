@@ -12,6 +12,8 @@ interface ContactProps {
     contactEmailLabel?: string;
     contactAddressLabel?: string;
     contactAddressValue?: string;
+    contactHotline?: string;
+    contactEmail?: string;
   };
 }
 
@@ -22,6 +24,8 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
   const emailLabel = data?.contactEmailLabel || "Email";
   const addressLabel = data?.contactAddressLabel || "Địa chỉ";
   const addressValue = data?.contactAddressValue || "Tầng 12, Tòa nhà Bitexco, Q1, TP.HCM";
+  const hotline = data?.contactHotline || "0912 345 678";
+  const email = data?.contactEmail || "contact@victorsoftware.com";
 
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
@@ -120,7 +124,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg">{hotlineLabel}</h4>
-                  <p className="text-slate-300">0912 345 678</p>
+                  <p className="text-slate-300">{hotline}</p>
                 </div>
               </div>
 
@@ -130,7 +134,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg">{emailLabel}</h4>
-                  <p className="text-slate-300">contact@victorsoftware.com</p>
+                  <p className="text-slate-300">{email}</p>
                 </div>
               </div>
 

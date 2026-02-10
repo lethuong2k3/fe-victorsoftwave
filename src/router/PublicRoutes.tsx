@@ -25,7 +25,9 @@ const PublicRoutes: React.FC = () => {
   useEffect(() => {
     const recordVisit = async () => {
       try {
-        await api.post('/api/analytics/visit?pageUrl=' + encodeURIComponent(window.location.href), {});
+        if (typeof window !== 'undefined' && window.location) {
+          await api.post('/api/analytics/visit?pageUrl=' + encodeURIComponent(window.location.href), {});
+        }
       } catch (e) {
         // Silently fail for analytics
         console.error("Analytics error", e);

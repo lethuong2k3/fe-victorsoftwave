@@ -14,6 +14,8 @@ import SEO from '@/components/SEO';
 import { api } from '@/utils/api';
 import { getLang as getStoredLang } from '@/utils/localization';
 
+import { useDarkMode } from '@/hooks/useDarkMode';
+
 const HeroSkeleton = () => (
   <section className="relative overflow-hidden">
     <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
@@ -82,36 +84,6 @@ const ContactSkeleton = () => (
     <div className="h-48 bg-slate-200 dark:bg-slate-800 rounded-2xl animate-pulse" />
   </section>
 );
-
-// A simple hook to manage dark mode
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    // Check system preference or local storage on mount
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
 
 const Home: React.FC = () => {
   const { isDark, toggleTheme } = useDarkMode();

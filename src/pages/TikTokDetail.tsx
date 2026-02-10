@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Smartphone, Target, TrendingUp, Video, BarChart3, Users, CheckCircle2, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
 import { getLang } from '@/utils/localization';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
@@ -87,38 +88,36 @@ const TikTokDetail: React.FC = () => {
     return () => window.removeEventListener('langchange', onLangChange);
   }, []);
 
-  useEffect(() => {
-    if (!content) return;
-    const isEn = lang === 'en';
-    const title =
-      (isEn ? content.seoTitleEn : content.seoTitle) ||
-      content.seoTitle ||
-      (isEn ? 'TikTok Ads Service - Victor Software' : 'Dịch vụ TikTok Ads - Victor Software');
-    const description =
-      (isEn ? content.seoDescriptionEn : content.seoDescription) || content.seoDescription || '';
-    const keywords = (isEn ? content.seoKeywordsEn : content.seoKeywords) || content.seoKeywords || '';
-
-    document.title = title;
-
-    const upsertMeta = (name: string, value: string) => {
-      const trimmed = (value || '').trim();
-      if (!trimmed) return;
-      let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', name);
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', trimmed);
-    };
-
-    upsertMeta('description', description);
-    if (keywords) {
-      upsertMeta('keywords', keywords);
-    }
-  }, [content, lang]);
-
   const isEn = lang === 'en';
+
+  const seoTitle =
+    (isEn ? content?.seoTitleEn : content?.seoTitle) ||
+    content?.seoTitle ||
+    (isEn ? 'TikTok Ads Service - Victor Software' : 'Dịch vụ TikTok Ads - Victor Software');
+  const seoDescription =
+    (isEn ? content?.seoDescriptionEn : content?.seoDescription) || content?.seoDescription || '';
+  const seoKeywords = (isEn ? content?.seoKeywordsEn : content?.seoKeywords) || content?.seoKeywords || '';
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": seoTitle,
+    "description": seoDescription,
+    "provider": {
+      "@type": "Organization",
+      "name": "Victor Software",
+      "url": "https://victorsoftwave.com"
+    },
+    "serviceType": "TikTok Ads Management",
+    "areaServed": "Global",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "VND",
+      "availability": "https://schema.org/InStock"
+    }
+  };
+
   const heroTitlePrefix = isEn
     ? content?.heroTitlePrefixEn || 'TikTok Ads'
     : content?.heroTitlePrefix || 'Quảng Cáo TikTok';
@@ -249,6 +248,13 @@ const TikTokDetail: React.FC = () => {
   if (loading && !content) {
     return (
       <div className="min-h-screen relative overflow-x-hidden selection:bg-accent/30">
+        <SEO
+          title={seoTitle}
+          description={seoDescription}
+          keywords={seoKeywords}
+          type="article"
+          image={heroImageUrl}
+        />
         <div className="fixed inset-0 pointer-events-none z-[-1]">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-pink-500/20 rounded-full blur-[100px] animate-pulse" />
           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[100px] animate-pulse" />
@@ -280,6 +286,14 @@ const TikTokDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden selection:bg-accent/30">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        keywords={seoKeywords}
+        image={heroImageUrl}
+        type="article"
+        structuredData={structuredData}
+      />
       <div className="fixed inset-0 pointer-events-none z-[-1]">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-pink-500/15 rounded-full blur-[100px] animate-pulse" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[100px] animate-pulse" />

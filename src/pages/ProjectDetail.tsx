@@ -8,6 +8,7 @@ import { ArrowLeft, ExternalLink, Calendar, User, Code, CheckCircle2 } from 'luc
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import NotFound from '@/pages/NotFound';
+import SEO from '@/components/SEO';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
 type Project = {
@@ -79,48 +80,6 @@ const ProjectDetail: React.FC = () => {
         if (correctSlug) {
           navigate(`/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${correctSlug}`, { replace: true });
         }
-      }
-
-      const seoTitle = lang === 'en' && project.seoTitleEn ? project.seoTitleEn : project.seoTitle;
-      const seoDesc = lang === 'en' && project.seoDescriptionEn ? project.seoDescriptionEn : project.seoDescription;
-      const seoKw = lang === 'en' && project.seoKeywordsEn ? project.seoKeywordsEn : project.seoKeywords;
-      
-      const defaultTitle = lang === 'en' && project.titleEn ? project.titleEn : project.title;
-      const defaultDesc = lang === 'en' && project.descriptionEn ? project.descriptionEn : project.description;
-
-      document.title = seoTitle || defaultTitle || 'Victor Software';
-
-      // Update meta description
-      let metaDesc = document.querySelector('meta[name="description"]');
-      if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.setAttribute('name', 'description');
-        document.head.appendChild(metaDesc);
-      }
-      metaDesc.setAttribute('content', seoDesc || defaultDesc || '');
-
-      // Update meta keywords
-      let metaKw = document.querySelector('meta[name="keywords"]');
-      if (!metaKw) {
-        metaKw = document.createElement('meta');
-        metaKw.setAttribute('name', 'keywords');
-        document.head.appendChild(metaKw);
-      }
-      metaKw.setAttribute('content', seoKw || '');
-
-      // Update canonical link
-      let canonical = document.querySelector('link[rel="canonical"]');
-      if (!canonical) {
-        canonical = document.createElement('link');
-        canonical.setAttribute('rel', 'canonical');
-        document.head.appendChild(canonical);
-      }
-      const baseUrl = window.location.origin;
-      const correctSlug = lang === 'en' ? project.slugEn : project.slug;
-      if (correctSlug) {
-        canonical.setAttribute('href', `${baseUrl}/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${correctSlug}`);
-      } else {
-        canonical.setAttribute('href', `${baseUrl}/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${project.id}`);
       }
     }
   }, [project, location.pathname]);
@@ -203,8 +162,37 @@ const ProjectDetail: React.FC = () => {
   const displayDescription =
     currentLang === 'en' && project.descriptionEn ? project.descriptionEn : project.description;
 
+  const seoTitle = currentLang === 'en' && project.seoTitleEn ? project.seoTitleEn : project.seoTitle;
+  const seoDesc = currentLang === 'en' && project.seoDescriptionEn ? project.seoDescriptionEn : project.seoDescription;
+  const seoKw = currentLang === 'en' && project.seoKeywordsEn ? project.seoKeywordsEn : project.seoKeywords;
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": displayTitle,
+    "description": displayDescription,
+    "image": project.img,
+    "creator": {
+      "@type": "Organization",
+      "name": "Victor Software",
+      "url": "https://victorsoftwave.com"
+    },
+    "dateCreated": project.completionDate,
+    "keywords": project.technologies?.join(", "),
+    "url": window.location.href,
+    ...(project.demoLink && { "sameAs": project.demoLink })
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-200 selection:bg-blue-500/30">
+      <SEO 
+        title={seoTitle || displayTitle || 'Victor Software'}
+        description={seoDesc || displayDescription || ''}
+        keywords={seoKw || ''}
+        image={project.img}
+        type="article"
+        structuredData={structuredData}
+      />
       <Navbar isDark={isDark} toggleTheme={toggleTheme} />
 
       <main className="pt-24 pb-20">

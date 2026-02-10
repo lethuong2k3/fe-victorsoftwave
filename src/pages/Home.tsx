@@ -10,6 +10,7 @@ import Blog from '@/components/Blog';
 import Contact from '@/components/Contact';
 import GoogleReviews from '@/components/GoogleReviews';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
 import { api } from '@/utils/api';
 import { getLang as getStoredLang } from '@/utils/localization';
 
@@ -157,6 +158,26 @@ const Home: React.FC = () => {
     queryKey: ['featured-articles', lang],
     queryFn: () => api.get<any>('/api/articles?featured=true&status=PUBLISHED&size=3&sort=createdAt,desc'),
   });
+
+  const seoData = useMemo(() => {
+    if (!rawHomeData) return {};
+    const isEn = lang === 'en';
+    const seoTitle = (isEn ? rawHomeData.seoTitleEn : rawHomeData.seoTitle) || rawHomeData.seoTitle || '';
+    const seoDescription =
+      (isEn ? rawHomeData.seoDescriptionEn : rawHomeData.seoDescription) || rawHomeData.seoDescription || '';
+    const seoKeywords =
+      (isEn ? rawHomeData.seoKeywordsEn : rawHomeData.seoKeywords) || rawHomeData.seoKeywords || '';
+    const fallbackTitle = isEn
+      ? [rawHomeData.titlePrefixEn, rawHomeData.titleHighlightEn].filter(Boolean).join(' ')
+      : [rawHomeData.titlePrefix, rawHomeData.titleHighlight].filter(Boolean).join(' ');
+    
+    return {
+        title: seoTitle.trim() || fallbackTitle || 'Victor Software',
+        description: seoDescription.trim(),
+        keywords: seoKeywords.trim(),
+        image: (isEn ? rawHomeData.heroImageUrlEn : rawHomeData.heroImageUrl) || rawHomeData.heroImageUrl
+    };
+  }, [rawHomeData, lang]);
   
   const homeContent = useMemo(() => {
     if (!rawHomeData) return null;
@@ -210,41 +231,37 @@ const Home: React.FC = () => {
     };
   }, [rawHomeData, lang]);
 
-  useEffect(() => {
-    if (!rawHomeData) return;
-    const isEn = lang === 'en';
-    const seoTitle = (isEn ? rawHomeData.seoTitleEn : rawHomeData.seoTitle) || rawHomeData.seoTitle || '';
-    const seoDescription =
-      (isEn ? rawHomeData.seoDescriptionEn : rawHomeData.seoDescription) || rawHomeData.seoDescription || '';
-    const seoKeywords =
-      (isEn ? rawHomeData.seoKeywordsEn : rawHomeData.seoKeywords) || rawHomeData.seoKeywords || '';
-    const fallbackTitle = isEn
-      ? [rawHomeData.titlePrefixEn, rawHomeData.titleHighlightEn].filter(Boolean).join(' ')
-      : [rawHomeData.titlePrefix, rawHomeData.titleHighlight].filter(Boolean).join(' ');
-    const title = seoTitle.trim() || fallbackTitle || 'Victor Software';
-    const description = seoDescription.trim();
-    const keywords = seoKeywords.trim();
-
-    document.title = title;
-
-    const upsertMeta = (name: string, value: string) => {
-      const trimmed = (value || '').trim();
-      if (!trimmed) return;
-      let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', name);
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', trimmed);
+  const structuredData = useMemo(() => {
+    if (!homeContent) return undefined;
+    
+    return {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Victor Software",
+      "image": seoData.image,
+      "description": seoData.description,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": homeContent.contactAddressValue,
+        "addressLocality": "Hồ Chí Minh",
+        "addressCountry": "VN"
+      },
+      "telephone": homeContent.contactHotline,
+      "email": homeContent.contactEmail,
+      "url": window.location.origin,
+      "priceRange": "$$"
     };
-
-    upsertMeta('description', description);
-    upsertMeta('keywords', keywords);
-  }, [rawHomeData, lang]);
+  }, [homeContent, seoData]);
 
   return (
     <div className="min-h-screen relative overflow-x-hidden selection:bg-accent/30">
+      <SEO 
+        title={seoData.title} 
+        description={seoData.description} 
+        keywords={seoData.keywords}
+        image={seoData.image}
+        structuredData={structuredData}
+      />
        {/* Background Ambient Effect */}
       <div className="fixed inset-0 pointer-events-none z-[-1]">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/20 rounded-full blur-[100px] animate-pulse" />

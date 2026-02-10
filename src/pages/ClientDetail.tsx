@@ -46,6 +46,7 @@ const useDarkMode = () => {
 };
 
 import NotFound from './NotFound';
+import SEO from '@/components/SEO';
 
 const ClientDetail: React.FC = () => {
   const { isDark, toggleTheme } = useDarkMode();
@@ -92,8 +93,27 @@ const ClientDetail: React.FC = () => {
     return <NotFound />;
   }
 
+  const structuredData = client ? {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": client.name,
+    "description": client.description,
+    "image": client.logo,
+    "url": client.link || window.location.href,
+    "sameAs": client.link ? [client.link] : []
+  } : undefined;
+
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
+      {client && (
+        <SEO
+          title={`${client.name} | Victor Software`}
+          description={client.description}
+          image={client.logo}
+          type="article"
+          structuredData={structuredData}
+        />
+      )}
       <Navbar isDark={isDark} toggleTheme={toggleTheme} />
       <main className="pt-24 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">

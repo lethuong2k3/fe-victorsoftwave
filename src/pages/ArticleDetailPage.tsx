@@ -8,7 +8,7 @@ import { Toast, ToastMessage } from '@/components/Toast';
 import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
-import { Helmet } from 'react-helmet-async';
+import SEO from '@/components/SEO';
 import DOMPurify from 'dompurify';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
@@ -75,6 +75,31 @@ const ArticleDetailPage: React.FC = () => {
     ? (article.image.startsWith('http') ? article.image : `${window.location.origin}${article.image.startsWith('/') ? '' : '/'}${article.image}`)
     : '';
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": title,
+    "image": fullImageUrl ? [fullImageUrl] : [],
+    "datePublished": article.createdAt,
+    "author": {
+      "@type": "Person",
+      "name": article.author || "Victor Software"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Victor Software",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://victorsoftwave.com/logo.png"
+      }
+    },
+    "description": description,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": window.location.href
+    }
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString(lang === 'en' ? 'en-US' : 'vi-VN', {
       year: 'numeric',
@@ -96,27 +121,15 @@ const ArticleDetailPage: React.FC = () => {
   return (
     <>
       <Toast message={toast} onClose={() => setToast(null)} />
-      <Helmet>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDesc} />
-        {seoKeywords && <meta name="keywords" content={seoKeywords} />}
-        
-        {/* Open Graph */}
-        <meta property="og:site_name" content="Victor Software" />
-        <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={seoDesc} />
-        <meta property="og:image" content={fullImageUrl} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:type" content="article" />
-        
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={seoTitle} />
-        <meta name="twitter:description" content={seoDesc} />
-        <meta name="twitter:image" content={fullImageUrl} />
-      </Helmet>
+      <SEO 
+        title={seoTitle}
+        description={seoDesc}
+        keywords={seoKeywords}
+        image={fullImageUrl}
+        url={window.location.href}
+        type="article"
+        structuredData={structuredData}
+      />
 
       <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
         <Navbar isDark={isDark} toggleTheme={toggleTheme} />

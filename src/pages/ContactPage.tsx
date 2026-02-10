@@ -139,12 +139,40 @@ const ContactPage: React.FC = () => {
     workingTime: lang === 'en' ? 'Mon - Fri: 8:00 AM - 5:30 PM' : 'Thứ 2 - Thứ 6: 8:00 - 17:30',
   };
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": seoTitle,
+    "description": seoDesc,
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Victor Software",
+      "url": "https://victorsoftwave.com",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": contactData?.contactHotline || defaults.hotline,
+        "contactType": "customer service",
+        "email": contactData?.contactEmail || defaults.email,
+        "areaServed": "VN",
+        "availableLanguage": ["Vietnamese", "English"]
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": contactData?.contactAddressValue || defaults.address,
+        "addressLocality": "Ho Chi Minh City",
+        "addressCountry": "VN"
+      }
+    }
+  };
+
   return (
     <>
-      <Helmet>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDesc} />
-      </Helmet>
+      <SEO
+        title={seoTitle}
+        description={seoDesc}
+        type="website"
+        structuredData={structuredData}
+      />
       
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300 flex flex-col">
         <Navbar isDark={isDark} toggleTheme={toggleTheme} />

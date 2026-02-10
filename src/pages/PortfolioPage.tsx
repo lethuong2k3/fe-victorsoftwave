@@ -8,6 +8,7 @@ import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
 import { useDarkMode } from '@/hooks/useDarkMode';
+import SEO from '@/components/SEO';
 
 const categories = ["Tất cả", "Doanh nghiệp", "Bán hàng", "Landing Page", "Nội thất", "Giáo dục", "Thời trang"];
 
@@ -89,33 +90,33 @@ type ProjectsPageContent = {
     setActiveCat(lang === 'en' ? 'All' : 'Tất cả');
   }, [lang]);
 
-  // Update SEO
-  useEffect(() => {
-    if (!pageContent) return;
-    const title = lang === 'en' ? (pageContent.seoTitleEn || pageContent.pageTitleEn) : (pageContent.seoTitle || pageContent.pageTitle);
-    const desc = lang === 'en' ? (pageContent.seoDescriptionEn || pageContent.pageDescriptionEn) : (pageContent.seoDescription || pageContent.pageDescription);
-    const keywords = lang === 'en' ? pageContent.seoKeywordsEn : pageContent.seoKeywords;
-
-    if (title) document.title = title;
-    
-    // Helper to update meta tag
-    const updateMeta = (name: string, content: string) => {
-        let tag = document.querySelector(`meta[name="${name}"]`);
-        if (!tag) {
-            tag = document.createElement('meta');
-            tag.setAttribute('name', name);
-            document.head.appendChild(tag);
-        }
-        tag.setAttribute('content', content);
-    };
-
-    if (desc) updateMeta('description', desc);
-    if (keywords) updateMeta('keywords', keywords);
-
-  }, [pageContent, lang]);
+  const seoTitle = lang === 'en' ? (pageContent?.seoTitleEn || pageContent?.pageTitleEn) : (pageContent?.seoTitle || pageContent?.pageTitle);
+  const seoDescription = lang === 'en' ? (pageContent?.seoDescriptionEn || pageContent?.pageDescriptionEn) : (pageContent?.seoDescription || pageContent?.pageDescription);
+  const seoKeywords = lang === 'en' ? pageContent?.seoKeywordsEn : pageContent?.seoKeywords;
 
   const displayTitle = (lang === 'en' ? pageContent?.pageTitleEn : pageContent?.pageTitle) || (lang === 'en' ? 'Website Portfolio' : 'Danh Mục Website');
   const displayDesc = (lang === 'en' ? pageContent?.pageDescriptionEn : pageContent?.pageDescription) || (lang === 'en' ? 'Explore our diverse, professional website templates suitable for all your business fields.' : 'Khám phá kho giao diện website đa dạng, chuyên nghiệp và phù hợp với mọi lĩnh vực kinh doanh của bạn.');
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": displayTitle,
+    "description": displayDesc,
+    "provider": {
+      "@type": "Organization",
+      "name": "Victor Software",
+      "url": "https://victorsoftwave.com"
+    },
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": projects?.map((project, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": `https://victorsoftwave.com/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${lang === 'en' && project.slugEn ? project.slugEn : project.slug}`,
+        "name": lang === 'en' && project.titleEn ? project.titleEn : project.title
+      })) || []
+    }
+  };
 
   const filteredProjects = projects;
 
@@ -157,6 +158,13 @@ type ProjectsPageContent = {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden selection:bg-accent/30 bg-white dark:bg-slate-950">
+      <SEO
+        title={seoTitle || displayTitle}
+        description={seoDescription || displayDesc}
+        keywords={seoKeywords}
+        type="website"
+        structuredData={structuredData}
+      />
       <Navbar isDark={isDark} toggleTheme={toggleTheme} />
 
       <main className="pt-24 pb-20">

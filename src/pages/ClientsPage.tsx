@@ -8,6 +8,7 @@ import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
 import { useDarkMode } from '@/hooks/useDarkMode';
+import SEO from '@/components/SEO';
 
 type Client = {
   id: number;
@@ -97,26 +98,38 @@ const ClientsPage: React.FC = () => {
 
   const pageDescription = lang === 'en'
     ? (pageContent?.pageDescriptionEn || 'We are proud to accompany businesses on their digital transformation journey.')
-    : (pageContent?.pageDescription || 'Chúng tôi tự hào được đồng hành cùng các doanh nghiệp trên hành trình chuyển đổi số.');
+    : (pageContent?.pageDescription || 'Chúng tôi tự hào đồng hành cùng các doanh nghiệp trên hành trình chuyển đổi số.');
 
-  useEffect(() => {
-    if (seoTitle) document.title = seoTitle;
-    const updateMeta = (name: string, content: string) => {
-      let tag = document.querySelector(`meta[name="${name}"]`);
-      if (!tag) {
-        tag = document.createElement('meta');
-        tag.setAttribute('name', name);
-        document.head.appendChild(tag);
-      }
-      tag.setAttribute('content', content);
-    };
-    if (seoDesc) updateMeta('description', seoDesc);
-    if (seoKeywords) updateMeta('keywords', seoKeywords);
-  }, [seoTitle, seoDesc, seoKeywords]);
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": pageTitle,
+    "description": pageDescription,
+    "provider": {
+      "@type": "Organization",
+      "name": "Victor Software",
+      "url": "https://victorsoftwave.com"
+    },
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": clients.map((client, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": `https://victorsoftwave.com/${lang}/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`,
+        "name": client.name
+      }))
+    }
+  };
 
   return (
-    <div className={`min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 ${isDark ? 'dark' : ''}`}>
-
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-200">
+      <SEO 
+        title={seoTitle} 
+        description={seoDesc} 
+        keywords={seoKeywords}
+        type="website"
+        structuredData={structuredData}
+      />
       <Navbar isDark={isDark} toggleTheme={toggleTheme} />
 
       <main className="pt-24 pb-20">

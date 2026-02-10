@@ -7,8 +7,8 @@ import Footer from '@/components/Footer';
 import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
-import { Helmet } from 'react-helmet-async';
 import { useDarkMode } from '@/hooks/useDarkMode';
+import SEO from '@/components/SEO';
 
 interface Article {
   id: number;
@@ -58,12 +58,38 @@ const ArticlesPage: React.FC = () => {
     });
   };
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": seoTitle,
+    "description": seoDesc,
+    "provider": {
+      "@type": "Organization",
+      "name": "Victor Software",
+      "url": "https://victorsoftwave.com"
+    },
+    "blogPost": data?.content?.map(article => ({
+      "@type": "BlogPosting",
+      "headline": lang === 'en' && article.titleEn ? article.titleEn : article.title,
+      "description": lang === 'en' && article.descriptionEn ? article.descriptionEn : article.description,
+      "image": article.image,
+      "datePublished": article.createdAt,
+      "author": {
+        "@type": "Person",
+        "name": article.author || "Victor Software"
+      },
+      "url": `https://victorsoftwave.com/${lang}/${getLocalizedSlug('tin-tuc', lang)}/${lang === 'en' && article.slugEn ? article.slugEn : article.slug}`
+    })) || []
+  };
+
   return (
     <>
-      <Helmet>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDesc} />
-      </Helmet>
+      <SEO 
+        title={seoTitle} 
+        description={seoDesc} 
+        type="website"
+        structuredData={structuredData}
+      />
 
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
         <Navbar isDark={isDark} toggleTheme={toggleTheme} />

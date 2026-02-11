@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, Moon, Sun, Monitor, Smartphone, Globe, Search, BarChart, PenTool, DollarSign } from 'lucide-react';
-import logo from '@/assets/logo.png';
 import { getLocalizedSlug, getSlugKey, getLang as getGlobalLang } from '@/utils/localization';
 
 interface NavbarProps {
@@ -225,13 +224,8 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
           onClick={() => handleNavigation('/')}
           className="cursor-pointer group"
         >
-            <div className="relative w-12 h-12 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-              <img 
-                src={logo} 
-                alt="Victor Software Logo" 
-                className="w-full h-full object-contain rounded-xl"
-                style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))' }}
-              />
+            <div className="relative w-12 h-12 flex items-center justify-center group-hover:scale-105 transition-transform duration-300 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">
+              VS
             </div>
         </div>
 

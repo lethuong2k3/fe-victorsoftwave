@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
-import logo from '@/assets/logo.png';
 import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
@@ -22,13 +21,8 @@ const Footer: React.FC = () => {
           
           <div className="col-span-1 md:col-span-1">
             <div className="mb-6">
-              <div className="relative w-14 h-14 flex items-center justify-center">
-                <img 
-                  src={logo} 
-                  alt="Victor Software Logo" 
-                  className="w-full h-full object-contain rounded-xl"
-                  style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))' }}
-                />
+              <div className="relative w-14 h-14 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">
+                VS
               </div>
             </div>
             <p className="text-slate-500 text-sm mb-6 leading-relaxed">

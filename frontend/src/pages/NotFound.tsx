@@ -25,7 +25,7 @@ const NotFound: React.FC = () => {
   const backHomeLabel = lang === 'en' ? 'Back to homepage' : 'Về trang chủ';
   const backPrevLabel = lang === 'en' ? 'Go back' : 'Quay lại';
 
-  const homePath = `/${lang}`;
+  const homePath = `/`;
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">

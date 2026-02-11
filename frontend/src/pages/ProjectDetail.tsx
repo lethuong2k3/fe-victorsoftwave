@@ -78,7 +78,7 @@ const ProjectDetail: React.FC = () => {
       if (slug && /^\d+$/.test(slug)) {
         const correctSlug = lang === 'en' ? project.slugEn : project.slug;
         if (correctSlug) {
-          navigate(`/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${correctSlug}`, { replace: true });
+          navigate(`/${getLocalizedSlug('danh-muc-website', lang)}/${correctSlug}`, { replace: true });
         }
       }
     }
@@ -179,7 +179,7 @@ const ProjectDetail: React.FC = () => {
     },
     "dateCreated": project.completionDate,
     "keywords": project.technologies?.join(", "),
-    "url": `https://www.victorsoftwave.com/${currentLang}/${getLocalizedSlug('danh-muc-website', currentLang)}/${currentLang === 'en' && project.slugEn ? project.slugEn : project.slug}`,
+    "url": `https://www.victorsoftwave.com/${getLocalizedSlug('danh-muc-website', currentLang)}/${currentLang === 'en' && project.slugEn ? project.slugEn : project.slug}`,
     ...(project.demoLink && { "sameAs": project.demoLink })
   };
 

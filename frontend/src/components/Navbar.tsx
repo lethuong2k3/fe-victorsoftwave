@@ -37,17 +37,13 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
   const handleNavigation = (path: string) => {
     setActiveNav(path);
     if (path.startsWith('/')) {
-      if (path === '/') {
-        navigate(`/${lang}`);
-      } else {
-        navigate(path);
-      }
+      navigate(path);
       setIsMobileMenuOpen(false);
       setActiveDropdown(null);
     } else {
       // Scroll to section on current page
-      if (location.pathname !== '/vi' && location.pathname !== '/en') {
-        navigate(`/${lang}`);
+      if (location.pathname !== '/') {
+        navigate('/');
         setTimeout(() => {
           const element = document.getElementById(path);
           if (element) {
@@ -78,22 +74,22 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
     
     const parts = currentPath.split('/').filter(Boolean);
     
-    if (parts.length >= 2) {
-      const currentSlug = parts[1];
+    if (parts.length >= 1) {
+      const currentSlug = parts[0];
       const key = getSlugKey(currentSlug);
       if (key) {
         const newSlug = getLocalizedSlug(key, nextLang);
-        const newParts = [nextLang, newSlug, ...parts.slice(2)];
+        const newParts = [newSlug, ...parts.slice(1)];
         const newUrl = `/${newParts.join('/')}${search}${hash}`;
         window.location.href = newUrl;
         return;
       }
     }
 
-    const rest = currentPath.replace(/^\/(vi|en|vn)/, '');
-    const basePath = rest ? `/${nextLang}${rest}` : `/${nextLang}`;
-    const newUrl = `${basePath}${search}${hash}`;
-    window.location.href = newUrl;
+    // For home or other paths, just reload to apply language change globally if needed, 
+    // though state update might be enough. 
+    // Re-navigating to current path to trigger re-renders.
+    window.location.reload();
   };
 
   // Smooth scroll handler (for backward compatibility)
@@ -101,22 +97,15 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
     handleNavigation(id);
   };
 
-  // Sync language from URL if user navigates manually or via deep link
+  // Sync language from storage or URL if needed
   useEffect(() => {
-    const pathParts = location.pathname.split('/');
-    const urlLang = pathParts[1];
-    
-    // Support 'vn' as alias for 'vi'
-    const normalizedLang = urlLang === 'vn' ? 'vi' : urlLang;
-    
-    if ((normalizedLang === 'vi' || normalizedLang === 'en') && normalizedLang !== lang) {
-      setLang(normalizedLang as 'vi' | 'en');
-      localStorage.setItem('lang', normalizedLang);
-      localStorage.setItem('language', normalizedLang);
-      document.documentElement.lang = normalizedLang;
-      window.dispatchEvent(new Event('langchange'));
+    // We no longer sync from URL prefix as it's removed.
+    // Language is now primarily from localStorage.
+    const storedLang = getGlobalLang();
+    if (storedLang !== lang) {
+      setLang(storedLang);
     }
-  }, [location.pathname, lang]);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (location.pathname !== '/' ) {
@@ -184,9 +173,9 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       title: labels.design,
       id: 'design',
       dropdown: [
-        { label: labels.priceList, icon: <DollarSign size={18} />, target: `/${lang}/${getLocalizedSlug('thiet-ke-website', lang)}` },
-        { label: labels.catalog, icon: <Monitor size={18} />, target: `/${lang}/${getLocalizedSlug('danh-muc-website', lang)}` },
-        { label: labels.featuredCustomers, icon: <Globe size={18} />, target: `/${lang}/${getLocalizedSlug('khach-hang', lang)}` },
+        { label: labels.priceList, icon: <DollarSign size={18} />, target: `/${getLocalizedSlug('thiet-ke-website', lang)}` },
+        { label: labels.catalog, icon: <Monitor size={18} />, target: `/${getLocalizedSlug('danh-muc-website', lang)}` },
+        { label: labels.featuredCustomers, icon: <Globe size={18} />, target: `/${getLocalizedSlug('khach-hang', lang)}` },
       ],
     },
     {
@@ -194,8 +183,8 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       title: labels.webServices,
       id: 'services',
       dropdown: [
-        { label: labels.seoConsulting, icon: <Search size={18} />, target: `/${lang}/${getLocalizedSlug('seo-tong-the', lang)}` },
-        { label: labels.websiteCare, icon: <PenTool size={18} />, target: `/${lang}/${getLocalizedSlug('cham-soc-website', lang)}` },
+        { label: labels.seoConsulting, icon: <Search size={18} />, target: `/${getLocalizedSlug('seo-tong-the', lang)}` },
+        { label: labels.websiteCare, icon: <PenTool size={18} />, target: `/${getLocalizedSlug('cham-soc-website', lang)}` },
       ],
     },
     {
@@ -203,22 +192,22 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       title: labels.marketing,
       id: 'marketing',
       dropdown: [
-        { label: 'TikTok Ads', icon: <Smartphone size={18} />, target: `/${lang}/${getLocalizedSlug('tiktok-ads', lang)}` },
-        { label: 'Facebook Ads', icon: <Globe size={18} />, target: `/${lang}/${getLocalizedSlug('facebook-ads', lang)}` },
-        { label: 'Google Ads', icon: <BarChart size={18} />, target: `/${lang}/${getLocalizedSlug('google-ads', lang)}` },
+        { label: 'TikTok Ads', icon: <Smartphone size={18} />, target: `/${getLocalizedSlug('tiktok-ads', lang)}` },
+        { label: 'Facebook Ads', icon: <Globe size={18} />, target: `/${getLocalizedSlug('facebook-ads', lang)}` },
+        { label: 'Google Ads', icon: <BarChart size={18} />, target: `/${getLocalizedSlug('google-ads', lang)}` },
       ],
     },
     {
       key: 'blog',
       title: labels.blog,
       id: 'blog',
-      path: `/${lang}/${getLocalizedSlug('bai-viet', lang)}`,
+      path: `/${getLocalizedSlug('bai-viet', lang)}`,
     },
     {
       key: 'contact',
       title: labels.contact,
       id: 'contact',
-      path: `/${lang}/${getLocalizedSlug('lien-he', lang)}`,
+      path: `/${getLocalizedSlug('lien-he', lang)}`,
     },
   ];
 

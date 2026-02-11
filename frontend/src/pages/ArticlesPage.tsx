@@ -78,7 +78,7 @@ const ArticlesPage: React.FC = () => {
         "@type": "Person",
         "name": article.author || "Victor Software"
       },
-      "url": `https://www.victorsoftwave.com/${lang}/${getLocalizedSlug('tin-tuc', lang)}/${lang === 'en' && article.slugEn ? article.slugEn : article.slug}`
+      "url": `https://www.victorsoftwave.com/${getLocalizedSlug('tin-tuc', lang)}/${lang === 'en' && article.slugEn ? article.slugEn : article.slug}`
     })) || []
   };
 
@@ -134,7 +134,7 @@ const ArticlesPage: React.FC = () => {
                   const title = lang === 'en' ? (article.titleEn || article.title) : article.title;
                   const desc = lang === 'en' ? (article.descriptionEn || article.description) : article.description;
                   const slug = lang === 'en' ? (article.slugEn || article.slug) : article.slug;
-                  const detailPath = `/${lang}/${getLocalizedSlug('bai-viet', lang)}/${slug}`;
+                  const detailPath = `/${getLocalizedSlug('bai-viet', lang)}/${slug}`;
 
                   return (
                     <motion.article

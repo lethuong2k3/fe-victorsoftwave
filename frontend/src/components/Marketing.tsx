@@ -33,9 +33,9 @@ const OptimizedImage = ({ src, alt, className }: { src: string; alt: string; cla
 const Marketing: React.FC<MarketingProps> = ({ data }) => {
   const navigate = useNavigate();
   const lang = getLang();
-  const tiktokPath = `/${lang}/${getLocalizedSlug('tiktok-ads', lang)}`;
-  const facebookPath = `/${lang}/${getLocalizedSlug('facebook-ads', lang)}`;
-  const googlePath = `/${lang}/${getLocalizedSlug('google-ads', lang)}`;
+  const tiktokPath = `/${getLocalizedSlug('tiktok-ads', lang)}`;
+  const facebookPath = `/${getLocalizedSlug('facebook-ads', lang)}`;
+  const googlePath = `/${getLocalizedSlug('google-ads', lang)}`;
   const badge = data?.marketingBadge || "Digital Marketing";
   const title = data?.marketingTitle || "Bùng nổ doanh số đa nền tảng";
   const platforms = data?.marketingPlatforms || [];

@@ -115,7 +115,7 @@ const ClientsPage: React.FC = () => {
       "itemListElement": clients.map((client, index) => ({
         "@type": "ListItem",
         "position": index + 1,
-        "url": `https://www.victorsoftwave.com/${lang}/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`,
+        "url": `https://www.victorsoftwave.com/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`,
         "name": client.name
       }))
     }
@@ -136,7 +136,7 @@ const ClientsPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <button
             onClick={() => {
-              navigate(`/${lang}`);
+              navigate(`/`);
             }}
             className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
           >
@@ -204,7 +204,7 @@ const ClientsPage: React.FC = () => {
                       className="group relative bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-xl hover:border-blue-500/30 transition-all duration-300 aspect-[3/2]"
                       onClick={() => {
                         if (client.slug) {
-                          navigate(`/${lang}/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`);
+                          navigate(`/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`);
                         }
                       }}
                     >
@@ -218,7 +218,7 @@ const ClientsPage: React.FC = () => {
                           onClick={(e) => {
                             e.stopPropagation();
                             if (client.slug) {
-                              navigate(`/${lang}/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`);
+                              navigate(`/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`);
                             }
                           }}
                           className="px-6 py-2 bg-white text-slate-900 rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"

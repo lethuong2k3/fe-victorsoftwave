@@ -79,9 +79,9 @@ const Services: React.FC<ServicesProps> = ({ data }) => {
       
       if (key) {
         const localizedSlug = getLocalizedSlug(key, lang);
-        navigate(`/${lang}/${localizedSlug}`);
+        navigate(`/${localizedSlug}`);
       } else {
-        navigate(`/${lang}${link}`);
+        navigate(`${link.startsWith('/') ? '' : '/'}${link}`);
       }
     }
   };

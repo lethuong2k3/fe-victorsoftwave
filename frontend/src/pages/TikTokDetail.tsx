@@ -305,7 +305,7 @@ const TikTokDetail: React.FC = () => {
         <section className="py-20 bg-gradient-to-b from-pink-50 to-white dark:from-slate-900 dark:to-slate-950">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <button
-              onClick={() => navigate(`/${lang}`)}
+              onClick={() => navigate(`/`)}
               className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
             >
               <ArrowLeft size={20} />
@@ -514,7 +514,7 @@ const TikTokDetail: React.FC = () => {
 
                 <div className="lg:justify-self-end">
                   <button
-                    onClick={() => navigate(`/${lang}`)}
+                    onClick={() => navigate(`/`)}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-full transition-all shadow-lg shadow-pink-500/25"
                   >
                     {consultationCta} <ArrowRight size={18} />

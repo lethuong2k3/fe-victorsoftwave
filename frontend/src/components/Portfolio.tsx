@@ -88,7 +88,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ data, lang = 'vi' }) => {
                 onClick={() => {
                   const projectSlug = (lang === 'en' ? project.slugEn : project.slug);
                   if (projectSlug) {
-                    navigate(`/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${projectSlug}`);
+                    navigate(`/${getLocalizedSlug('danh-muc-website', lang)}/${projectSlug}`);
                   }
                 }}
               >
@@ -111,7 +111,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ data, lang = 'vi' }) => {
         
         <div className="mt-12 text-center">
             <button 
-                onClick={() => navigate(`/${lang}/${SLUG_MAPPING['danh-muc-website'][lang]}`)}
+                onClick={() => navigate(`/${SLUG_MAPPING['danh-muc-website'][lang]}`)}
                 className="px-8 py-3 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 font-semibold transition-colors"
             >
                 {lang === 'en' ? 'View All Projects' : 'Xem toàn bộ dự án'}

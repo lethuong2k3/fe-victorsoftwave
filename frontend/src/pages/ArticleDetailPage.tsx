@@ -96,7 +96,7 @@ const ArticleDetailPage: React.FC = () => {
     "description": description,
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://www.victorsoftwave.com/${lang}/${getLocalizedSlug('tin-tuc', lang)}/${slug}`
+      "@id": `https://www.victorsoftwave.com/${getLocalizedSlug('tin-tuc', lang)}/${slug}`
     }
   };
 
@@ -108,7 +108,7 @@ const ArticleDetailPage: React.FC = () => {
     });
   };
 
-  const backLink = `/${lang}/${getLocalizedSlug('bai-viet', lang)}`;
+  const backLink = `/${getLocalizedSlug('bai-viet', lang)}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);

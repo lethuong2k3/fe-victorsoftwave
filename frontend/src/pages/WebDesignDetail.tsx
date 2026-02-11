@@ -221,17 +221,13 @@ const WebDesignDetail: React.FC = () => {
     if (rawLink.startsWith('http')) return rawLink;
     if (!rawLink.startsWith('/')) return rawLink;
     
-    // Check if it already has prefix
-    if (rawLink.startsWith('/en/') || rawLink.startsWith('/vi/')) return rawLink;
-
     const cleanLink = rawLink.slice(1);
     const key = getSlugKey(cleanLink);
     if (key) {
-      return `/${lang}/${getLocalizedSlug(key, lang)}`;
+      return `/${getLocalizedSlug(key, lang)}`;
     }
 
-    const prefix = lang === 'en' ? '/en' : '/vi';
-    return `${prefix}${rawLink}`;
+    return rawLink;
   };
 
   return (
@@ -255,7 +251,7 @@ const WebDesignDetail: React.FC = () => {
         <section className="py-20 bg-gradient-to-b from-blue-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <button
-              onClick={() => navigate(`/${lang}`)}
+              onClick={() => navigate(`/`)}
               className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
             >
               <ArrowLeft size={20} />

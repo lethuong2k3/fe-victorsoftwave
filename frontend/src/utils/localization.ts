@@ -77,11 +77,16 @@ export const getSlugKey = (slug: string): SlugKey | null => {
 
 export const getLang = (): Lang => {
   if (typeof window === 'undefined') return 'vi';
+  
+  // Prioritize localStorage
+  const stored = (localStorage.getItem('lang') || localStorage.getItem('language') || '').toLowerCase();
+  if (stored === 'en' || stored === 'vi') return stored as Lang;
+  
+  // Fallback to URL path (only for initial detection if no storage)
   const path = (window.location.pathname || '').toLowerCase();
   const seg = path.split('/').filter(Boolean)[0] || '';
   if (seg === 'vi' || seg === 'vn') return 'vi';
   if (seg === 'en') return 'en';
-  const stored = (localStorage.getItem('lang') || localStorage.getItem('language') || '').toLowerCase();
-  if (stored === 'en' || stored === 'vi') return stored as Lang;
+
   return 'vi';
 };

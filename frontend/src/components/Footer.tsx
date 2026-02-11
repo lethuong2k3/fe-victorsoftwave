@@ -50,18 +50,18 @@ const Footer: React.FC = () => {
             <h4 className="font-bold text-slate-900 dark:text-white mb-6">Dịch vụ</h4>
             <ul className="space-y-3 text-sm text-slate-500 dark:text-slate-400">
                 <li>
-                  <Link to={`/${lang}/${getLocalizedSlug('thiet-ke-website', lang)}`} className="hover:text-blue-500">
+                  <Link to={`/${getLocalizedSlug('thiet-ke-website', lang)}`} className="hover:text-blue-500">
                     Thiết kế Website
                   </Link>
                 </li>
                 <li><a href="#" className="hover:text-blue-500">Viết App Mobile</a></li>
                 <li>
-                  <Link to={`/${lang}/${getLocalizedSlug('seo-tong-the', lang)}`} className="hover:text-blue-500">
+                  <Link to={`/${getLocalizedSlug('seo-tong-the', lang)}`} className="hover:text-blue-500">
                     SEO Tổng thể
                   </Link>
                 </li>
                 <li>
-                  <Link to={`/${lang}/${getLocalizedSlug('tiktok-ads', lang)}`} className="hover:text-blue-500">
+                  <Link to={`/${getLocalizedSlug('tiktok-ads', lang)}`} className="hover:text-blue-500">
                     Chạy quảng cáo
                   </Link>
                 </li>

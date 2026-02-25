@@ -10,7 +10,6 @@ import { api } from '@/utils/api';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import SEO from '@/components/SEO';
 
-const categories = ["Tất cả", "Doanh nghiệp", "Bán hàng", "Landing Page", "Nội thất", "Giáo dục", "Thời trang"];
 
 type Project = {
   id: number;
@@ -48,8 +47,14 @@ type ProjectsPageContent = {
   const navigate = useNavigate();
   const lang = getLang();
   
-  const categoriesVi = ["Tất cả", "Doanh nghiệp", "Bán hàng", "Landing Page", "Nội thất", "Giáo dục", "Thời trang"];
-  const categoriesEn = ["All", "Business", "E-commerce", "Landing Page", "Interior", "Education", "Fashion"];
+  const { data: managedCategories } = useQuery({
+    queryKey: ['categories', 'project'],
+    queryFn: () => api.get<any[]>('/api/categories/project'),
+    initialData: [],
+  });
+
+  const categoriesVi = ["Tất cả", ...(managedCategories?.map((c) => c.name) || [])];
+  const categoriesEn = ["All", ...(managedCategories?.map((c) => c.nameEn || c.name) || [])];
   const categories = lang === 'en' ? categoriesEn : categoriesVi;
   
   const [activeCat, setActiveCat] = useState(categories[0]);
@@ -60,9 +65,12 @@ type ProjectsPageContent = {
   }, [activeCat]);
 
   const getFilterCategory = (displayCat: string) => {
-    if (lang !== 'en') return displayCat;
-    const index = categoriesEn.indexOf(displayCat);
-    if (index !== -1) return categoriesVi[index];
+    if (displayCat === "All" || displayCat === "Tất cả") return "";
+    
+    if (lang === 'en') {
+        const found = managedCategories?.find(c => (c.nameEn || c.name) === displayCat);
+        return found ? found.name : displayCat;
+    }
     return displayCat;
   };
 
@@ -173,7 +181,7 @@ type ProjectsPageContent = {
               onClick={() => {
                 navigate(`/`);
               }}
-              className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
+              className="cursor-pointer flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
             >
               <ArrowLeft size={20} />
               <span>{lang === 'en' ? 'Back to Home' : 'Quay lại trang chủ'}</span>

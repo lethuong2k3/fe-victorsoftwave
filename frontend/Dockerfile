@@ -37,7 +37,7 @@ COPY nginx.conf /etc/nginx/templates/default.conf.template
 # Default port
 ENV PORT=80
 # Default Backend URL for SEO Proxy (Override this in Railway)
-ENV BACKEND_URL=http://localhost:8080
+ENV BACKEND_URL=https://victor-softwave-backend-production.up.railway.app
 
 # Expose port
 EXPOSE 80

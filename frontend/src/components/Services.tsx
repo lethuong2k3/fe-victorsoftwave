@@ -120,7 +120,7 @@ const Services: React.FC<ServicesProps> = ({ data }) => {
               
               <button 
                 onClick={() => handleViewDetail(service.link)}
-                className="flex items-center gap-2 text-sm font-bold text-blue-600 dark:text-blue-400 group-hover:translate-x-2 transition-transform self-start"
+                className="cursor-pointer flex items-center gap-2 text-sm font-bold text-blue-600 dark:text-blue-400 group-hover:translate-x-2 transition-transform self-start"
               >
                 {lang === 'en' ? 'View details' : 'Xem chi tiết'} <ArrowRight size={16} />
               </button>

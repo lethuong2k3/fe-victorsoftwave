@@ -78,7 +78,7 @@ const ProjectDetail: React.FC = () => {
       if (slug && /^\d+$/.test(slug)) {
         const correctSlug = lang === 'en' ? project.slugEn : project.slug;
         if (correctSlug) {
-          navigate(`/${getLocalizedSlug('danh-muc-website', lang)}/${correctSlug}`, { replace: true });
+          navigate(`/${correctSlug}`, { replace: true });
         }
       }
     }
@@ -198,11 +198,11 @@ const ProjectDetail: React.FC = () => {
       <main className="pt-24 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <button
-            onClick={() => navigate(`/${getCurrentLang()}/${getLocalizedSlug('danh-muc-website', getCurrentLang())}`)}
-            className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors group"
+            onClick={() => navigate(`/${currentLang}/${getLocalizedSlug('danh-muc-website', currentLang)}`)}
+            className="cursor-pointer flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors group"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            <span>Quay lại danh mục</span>
+            <span>{currentLang === 'en' ? 'Back to Portfolio' : 'Quay lại danh sách'}</span>
           </button>
 
           <div className="grid lg:grid-cols-2 gap-12 mb-16">

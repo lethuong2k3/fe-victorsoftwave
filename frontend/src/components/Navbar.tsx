@@ -237,21 +237,21 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
           {menuItems.map((item) => (
             <div
               key={item.key}
-              className={`relative group px-3 py-2 rounded-full ${isItemActive(item) ? 'bg-slate-100/70 dark:bg-slate-800/60' : ''}`}
+              className={`relative group px-3 py-2 rounded-full cursor-pointer ${isItemActive(item) ? 'bg-slate-100/70 dark:bg-slate-800/60' : ''}`}
               onMouseEnter={() => setActiveDropdown(item.key)}
               onMouseLeave={() => setActiveDropdown(null)}
+              onClick={() => {
+                // If has path (like "Thiết kế web"), navigate directly
+                if (item.path) {
+                  handleNavigation(item.path);
+                } else if (!item.dropdown) {
+                  // If no dropdown, scroll to section
+                  handleNavigation(item.id);
+                }
+                // If has dropdown but no path, dropdown will handle hover
+              }}
             >
-              <button
-                onClick={() => {
-                  // If has path (like "Thiết kế web"), navigate directly
-                  if (item.path) {
-                    handleNavigation(item.path);
-                  } else if (!item.dropdown) {
-                    // If no dropdown, scroll to section
-                    handleNavigation(item.id);
-                  }
-                  // If has dropdown but no path, dropdown will handle hover
-                }}
+              <div
                 className={`flex items-center gap-1 text-sm font-medium transition-colors ${
                   isItemActive(item)
                     ? 'text-blue-600 dark:text-blue-400'
@@ -260,7 +260,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
               >
                 {item.title}
                 {item.dropdown && <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />}
-              </button>
+              </div>
 
               {/* Dropdown */}
               {item.dropdown && activeDropdown === item.key && (
@@ -310,7 +310,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
         <div className="flex items-center gap-4">
           <button
             onClick={toggleLanguage}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors"
+            className="cursor-pointer inline-flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors"
             aria-label="Toggle language"
             type="button"
           >
@@ -320,14 +320,14 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
 
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors"
+            className="cursor-pointer p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors"
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           
           <button 
             onClick={() => handleNavigation('contact')}
-            className="hidden lg:block px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-800 text-white text-sm font-semibold rounded-full shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition-all duration-300"
+            className="cursor-pointer hidden lg:block px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-800 text-white text-sm font-semibold rounded-full shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition-all duration-300"
           >
             {labels.consultNow}
           </button>

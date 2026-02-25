@@ -46,7 +46,7 @@ const ClientsPage: React.FC = () => {
   const navigate = useNavigate();
   const lang = getLang();
   
-  const [activeCat, setActiveCat] = useState('All');
+  const [activeCat, setActiveCat] = useState(lang === 'en' ? 'All' : 'Tất cả');
   const [page, setPage] = useState(0);
 
   // Fetch Page Content (SEO, Title, Description)
@@ -56,18 +56,31 @@ const ClientsPage: React.FC = () => {
   });
 
   // Fetch Categories
-  const { data: categoriesData } = useQuery<string[]>({
-    queryKey: ['client-categories'],
-    queryFn: () => api.get<string[]>('/api/clients/categories'),
+  const { data: managedCategories } = useQuery<any[]>({
+    queryKey: ['categories', 'client'],
+    queryFn: () => api.get<any[]>('/api/categories/client'),
+    initialData: [],
   });
 
-  const categories = ['All', ...(categoriesData || [])];
+  const categoriesVi = ["Tất cả", ...(managedCategories?.map((c) => c.name) || [])];
+  const categoriesEn = ["All", ...(managedCategories?.map((c) => c.nameEn || c.name) || [])];
+  const categories = lang === 'en' ? categoriesEn : categoriesVi;
   
   // Handle Category Selection
-  // Note: Since categories are stored as simple strings in backend, we display them directly.
-  // Ideally, we might want bilingual categories, but for now we use what's in the DB.
+  const getFilterCategory = (displayCategory: string) => {
+    if (displayCategory === 'All' || displayCategory === 'Tất cả') return '';
+    const category = managedCategories?.find(c => 
+        (lang === 'en' ? c.nameEn || c.name : c.name) === displayCategory
+    );
+    return category ? category.name : displayCategory;
+  };
   
-  const queryCat = activeCat === 'All' ? '' : activeCat;
+  const queryCat = getFilterCategory(activeCat);
+
+  useEffect(() => {
+    setActiveCat(lang === 'en' ? 'All' : 'Tất cả');
+    setPage(0);
+  }, [lang]);
 
   // Fetch Clients
   const { data: clientPage, isLoading: clientsLoading } = useQuery<ClientPageResponse>({
@@ -138,7 +151,7 @@ const ClientsPage: React.FC = () => {
             onClick={() => {
               navigate(`/`);
             }}
-            className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
+            className="cursor-pointer flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
           >
             <ArrowLeft size={20} />
             <span>{lang === 'en' ? 'Back to Home' : 'Quay lại trang chủ'}</span>

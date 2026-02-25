@@ -33,13 +33,18 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex gap-4">
                 {homeData?.facebookUrl && (
-                  <a href={homeData.facebookUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-blue-600 hover:text-white transition-all"><Facebook size={18} /></a>
+                  <a href={homeData.facebookUrl} target="_blank" rel="noopener noreferrer" className="cursor-pointer w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-blue-600 hover:text-white transition-all"><Facebook size={18} /></a>
                 )}
                 {homeData?.zaloUrl && (
-                   <a href={homeData.zaloUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-blue-500 hover:text-white transition-all font-bold text-xs">Zalo</a>
+                   <a href={homeData.zaloUrl} target="_blank" rel="noopener noreferrer" className="cursor-pointer w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-blue-500 hover:text-white transition-all font-bold text-xs">Zalo</a>
                 )}
-                <a href="#" className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-pink-600 hover:text-white transition-all"><Instagram size={18} /></a>
-                <a href="#" className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-blue-500 hover:text-white transition-all"><Linkedin size={18} /></a>
+                {homeData?.tiktokUrl && (
+                  <a href={homeData.tiktokUrl} target="_blank" rel="noopener noreferrer" className="cursor-pointer w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-black hover:text-white transition-all">
+                    <svg viewBox="0 0 24 24" fill="currentColor" height="18" width="18">
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+                    </svg>
+                  </a>
+                )}
             </div>
           </div>
 
@@ -82,7 +87,7 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex">
                 <input type="email" placeholder="Email của bạn" className="bg-slate-100 dark:bg-slate-900 px-4 py-2 rounded-l-lg outline-none w-full text-sm dark:text-white" />
-                <button className="bg-blue-600 px-4 py-2 rounded-r-lg text-white text-sm font-medium hover:bg-blue-700">Gửi</button>
+                <button className="cursor-pointer bg-blue-600 px-4 py-2 rounded-r-lg text-white text-sm font-medium hover:bg-blue-700">Gửi</button>
             </div>
           </div>
 

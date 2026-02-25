@@ -345,7 +345,7 @@ const ContactPage: React.FC = () => {
 
                                 <button 
                                     disabled={loading}
-                                    className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-blue-500/50 flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+                                    className="cursor-pointer w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-blue-500/50 flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
                                 >
                                     {loading ? <Loader2 className="animate-spin" /> : <>{labels.send} <Send size={18} className="group-hover:translate-x-1 transition-transform" /></>}
                                 </button>

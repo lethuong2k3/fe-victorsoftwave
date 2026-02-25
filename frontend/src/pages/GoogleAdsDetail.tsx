@@ -259,9 +259,9 @@ const GoogleAdsDetail = () => {
         <section className="py-20 bg-gradient-to-b from-blue-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <button
-              onClick={() => navigate(`/`)}
-              className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
-            >
+          onClick={() => navigate(`/`)}
+          className="cursor-pointer flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
+        >
               <ArrowLeft size={20} />
               <span>{backToHomeLabel}</span>
             </button>

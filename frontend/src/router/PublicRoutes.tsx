@@ -15,6 +15,7 @@ import ArticlesPage from '@/pages/ArticlesPage';
 import ArticleDetailPage from '@/pages/ArticleDetailPage';
 import ContactPage from '@/pages/ContactPage';
 import NotFound from '@/pages/NotFound';
+import GenericDetail from '@/pages/GenericDetail';
 import { SLUG_MAPPING, getLang, getLocalizedSlug } from '@/utils/localization';
 import FloatingContact from '@/components/FloatingContact';
 import { api } from '@/utils/api';
@@ -42,18 +43,19 @@ const PublicRoutes: React.FC = () => {
 
   const LegacyDuAnRedirect: React.FC = () => {
     const { id } = useParams();
-    const lang = getLang();
-    return <Navigate to={`/${getLocalizedSlug('danh-muc-website', lang)}/${id}`} replace />;
+    // Redirect legacy ID-based URLs directly to the ID (handled by GenericDetail -> ProjectDetail)
+    return <Navigate to={`/${id}`} replace />;
   };
 
   const LegacyProjectSlugRedirectVi: React.FC = () => {
     const { slug } = useParams();
-    return <Navigate to={`/${SLUG_MAPPING['danh-muc-website'].vi}/${slug}`} replace />;
+    // Redirect legacy /du-an/slug to /slug
+    return <Navigate to={`/${slug}`} replace />;
   };
 
   const LegacyProjectSlugRedirectEn: React.FC = () => {
     const { slug } = useParams();
-    return <Navigate to={`/${SLUG_MAPPING['danh-muc-website'].en}/${slug}`} replace />;
+    return <Navigate to={`/${slug}`} replace />;
   };
 
   return (
@@ -90,27 +92,19 @@ const PublicRoutes: React.FC = () => {
         <Route path={`/${SLUG_MAPPING['google-ads'].vi}`} element={<GoogleAdsDetail />} />
         <Route path={`/${SLUG_MAPPING['google-ads'].en}`} element={<GoogleAdsDetail />} />
 
-        {/* Portfolio */}
+        {/* Portfolio Listing (Category Page) */}
         <Route path={`/${SLUG_MAPPING['danh-muc-website'].vi}`} element={<PortfolioPage />} />
         <Route path={`/${SLUG_MAPPING['danh-muc-website'].en}`} element={<PortfolioPage />} />
-
-        {/* Project Detail under Web Category */}
-        <Route path={`/${SLUG_MAPPING['danh-muc-website'].vi}/:slug`} element={<ProjectDetail />} />
-        <Route path={`/${SLUG_MAPPING['danh-muc-website'].en}/:slug`} element={<ProjectDetail />} />
-
-        {/* Clients */}
+        
+        {/* Clients Listing (Category Page) */}
         <Route path={`/${SLUG_MAPPING['khach-hang'].vi}`} element={<ClientsPage />} />
         <Route path={`/${SLUG_MAPPING['khach-hang'].en}`} element={<ClientsPage />} />
-        
-        {/* Client Detail with Slug */}
-        <Route path={`/${SLUG_MAPPING['khach-hang'].vi}/:slug`} element={<ClientDetail />} />
-        <Route path={`/${SLUG_MAPPING['khach-hang'].en}/:slug`} element={<ClientDetail />} />
 
         {/* Articles / Blog */}
         <Route path={`/${SLUG_MAPPING['bai-viet'].vi}`} element={<ArticlesPage />} />
         <Route path={`/${SLUG_MAPPING['bai-viet'].en}`} element={<ArticlesPage />} />
         
-        {/* Article Detail */}
+        {/* Article Detail - Kept as is (nested) */}
         <Route path={`/${SLUG_MAPPING['bai-viet'].vi}/:slug`} element={<ArticleDetailPage />} />
         <Route path={`/${SLUG_MAPPING['bai-viet'].en}/:slug`} element={<ArticleDetailPage />} />
 
@@ -137,9 +131,12 @@ const PublicRoutes: React.FC = () => {
         <Route path="/lien-he" element={<Navigate to={`/${SLUG_MAPPING['lien-he'].vi}`} replace />} />
         <Route path="/du-an/:id" element={<LegacyDuAnRedirect />} />
 
+        {/* Flattened Project/Client Detail - Must be last before 404 to avoid conflicts */}
+        <Route path="/:slug" element={<GenericDetail />} />
+
         {/* 404 - Not Found */}
         <Route path="*" element={<NotFound />} />
-    </Routes>
+      </Routes>
       <FloatingContact />
     </>
   );

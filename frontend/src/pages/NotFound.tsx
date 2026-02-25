@@ -40,7 +40,7 @@ const NotFound: React.FC = () => {
           <div className="flex items-center justify-between mb-8">
             <button
               onClick={() => navigate(-1)}
-              className="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+              className="cursor-pointer inline-flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>{backPrevLabel}</span>
@@ -61,7 +61,7 @@ const NotFound: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button
                   onClick={() => navigate(homePath)}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 text-white text-sm font-semibold shadow-md hover:bg-blue-500 transition-colors"
+                  className="cursor-pointer inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 text-white text-sm font-semibold shadow-md hover:bg-blue-500 transition-colors"
                 >
                   <HomeIcon className="w-4 h-4" />
                   <span>{backHomeLabel}</span>

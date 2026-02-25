@@ -121,7 +121,7 @@ const ClientDetail: React.FC = () => {
             onClick={() => {
               navigate(`/${SLUG_MAPPING['khach-hang'][lang]}`);
             }}
-            className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors group"
+            className="cursor-pointer flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors group"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             <span>{lang === 'en' ? 'Back to Clients' : 'Quay lại Khách hàng'}</span>

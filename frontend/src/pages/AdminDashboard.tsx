@@ -53,6 +53,7 @@ import { GoogleAdsContentForm } from '@/components/GoogleAdsContentForm';
 import ProjectsPageContentForm from '@/components/ProjectsPageContentForm';
 import ClientsPageContentForm from '@/components/ClientsPageContentForm';
 import { QuoteModal } from '@/components/QuoteModal';
+import { CategoryManagement } from '@/components/CategoryManagement';
 import { ArticlesManagement } from '@/components/ArticlesManagement';
 import { ContactManagement } from '@/components/ContactManagement';
 import { GoogleReviewsManagement } from '@/components/GoogleReviewsManagement';
@@ -172,6 +173,8 @@ const AdminDashboard: React.FC = () => {
   const [clientLoading, setClientLoading] = useState(false);
   const [clientError, setClientError] = useState<string | null>(null);
   const [clientCategories, setClientCategories] = useState<string[]>([]);
+  const [managedProjectCategories, setManagedProjectCategories] = useState<any[]>([]);
+  const [managedClientCategories, setManagedClientCategories] = useState<any[]>([]);
   const [clientFilterCat, setClientFilterCat] = useState<string>('');
   const [clientSearch, setClientSearch] = useState('');
   const [clientSearchDebounced, setClientSearchDebounced] = useState('');
@@ -526,6 +529,11 @@ const AdminDashboard: React.FC = () => {
         if (Array.isArray(data)) {
           setProjectCategories(data);
         }
+        // Fetch managed categories for modal
+        const managedData = await api.get('/api/categories/project');
+        if (Array.isArray(managedData)) {
+          setManagedProjectCategories(managedData);
+        }
       } catch {
       }
     };
@@ -564,6 +572,11 @@ const AdminDashboard: React.FC = () => {
         const data = await api.get('/api/admin/clients/categories');
         if (Array.isArray(data)) {
           setClientCategories(data);
+        }
+        // Fetch managed categories for modal
+        const managedData = await api.get('/api/categories/client');
+        if (Array.isArray(managedData)) {
+          setManagedClientCategories(managedData);
         }
       } catch {
       }
@@ -731,7 +744,7 @@ const AdminDashboard: React.FC = () => {
           </div>
           <div
             onClick={() => setIsStaticPagesOpen((v) => !v)}
-            className="flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer transition-all duration-200 group text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+            className="cursor-pointer flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
           >
             <div className="flex items-center space-x-3">
               <FileText className="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white" />
@@ -874,6 +887,12 @@ const AdminDashboard: React.FC = () => {
             label="Cài đặt" 
             active={activeTab === 'settings'}
             onClick={() => changeTab('settings')}
+          />
+          <SidebarItem 
+            icon={Layers} 
+            label="Quản lý danh mục" 
+            active={activeTab === 'categories'}
+            onClick={() => changeTab('categories')}
           />
         </div>
 
@@ -1728,15 +1747,20 @@ const AdminDashboard: React.FC = () => {
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Danh mục</label>
-                          <input
-                            type="text"
+                          <select
                             value={editingProject.cat || ''}
                             onChange={(e) =>
                               setEditingProject((prev: any) => ({ ...prev, cat: e.target.value }))
                             }
-                            placeholder="Ví dụ: Doanh nghiệp, Bán hàng..."
                             className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm"
-                          />
+                          >
+                            <option value="">-- Chọn danh mục --</option>
+                            {managedProjectCategories.map((cat: any) => (
+                              <option key={cat.id} value={cat.name}>
+                                {cat.name}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                         <div className="space-y-2 flex items-center gap-2 pt-6">
                           <input
@@ -2495,14 +2519,19 @@ const AdminDashboard: React.FC = () => {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Danh mục</label>
-                            <input
-                                type="text"
-                                value={editingClient.category || ''}
-                                onChange={(e) => setEditingClient((prev: any) => ({ ...prev, category: e.target.value }))}
-                                placeholder="Ví dụ: Doanh nghiệp, Bán lẻ..."
-                                className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm"
-                            />
+                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Danh mục</label>
+                          <select
+                            value={editingClient.category || ''}
+                            onChange={(e) => setEditingClient((prev: any) => ({ ...prev, category: e.target.value }))}
+                            className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm"
+                          >
+                             <option value="">-- Chọn danh mục --</option>
+                             {managedClientCategories.map((cat: any) => (
+                               <option key={cat.id} value={cat.name}>
+                                 {cat.name}
+                               </option>
+                             ))}
+                          </select>
                         </div>
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Slug (URL)</label>
@@ -2981,6 +3010,10 @@ const AdminDashboard: React.FC = () => {
               </div>
             )}
 
+            {activeTab === 'categories' && (
+              <CategoryManagement />
+            )}
+
             {activeTab === 'static-home' && (
               <div className="space-y-6">
                 <HomeContentForm />
@@ -3038,7 +3071,7 @@ const AdminDashboard: React.FC = () => {
           <button
             type="button"
             onClick={() => scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 shadow-lg shadow-blue-500/30 transition-all active:scale-95"
+            className="cursor-pointer fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 shadow-lg shadow-blue-500/30 transition-all active:scale-95"
           >
             <ArrowUp className="w-4 h-4" />
             <span className="text-sm font-semibold">Lên top</span>

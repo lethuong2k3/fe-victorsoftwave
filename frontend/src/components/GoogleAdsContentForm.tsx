@@ -84,7 +84,7 @@ export const GoogleAdsContentForm: React.FC = () => {
 
   useEffect(() => {
     if (fetchedData) {
-      setFormData(fetchedData);
+      setFormData((prev) => ({ ...prev, ...fetchedData }));
     }
   }, [fetchedData]);
 
@@ -122,7 +122,7 @@ export const GoogleAdsContentForm: React.FC = () => {
       return api.post('/api/pages/google-ads', data);
     },
     onSuccess: (savedData) => {
-      setFormData(savedData);
+      setFormData((prev) => ({ ...prev, ...savedData }));
       setToast({ text: 'Lưu nội dung thành công!', type: 'success' });
       queryClient.invalidateQueries({ queryKey: ['google-ads-content'] });
     },

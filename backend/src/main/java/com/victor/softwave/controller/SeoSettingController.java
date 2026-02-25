@@ -10,7 +10,6 @@ import org.springframework.lang.NonNull;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/settings")
 public class SeoSettingController {
@@ -28,7 +27,7 @@ public class SeoSettingController {
     }
 
     @PostMapping("/seo")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<SeoSetting> updateSeoSettings(@RequestBody @NonNull SeoSetting newSetting) {
         List<SeoSetting> settings = seoSettingRepository.findAll();
         if (!settings.isEmpty()) {

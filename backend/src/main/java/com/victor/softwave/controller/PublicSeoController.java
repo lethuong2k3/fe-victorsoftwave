@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/public/seo-meta")
-@CrossOrigin(origins = "*")
 public class PublicSeoController {
 
     @Autowired

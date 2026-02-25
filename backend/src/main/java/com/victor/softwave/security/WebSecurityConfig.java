@@ -18,6 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.springframework.security.config.Customizer;
+
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+
 @Configuration
 @EnableMethodSecurity
 public class WebSecurityConfig {
@@ -26,6 +30,13 @@ public class WebSecurityConfig {
 
   @Autowired
   private AuthEntryPointJwt unauthorizedHandler;
+
+  @Bean
+  public FilterRegistrationBean<AuthTokenFilter> authTokenFilterRegistration(AuthTokenFilter filter) {
+    FilterRegistrationBean<AuthTokenFilter> registration = new FilterRegistrationBean<>(filter);
+    registration.setEnabled(false);
+    return registration;
+  }
 
   @Bean
   public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -55,10 +66,14 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
+        .cors(Customizer.withDefaults())
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/auth/**").permitAll()
             .requestMatchers("/api/test/**").permitAll()
+            .requestMatchers("/error").permitAll()
+            .requestMatchers("/api/projects/featured").permitAll()
             .requestMatchers("/api/projects/**").permitAll()
             .requestMatchers("/api/clients/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/articles/**").permitAll()
@@ -76,7 +91,9 @@ public class WebSecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/contacts").permitAll()
             .requestMatchers("/api/analytics/**").permitAll()
             .requestMatchers("/uploads/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
             .anyRequest().authenticated());
 
     http.authenticationProvider(authenticationProvider());

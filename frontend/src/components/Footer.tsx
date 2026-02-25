@@ -4,6 +4,7 @@ import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
+import logo from '@/assets/logo.png';
 
 const Footer: React.FC = () => {
   const lang = getLang();
@@ -21,9 +22,11 @@ const Footer: React.FC = () => {
           
           <div className="col-span-1 md:col-span-1">
             <div className="mb-6">
-              <div className="relative w-14 h-14 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">
-                VS
-              </div>
+              <img 
+                src="/assets/logo.png" 
+                alt="Victor Software" 
+                className="w-14 h-14 object-contain rounded-xl"
+              />
             </div>
             <p className="text-slate-500 text-sm mb-6 leading-relaxed">
               Đối tác tin cậy trong hành trình chuyển đổi số của doanh nghiệp. Chúng tôi mang đến những giải pháp công nghệ tiên tiến nhất.

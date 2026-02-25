@@ -41,7 +41,10 @@ public class ProjectController {
 
     @GetMapping("/featured")
     public List<Project> getFeaturedProjects() {
-        return projectService.getFeaturedProjects();
+        System.out.println("Entering getFeaturedProjects");
+        List<Project> projects = projectService.getFeaturedProjects();
+        System.out.println("Returning " + projects.size() + " featured projects");
+        return projects;
     }
 
     @GetMapping("/{slug}")

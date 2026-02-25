@@ -16,7 +16,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.validation.FieldError;
 import org.springframework.lang.NonNull;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/pages/home")
 public class HomeContentController {
@@ -299,7 +298,7 @@ public class HomeContentController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<HomeContent> saveContent(@Valid @RequestBody @NonNull HomeContent request) {
         List<HomeContent> all = homeContentRepository.findAll();
         if (!all.isEmpty()) {

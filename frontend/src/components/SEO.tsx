@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
+import logo from '@/assets/logo.png';
 
 interface SEOProps {
   title?: string;
@@ -17,7 +18,7 @@ const SEO: React.FC<SEOProps> = ({
   title = "Victor Software - Giải Pháp Số Toàn Diện",
   description = "Chuyên cung cấp giải pháp thiết kế website, phần mềm và marketing online chuyên nghiệp.",
   keywords = "thiết kế website, phần mềm, marketing online, seo, ads",
-  image = "/logo.png",
+  image = logo,
   url,
   type = "website",
   siteName = "Victor Software",

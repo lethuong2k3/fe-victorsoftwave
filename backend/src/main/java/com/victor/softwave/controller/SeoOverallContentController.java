@@ -10,7 +10,6 @@ import org.springframework.lang.NonNull;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/pages/seo-overall")
 public class SeoOverallContentController {
@@ -106,7 +105,7 @@ public class SeoOverallContentController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<SeoOverallContent> saveContent(@RequestBody @NonNull SeoOverallContent request) {
         List<SeoOverallContent> all = seoOverallContentRepository.findAll();
         if (!all.isEmpty()) {

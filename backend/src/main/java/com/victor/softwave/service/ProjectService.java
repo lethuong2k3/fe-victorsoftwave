@@ -3,6 +3,7 @@ package com.victor.softwave.service;
 import com.victor.softwave.model.Project;
 import com.victor.softwave.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -67,19 +68,19 @@ public class ProjectService {
         return projectRepository.countByCatAndFeaturedTrueAndIdNot(cat, id);
     }
 
-    public Project saveProject(Project project) {
+    public @NonNull Project saveProject(@NonNull Project project) {
         return projectRepository.save(project);
     }
 
-    public Optional<Project> getProjectById(Long id) {
+    public Optional<Project> getProjectById(@NonNull Long id) {
         return projectRepository.findById(id);
     }
 
-    public boolean existsById(Long id) {
+    public boolean existsById(@NonNull Long id) {
         return projectRepository.existsById(id);
     }
 
-    public void deleteProject(Long id) {
+    public void deleteProject(@NonNull Long id) {
         projectRepository.deleteById(id);
     }
 }

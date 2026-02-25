@@ -13,6 +13,19 @@ public class ProjectsPageContent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Page Content
+    private String pageTitle;
+    private String pageTitleEn;
+
+    @Column(columnDefinition = "TEXT")
+    private String pageDescription;
+
+    @Column(columnDefinition = "TEXT")
+    private String pageDescriptionEn;
+
+    private String heroImageUrl;
+    private String heroImageUrlEn;
+
     // SEO
     private String seoTitle;
     @Column(columnDefinition = "TEXT")

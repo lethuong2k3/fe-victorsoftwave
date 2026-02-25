@@ -10,7 +10,6 @@ import org.springframework.lang.NonNull;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/pages/web-design")
 public class WebDesignContentController {
@@ -116,7 +115,7 @@ public class WebDesignContentController {
         }
 
         @PostMapping
-        @PreAuthorize("hasRole('ADMIN')")
+        @PreAuthorize("hasAuthority('ROLE_ADMIN')")
         public ResponseEntity<WebDesignContent> saveContent(@RequestBody @NonNull WebDesignContent request) {
                 List<WebDesignContent> all = webDesignContentRepository.findAll();
                 if (!all.isEmpty()) {

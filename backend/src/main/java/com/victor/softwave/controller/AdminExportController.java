@@ -20,7 +20,6 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/admin/export")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class AdminExportController {
 
         @Autowired

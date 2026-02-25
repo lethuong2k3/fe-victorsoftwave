@@ -1,5 +1,6 @@
 package com.victor.softwave.security.jwt;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -9,17 +10,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtils {
   private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-  @Value("${victor.app.jwtSecret}")
+  @Value("${JWT_SECRET}")
   private String jwtSecret;
 
-  @Value("${victor.app.jwtExpirationMs}")
+  @Value("${JWT_EXPIRATION_MS}")
   private int jwtExpirationMs;
 
   public String generateTokenFromUsername(String username) {
@@ -32,7 +32,8 @@ public class JwtUtils {
   }
 
   private Key key() {
-    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+    return Keys.hmacShaKeyFor(keyBytes);
   }
 
   public String getUserNameFromJwtToken(String token) {

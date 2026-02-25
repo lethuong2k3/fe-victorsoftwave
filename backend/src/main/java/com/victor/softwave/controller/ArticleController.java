@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/articles")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class ArticleController {
 
     @Autowired

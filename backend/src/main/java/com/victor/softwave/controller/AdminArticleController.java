@@ -17,8 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admin/articles")
-@PreAuthorize("hasRole('ADMIN')")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class AdminArticleController {
 
     @Autowired

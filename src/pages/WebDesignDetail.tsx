@@ -218,7 +218,8 @@ const WebDesignDetail: React.FC = () => {
 
   const buildLocalizedHref = (rawLink: string) => {
     if (!rawLink) return rawLink;
-    if (rawLink.startsWith('http')) return rawLink;
+    if (rawLink.startsWith('http') || rawLink.startsWith('https')) return rawLink;
+    if (rawLink.startsWith('m.me')) return `https://${rawLink}`;
     if (!rawLink.startsWith('/')) return rawLink;
     
     const cleanLink = rawLink.slice(1);

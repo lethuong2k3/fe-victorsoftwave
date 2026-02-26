@@ -412,7 +412,7 @@ const WebsiteCareDetail: React.FC = () => {
                   </div>
                   {plan.link ? (
                     <a
-                      href={plan.link}
+                      href={plan.link.startsWith('http') ? plan.link : plan.link.startsWith('m.me') ? `https://${plan.link}` : plan.link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={[

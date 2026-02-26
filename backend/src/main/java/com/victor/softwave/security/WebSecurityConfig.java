@@ -87,11 +87,13 @@ public class WebSecurityConfig {
             .requestMatchers(HttpMethod.GET, "/api/pages/google-ads").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/pages/projects").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/pages/clients").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/google-reviews").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/contacts").permitAll()
             .requestMatchers("/api/analytics/**").permitAll()
             .requestMatchers("/uploads/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/sitemap.xml").permitAll()
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
             .anyRequest().authenticated());

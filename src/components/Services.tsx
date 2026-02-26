@@ -2,11 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Layout, Search, ShieldCheck, ArrowRight } from 'lucide-react';
-<<<<<<< HEAD
 import { getLocalizedSlug, getSlugKey } from '@/utils/localization';
-=======
-import { getLocalizedSlug, getSlugKey } from '../utils/localization';
->>>>>>> b2df92e (first commit)
 
 const services = [
   {
@@ -83,15 +79,9 @@ const Services: React.FC<ServicesProps> = ({ data }) => {
       
       if (key) {
         const localizedSlug = getLocalizedSlug(key, lang);
-<<<<<<< HEAD
         navigate(`/${localizedSlug}`);
       } else {
         navigate(`${link.startsWith('/') ? '' : '/'}${link}`);
-=======
-        navigate(`/${lang}/${localizedSlug}`);
-      } else {
-        navigate(`/${lang}${link}`);
->>>>>>> b2df92e (first commit)
       }
     }
   };
@@ -130,11 +120,7 @@ const Services: React.FC<ServicesProps> = ({ data }) => {
               
               <button 
                 onClick={() => handleViewDetail(service.link)}
-<<<<<<< HEAD
                 className="cursor-pointer flex items-center gap-2 text-sm font-bold text-blue-600 dark:text-blue-400 group-hover:translate-x-2 transition-transform self-start"
-=======
-                className="flex items-center gap-2 text-sm font-bold text-blue-600 dark:text-blue-400 group-hover:translate-x-2 transition-transform self-start"
->>>>>>> b2df92e (first commit)
               >
                 {lang === 'en' ? 'View details' : 'Xem chi tiết'} <ArrowRight size={16} />
               </button>

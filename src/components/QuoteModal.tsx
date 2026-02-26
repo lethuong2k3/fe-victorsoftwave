@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Plus, Trash2, FileSpreadsheet, Download, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-<<<<<<< HEAD
 import { api } from '@/utils/api';
-=======
-import { getAuthHeader } from '../utils/auth';
->>>>>>> b2df92e (first commit)
 
 interface QuoteItem {
   description: string;
@@ -32,7 +28,6 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, selecte
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-<<<<<<< HEAD
         const data = await api.get('/api/pages/web-design?lang=vi');
         if (data && data.pricingJsonVi) {
           try {
@@ -43,21 +38,6 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, selecte
             }
           } catch (e) {
             console.error('Failed to parse pricingJsonVi', e);
-=======
-        const res = await fetch('/api/pages/web-design?lang=vi');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.pricingJsonVi) {
-            try {
-              const parsed = JSON.parse(data.pricingJsonVi);
-              if (Array.isArray(parsed) && parsed.length > 0) {
-                setPackages(parsed);
-                return;
-              }
-            } catch (e) {
-              console.error('Failed to parse pricingJsonVi', e);
-            }
->>>>>>> b2df92e (first commit)
           }
         }
       } catch (error) {
@@ -111,17 +91,8 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, selecte
   const handleExport = async () => {
     try {
       setLoading(true);
-<<<<<<< HEAD
       const blob = await api.download('/api/admin/export/quote', {
         method: 'POST',
-=======
-      const res = await fetch('/api/admin/export/quote', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
->>>>>>> b2df92e (first commit)
         body: JSON.stringify({
           customerName,
           companyName,
@@ -133,12 +104,6 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, selecte
         }),
       });
 
-<<<<<<< HEAD
-=======
-      if (!res.ok) throw new Error('Export failed');
-
-      const blob = await res.blob();
->>>>>>> b2df92e (first commit)
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;

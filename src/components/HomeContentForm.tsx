@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
 import { Loader2, Save, Home, Image as ImageIcon, Upload, Link as LinkIcon, Trash2 } from 'lucide-react';
 import { z } from 'zod';
 import { api } from '@/utils/api';
 import { Toast } from '@/components/Toast';
-=======
-import { clearCache } from '../utils/cache';
-import { Loader2, Save, Home, Image as ImageIcon, Upload, Link as LinkIcon, Trash2 } from 'lucide-react';
-import { z } from 'zod';
-import { getAuthHeader } from '../utils/auth';
-import { Toast } from './Toast';
->>>>>>> b2df92e (first commit)
 
 type ServiceItem = {
   id: string;
@@ -238,7 +230,6 @@ const HomeContentForm: React.FC = () => {
     const fetchContent = async () => {
       setLoading(true);
       try {
-<<<<<<< HEAD
         const data = await api.get<HomeContent>(`/api/pages/home?_t=${Date.now()}`);
         setFormData({
           ...emptyContent,
@@ -247,24 +238,6 @@ const HomeContentForm: React.FC = () => {
       } catch (error) {
         console.error('Failed to fetch content:', error);
         setMessage({ type: 'error', text: 'Không thể tải nội dung. Vui lòng thử lại.' });
-=======
-        const response = await fetch(`/api/pages/home?_t=${Date.now()}`, {
-          headers: {
-            ...getAuthHeader(),
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setFormData({
-            ...emptyContent,
-            ...data,
-          });
-        } else if (response.status === 401) {
-          setMessage({ type: 'error', text: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.' });
-        }
-      } catch (error) {
-        console.error('Failed to fetch content:', error);
->>>>>>> b2df92e (first commit)
       } finally {
         setLoading(false);
       }
@@ -521,7 +494,6 @@ const HomeContentForm: React.FC = () => {
     setSaving(true);
     setMessage(null);
     try {
-<<<<<<< HEAD
       const savedData = await api.post<HomeContent>('/api/pages/home', formData);
       setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
       setFormData((prev) => ({ ...prev, ...savedData }));
@@ -535,39 +507,6 @@ const HomeContentForm: React.FC = () => {
       } else {
            setMessage({ type: 'error', text: 'Lỗi kết nối đến server.' });
       }
-=======
-      const response = await fetch('/api/pages/home', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
-        const savedData = await response.json();
-        setFormData((prev) => ({ ...prev, ...savedData }));
-        setErrors({});
-        clearCache();
-      } else {
-        if (response.headers.get('content-type')?.includes('application/json')) {
-          const data = await response.json();
-          if (data && typeof data === 'object') {
-            setErrors(data as Record<string, string>);
-            setMessage({ type: 'error', text: 'Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.' });
-          } else {
-            setMessage({ type: 'error', text: 'Có lỗi xảy ra khi lưu.' });
-          }
-        } else {
-          setMessage({ type: 'error', text: 'Có lỗi xảy ra khi lưu.' });
-        }
-      }
-    } catch (error) {
-      console.error('Save error:', error);
-      setMessage({ type: 'error', text: 'Lỗi kết nối đến server.' });
->>>>>>> b2df92e (first commit)
     } finally {
       setSaving(false);
     }

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
-<<<<<<< HEAD
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getLang, getLocalizedSlug } from '@/utils/localization';
@@ -11,43 +10,6 @@ import { api } from '@/utils/api';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import SEO from '@/components/SEO';
 
-=======
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang, getLocalizedSlug } from '../utils/localization';
-import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
-
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
-
-const categories = ["Tất cả", "Doanh nghiệp", "Bán hàng", "Landing Page", "Nội thất", "Giáo dục", "Thời trang"];
->>>>>>> b2df92e (first commit)
 
 type Project = {
   id: number;
@@ -85,7 +47,6 @@ type ProjectsPageContent = {
   const navigate = useNavigate();
   const lang = getLang();
   
-<<<<<<< HEAD
   const { data: managedCategories } = useQuery({
     queryKey: ['categories', 'project'],
     queryFn: () => api.get<any[]>('/api/categories/project'),
@@ -94,10 +55,6 @@ type ProjectsPageContent = {
 
   const categoriesVi = ["Tất cả", ...(managedCategories?.map((c) => c.name) || [])];
   const categoriesEn = ["All", ...(managedCategories?.map((c) => c.nameEn || c.name) || [])];
-=======
-  const categoriesVi = ["Tất cả", "Doanh nghiệp", "Bán hàng", "Landing Page", "Nội thất", "Giáo dục", "Thời trang"];
-  const categoriesEn = ["All", "Business", "E-commerce", "Landing Page", "Interior", "Education", "Fashion"];
->>>>>>> b2df92e (first commit)
   const categories = lang === 'en' ? categoriesEn : categoriesVi;
   
   const [activeCat, setActiveCat] = useState(categories[0]);
@@ -108,45 +65,28 @@ type ProjectsPageContent = {
   }, [activeCat]);
 
   const getFilterCategory = (displayCat: string) => {
-<<<<<<< HEAD
     if (displayCat === "All" || displayCat === "Tất cả") return "";
     
     if (lang === 'en') {
         const found = managedCategories?.find(c => (c.nameEn || c.name) === displayCat);
         return found ? found.name : displayCat;
     }
-=======
-    if (lang !== 'en') return displayCat;
-    const index = categoriesEn.indexOf(displayCat);
-    if (index !== -1) return categoriesVi[index];
->>>>>>> b2df92e (first commit)
     return displayCat;
   };
 
   const queryCat = getFilterCategory(activeCat);
 
-<<<<<<< HEAD
   const { data: projectPage, isLoading: projectsLoading, error } = useQuery<ProjectPageResponse>({
     queryKey: ['projects', page, queryCat],
     queryFn: () => api.get<ProjectPageResponse>(`/api/projects?page=${page}&size=9&category=${encodeURIComponent(queryCat)}`),
     placeholderData: (prev) => prev,
-=======
-  const { data: projectPage, isLoading: projectsLoading, error } = useQuery({
-    queryKey: ['projects', page, queryCat],
-    queryFn: () => fetcher<ProjectPageResponse>(`/api/projects?page=${page}&size=9&category=${encodeURIComponent(queryCat)}`),
-    keepPreviousData: true,
->>>>>>> b2df92e (first commit)
   });
 
   const projects: Project[] = projectPage?.content || [];
 
   const { data: pageContent, isLoading: contentLoading } = useQuery({
     queryKey: ['projects-page-content', lang],
-<<<<<<< HEAD
     queryFn: () => api.get<ProjectsPageContent>('/api/pages/projects', {
-=======
-    queryFn: () => fetcher<ProjectsPageContent>('/api/pages/projects', {
->>>>>>> b2df92e (first commit)
       headers: { 'Accept-Language': lang }
     }),
   });
@@ -158,41 +98,13 @@ type ProjectsPageContent = {
     setActiveCat(lang === 'en' ? 'All' : 'Tất cả');
   }, [lang]);
 
-<<<<<<< HEAD
   const seoTitle = lang === 'en' ? (pageContent?.seoTitleEn || pageContent?.pageTitleEn) : (pageContent?.seoTitle || pageContent?.pageTitle);
   const seoDescription = lang === 'en' ? (pageContent?.seoDescriptionEn || pageContent?.pageDescriptionEn) : (pageContent?.seoDescription || pageContent?.pageDescription);
   const seoKeywords = lang === 'en' ? pageContent?.seoKeywordsEn : pageContent?.seoKeywords;
-=======
-  // Update SEO
-  useEffect(() => {
-    if (!pageContent) return;
-    const title = lang === 'en' ? (pageContent.seoTitleEn || pageContent.pageTitleEn) : (pageContent.seoTitle || pageContent.pageTitle);
-    const desc = lang === 'en' ? (pageContent.seoDescriptionEn || pageContent.pageDescriptionEn) : (pageContent.seoDescription || pageContent.pageDescription);
-    const keywords = lang === 'en' ? pageContent.seoKeywordsEn : pageContent.seoKeywords;
-
-    if (title) document.title = title;
-    
-    // Helper to update meta tag
-    const updateMeta = (name: string, content: string) => {
-        let tag = document.querySelector(`meta[name="${name}"]`);
-        if (!tag) {
-            tag = document.createElement('meta');
-            tag.setAttribute('name', name);
-            document.head.appendChild(tag);
-        }
-        tag.setAttribute('content', content);
-    };
-
-    if (desc) updateMeta('description', desc);
-    if (keywords) updateMeta('keywords', keywords);
-
-  }, [pageContent, lang]);
->>>>>>> b2df92e (first commit)
 
   const displayTitle = (lang === 'en' ? pageContent?.pageTitleEn : pageContent?.pageTitle) || (lang === 'en' ? 'Website Portfolio' : 'Danh Mục Website');
   const displayDesc = (lang === 'en' ? pageContent?.pageDescriptionEn : pageContent?.pageDescription) || (lang === 'en' ? 'Explore our diverse, professional website templates suitable for all your business fields.' : 'Khám phá kho giao diện website đa dạng, chuyên nghiệp và phù hợp với mọi lĩnh vực kinh doanh của bạn.');
 
-<<<<<<< HEAD
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -208,14 +120,12 @@ type ProjectsPageContent = {
       "itemListElement": projects?.map((project, index) => ({
         "@type": "ListItem",
         "position": index + 1,
-        "url": `https://www.victorsoftwave.com/${getLocalizedSlug('danh-muc-website', lang)}/${lang === 'en' && project.slugEn ? project.slugEn : project.slug}`,
+        "url": `https://www.victorsoftwave.com/${lang === 'en' && project.slugEn ? project.slugEn : project.slug}`,
         "name": lang === 'en' && project.titleEn ? project.titleEn : project.title
       })) || []
     }
   };
 
-=======
->>>>>>> b2df92e (first commit)
   const filteredProjects = projects;
 
   const totalPages = projectPage?.totalPages ?? 0;
@@ -256,7 +166,6 @@ type ProjectsPageContent = {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden selection:bg-accent/30 bg-white dark:bg-slate-950">
-<<<<<<< HEAD
       <SEO
         title={seoTitle || displayTitle}
         description={seoDescription || displayDesc}
@@ -264,23 +173,15 @@ type ProjectsPageContent = {
         type="website"
         structuredData={structuredData}
       />
-=======
->>>>>>> b2df92e (first commit)
       <Navbar isDark={isDark} toggleTheme={toggleTheme} />
 
       <main className="pt-24 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <button
               onClick={() => {
-<<<<<<< HEAD
                 navigate(`/`);
               }}
               className="cursor-pointer flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
-=======
-                navigate(`/${lang}`);
-              }}
-              className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
->>>>>>> b2df92e (first commit)
             >
               <ArrowLeft size={20} />
               <span>{lang === 'en' ? 'Back to Home' : 'Quay lại trang chủ'}</span>
@@ -347,11 +248,7 @@ type ProjectsPageContent = {
                         onClick={() => {
                           const projectSlug = (lang === 'en' ? project.slugEn : project.slug);
                           if (projectSlug) {
-<<<<<<< HEAD
-                            navigate(`/${getLocalizedSlug('danh-muc-website', lang)}/${projectSlug}`);
-=======
-                            navigate(`/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${projectSlug}`);
->>>>>>> b2df92e (first commit)
+                            navigate(`/${projectSlug}`);
                           }
                         }}
                     >
@@ -367,11 +264,7 @@ type ProjectsPageContent = {
                                         e.stopPropagation();
                                         const projectSlug = (lang === 'en' ? project.slugEn : project.slug);
                                         if (projectSlug) {
-<<<<<<< HEAD
-                                          navigate(`/${getLocalizedSlug('danh-muc-website', lang)}/${projectSlug}`);
-=======
-                                          navigate(`/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${projectSlug}`);
->>>>>>> b2df92e (first commit)
+                                          navigate(`/${projectSlug}`);
                                         }
                                     }}
                                     className="px-6 py-2 bg-white text-slate-900 rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"

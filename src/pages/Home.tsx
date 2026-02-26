@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-<<<<<<< HEAD
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
@@ -16,18 +15,6 @@ import { api } from '@/utils/api';
 import { getLang as getStoredLang } from '@/utils/localization';
 
 import { useDarkMode } from '@/hooks/useDarkMode';
-=======
-import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import Services from '../components/Services';
-import Marketing from '../components/Marketing';
-import Portfolio from '../components/Portfolio';
-import Blog from '../components/Blog';
-import Contact from '../components/Contact';
-import Footer from '../components/Footer';
-import { fetcher } from '../utils/api';
-import { getLang as getStoredLang } from '../utils/localization';
->>>>>>> b2df92e (first commit)
 
 const HeroSkeleton = () => (
   <section className="relative overflow-hidden">
@@ -98,39 +85,6 @@ const ContactSkeleton = () => (
   </section>
 );
 
-<<<<<<< HEAD
-=======
-// A simple hook to manage dark mode
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    // Check system preference or local storage on mount
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
-
->>>>>>> b2df92e (first commit)
 const Home: React.FC = () => {
   const { isDark, toggleTheme } = useDarkMode();
   const { lang: urlLang } = useParams();
@@ -167,19 +121,13 @@ const Home: React.FC = () => {
   }, []);
 
   const { data: rawHomeData, isLoading: loading } = useQuery({
-<<<<<<< HEAD
     queryKey: ['home-content'],
     queryFn: () => api.get<any>('/api/pages/home'),
     staleTime: 1000 * 60 * 5, // 5 minutes
-=======
-    queryKey: ['home-data', lang],
-    queryFn: () => fetcher<any>('/api/pages/home'),
->>>>>>> b2df92e (first commit)
   });
 
   const { data: featuredArticlesData } = useQuery({
     queryKey: ['featured-articles', lang],
-<<<<<<< HEAD
     queryFn: () => api.get<any>('/api/articles?featured=true&status=PUBLISHED&size=3&sort=createdAt,desc'),
   });
 
@@ -202,10 +150,6 @@ const Home: React.FC = () => {
         image: (isEn ? rawHomeData.heroImageUrlEn : rawHomeData.heroImageUrl) || rawHomeData.heroImageUrl
     };
   }, [rawHomeData, lang]);
-=======
-    queryFn: () => fetcher<any>('/api/articles?featured=true&status=PUBLISHED&size=3&sort=createdAt,desc'),
-  });
->>>>>>> b2df92e (first commit)
   
   const homeContent = useMemo(() => {
     if (!rawHomeData) return null;
@@ -254,7 +198,6 @@ const Home: React.FC = () => {
       contactEmailLabel: lang === 'en' ? data.contactEmailLabelEn : data.contactEmailLabel,
       contactAddressLabel: lang === 'en' ? data.contactAddressLabelEn : data.contactAddressLabel,
       contactAddressValue: lang === 'en' ? data.contactAddressValueEn : data.contactAddressValue,
-<<<<<<< HEAD
       contactHotline: data.contactHotline,
       contactEmail: data.contactEmail,
     };
@@ -291,46 +234,6 @@ const Home: React.FC = () => {
         image={seoData.image}
         structuredData={structuredData}
       />
-=======
-    };
-  }, [rawHomeData, lang]);
-
-  useEffect(() => {
-    if (!rawHomeData) return;
-    const isEn = lang === 'en';
-    const seoTitle = (isEn ? rawHomeData.seoTitleEn : rawHomeData.seoTitle) || rawHomeData.seoTitle || '';
-    const seoDescription =
-      (isEn ? rawHomeData.seoDescriptionEn : rawHomeData.seoDescription) || rawHomeData.seoDescription || '';
-    const seoKeywords =
-      (isEn ? rawHomeData.seoKeywordsEn : rawHomeData.seoKeywords) || rawHomeData.seoKeywords || '';
-    const fallbackTitle = isEn
-      ? [rawHomeData.titlePrefixEn, rawHomeData.titleHighlightEn].filter(Boolean).join(' ')
-      : [rawHomeData.titlePrefix, rawHomeData.titleHighlight].filter(Boolean).join(' ');
-    const title = seoTitle.trim() || fallbackTitle || 'Victor Software';
-    const description = seoDescription.trim();
-    const keywords = seoKeywords.trim();
-
-    document.title = title;
-
-    const upsertMeta = (name: string, value: string) => {
-      const trimmed = (value || '').trim();
-      if (!trimmed) return;
-      let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', name);
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', trimmed);
-    };
-
-    upsertMeta('description', description);
-    upsertMeta('keywords', keywords);
-  }, [rawHomeData, lang]);
-
-  return (
-    <div className="min-h-screen relative overflow-x-hidden selection:bg-accent/30">
->>>>>>> b2df92e (first commit)
        {/* Background Ambient Effect */}
       <div className="fixed inset-0 pointer-events-none z-[-1]">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/20 rounded-full blur-[100px] animate-pulse" />
@@ -343,13 +246,9 @@ const Home: React.FC = () => {
         {loading || !homeContent ? <HeroSkeleton /> : <Hero data={homeContent} />}
         {loading || !homeContent ? <ServicesSkeleton /> : <Services data={homeContent} />}
         {loading || !homeContent ? <MarketingSkeleton /> : <Marketing data={homeContent} />}
-<<<<<<< HEAD
         {loading || !homeContent ? <PortfolioSkeleton /> : <Portfolio data={homeContent} lang={lang} />}
         {loading || !homeContent ? <BlogSkeleton /> : <Blog data={homeContent} posts={featuredArticlesData?.content || []} lang={lang} />}
         <GoogleReviews />
-=======
-        {loading || !homeContent ? <BlogSkeleton /> : <Blog data={homeContent} posts={featuredArticlesData?.content || []} lang={lang} />}
->>>>>>> b2df92e (first commit)
         {loading || !homeContent ? <ContactSkeleton /> : <Contact data={homeContent} />}
       </main>
 

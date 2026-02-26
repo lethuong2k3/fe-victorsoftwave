@@ -1,20 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-<<<<<<< HEAD
 import { Loader2, Save, ImageIcon, Link as LinkIcon, Upload, Trash2 } from 'lucide-react';
 import { api } from '@/utils/api';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Toast } from '@/components/Toast';
 import { getLocalizedSlug } from '@/utils/localization';
-=======
-import { clearCache } from '../utils/cache';
-import { Loader2, Save, ImageIcon, Link as LinkIcon, Upload, Trash2 } from 'lucide-react';
-import { getAuthHeader } from '../utils/auth';
-import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import { Toast } from './Toast';
-import { getLocalizedSlug } from '../utils/localization';
->>>>>>> b2df92e (first commit)
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string;
@@ -118,16 +108,8 @@ const FacebookAdsContentForm: React.FC = () => {
   const fetchContent = async () => {
     try {
       setLoading(true);
-<<<<<<< HEAD
       const data = await api.get<any>('/api/pages/facebook-ads');
       setFormData(data);
-=======
-      const response = await fetch('/api/pages/facebook-ads');
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data);
-      }
->>>>>>> b2df92e (first commit)
     } catch (error) {
       setMessage({ type: 'error', text: 'Không thể tải dữ liệu.' });
     } finally {
@@ -148,33 +130,11 @@ const FacebookAdsContentForm: React.FC = () => {
     setMessage(null);
 
     try {
-<<<<<<< HEAD
       const saved = await api.post<any>('/api/pages/facebook-ads', formData);
       setFormData(saved);
       setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
     } catch (error) {
       setMessage({ type: 'error', text: 'Có lỗi xảy ra khi lưu.' });
-=======
-      const response = await fetch('/api/pages/facebook-ads', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const saved = await response.json();
-        setFormData(saved);
-        setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
-        clearCache();
-      } else {
-        setMessage({ type: 'error', text: 'Có lỗi xảy ra khi lưu.' });
-      }
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Lỗi kết nối đến server.' });
->>>>>>> b2df92e (first commit)
     } finally {
       setSaving(false);
     }

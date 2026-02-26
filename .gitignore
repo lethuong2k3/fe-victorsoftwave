@@ -29,9 +29,6 @@ dist-ssr
 !.env.example
 .env 
 .env 
-<<<<<<< HEAD
 
 # Vite
 .vite/
-=======
->>>>>>> b2df92e (first commit)

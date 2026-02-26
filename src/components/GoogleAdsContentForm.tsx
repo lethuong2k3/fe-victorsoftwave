@@ -1,23 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Loader2, Save, Upload, Link as LinkIcon, ImageIcon, Trash2 } from 'lucide-react';
-<<<<<<< HEAD
 
-=======
-import { getAuthHeader } from '../utils/auth';
->>>>>>> b2df92e (first commit)
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import { Toast, ToastMessage } from './Toast';
-<<<<<<< HEAD
 import { getLocalizedSlug } from '@/utils/localization';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/utils/api';
-=======
-import { getLocalizedSlug } from '../utils/localization';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
->>>>>>> b2df92e (first commit)
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string;
@@ -78,10 +68,7 @@ export const GoogleAdsContentForm: React.FC = () => {
   const [formData, setFormData] = useState<GoogleAdsContent>(emptyContent);
   const [activeLang, setActiveLang] = useState<'vi' | 'en'>('vi');
   const activeLangRef = useRef<'vi' | 'en'>('vi');
-<<<<<<< HEAD
   const [loading, setLoading] = useState(false);
-=======
->>>>>>> b2df92e (first commit)
   const [toast, setToast] = useState<ToastMessage | null>(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -92,20 +79,12 @@ export const GoogleAdsContentForm: React.FC = () => {
 
   const { data: fetchedData, isLoading } = useQuery({
     queryKey: ['google-ads-content'],
-<<<<<<< HEAD
     queryFn: () => api.get<GoogleAdsContent>('/api/pages/google-ads'),
-=======
-    queryFn: () => fetcher<GoogleAdsContent>('/api/pages/google-ads'),
->>>>>>> b2df92e (first commit)
   });
 
   useEffect(() => {
     if (fetchedData) {
-<<<<<<< HEAD
       setFormData((prev) => ({ ...prev, ...fetchedData }));
-=======
-      setFormData(fetchedData);
->>>>>>> b2df92e (first commit)
     }
   }, [fetchedData]);
 
@@ -131,24 +110,7 @@ export const GoogleAdsContentForm: React.FC = () => {
     }
   }, [activeLang, editor, formData.serviceDescriptionHtml, formData.serviceDescriptionHtmlEn]);
 
-<<<<<<< HEAD
 
-=======
-  const fetchContent = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch('/api/pages/google-ads');
-      if (res.ok) {
-        const data = await res.json();
-        setFormData(data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch Google Ads content:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
->>>>>>> b2df92e (first commit)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -157,24 +119,10 @@ export const GoogleAdsContentForm: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: GoogleAdsContent) => {
-<<<<<<< HEAD
       return api.post('/api/pages/google-ads', data);
     },
     onSuccess: (savedData) => {
       setFormData((prev) => ({ ...prev, ...savedData }));
-=======
-      return fetcher<GoogleAdsContent>('/api/pages/google-ads', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(data),
-      });
-    },
-    onSuccess: (savedData) => {
-      setFormData(savedData);
->>>>>>> b2df92e (first commit)
       setToast({ text: 'Lưu nội dung thành công!', type: 'success' });
       queryClient.invalidateQueries({ queryKey: ['google-ads-content'] });
     },

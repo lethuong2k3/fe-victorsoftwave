@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { MessageCircle, MessagesSquare, X, MessageSquareText } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-<<<<<<< HEAD
 import { api } from '@/utils/api';
-=======
-import { fetcher } from '../utils/api';
->>>>>>> b2df92e (first commit)
 
 interface HomeContent {
   zaloUrl?: string;
@@ -19,11 +15,7 @@ const FloatingContact = () => {
   // Fetch home content to get links
   const { data } = useQuery({
     queryKey: ['home-content'],
-<<<<<<< HEAD
     queryFn: () => api.get<HomeContent>('/api/pages/home'),
-=======
-    queryFn: () => fetcher<HomeContent>('/api/pages/home'),
->>>>>>> b2df92e (first commit)
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
@@ -45,11 +37,7 @@ const FloatingContact = () => {
             href={zaloUrl}
             target="_blank"
             rel="noopener noreferrer"
-<<<<<<< HEAD
             className="cursor-pointer flex items-center justify-center w-12 h-12 bg-[#0068FF] text-white rounded-full shadow-lg hover:bg-[#0054cc] transition-colors group relative"
-=======
-            className="flex items-center justify-center w-12 h-12 bg-[#0068FF] text-white rounded-full shadow-lg hover:bg-[#0054cc] transition-colors group relative"
->>>>>>> b2df92e (first commit)
           >
             <span className="absolute right-full mr-3 bg-slate-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
               Zalo
@@ -64,11 +52,7 @@ const FloatingContact = () => {
             href={messengerUrl}
             target="_blank"
             rel="noopener noreferrer"
-<<<<<<< HEAD
             className="cursor-pointer flex items-center justify-center w-12 h-12 bg-[#0084FF] text-white rounded-full shadow-lg hover:bg-[#0078e0] transition-colors group relative"
-=======
-            className="flex items-center justify-center w-12 h-12 bg-[#0084FF] text-white rounded-full shadow-lg hover:bg-[#0078e0] transition-colors group relative"
->>>>>>> b2df92e (first commit)
           >
              <span className="absolute right-full mr-3 bg-slate-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
               Messenger
@@ -83,11 +67,7 @@ const FloatingContact = () => {
             href={adminChatUrl}
             target="_blank"
             rel="noopener noreferrer"
-<<<<<<< HEAD
             className="cursor-pointer flex items-center justify-center w-12 h-12 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 transition-colors group relative"
-=======
-            className="flex items-center justify-center w-12 h-12 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 transition-colors group relative"
->>>>>>> b2df92e (first commit)
           >
              <span className="absolute right-full mr-3 bg-slate-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
               Chat Admin
@@ -100,11 +80,7 @@ const FloatingContact = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-<<<<<<< HEAD
         className="cursor-pointer flex items-center justify-center w-14 h-14 bg-blue-600 text-white rounded-full shadow-xl hover:bg-blue-700 transition-transform hover:scale-105 active:scale-95 relative"
-=======
-        className="flex items-center justify-center w-14 h-14 bg-blue-600 text-white rounded-full shadow-xl hover:bg-blue-700 transition-transform hover:scale-105 active:scale-95 relative"
->>>>>>> b2df92e (first commit)
       >
         <div className={`absolute transition-all duration-300 ${isOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100'}`}>
           <MessageSquareText size={28} />

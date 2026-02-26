@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-<<<<<<< HEAD
 import { api } from '@/utils/api';
 import { SLUG_MAPPING, getLocalizedSlug } from '@/utils/localization';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
@@ -11,44 +10,6 @@ import Footer from '@/components/Footer';
 import NotFound from '@/pages/NotFound';
 import SEO from '@/components/SEO';
 import { useDarkMode } from '@/hooks/useDarkMode';
-=======
-import { fetcher } from '../utils/api';
-import { SLUG_MAPPING, getLocalizedSlug } from '../utils/localization';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Calendar, User, Code, CheckCircle2 } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import NotFound from './NotFound';
-
-const useDarkMode = () => {
-  const [isDark, setIsDark] = React.useState(false);
-
-  useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
->>>>>>> b2df92e (first commit)
 
 type Project = {
   id: number;
@@ -91,11 +52,7 @@ const ProjectDetail: React.FC = () => {
     queryFn: async () => {
       if (!slug) return null;
       try {
-<<<<<<< HEAD
         return await api.get<Project>(`/api/projects/${slug}`);
-=======
-        return await fetcher<Project>(`/api/projects/${slug}`);
->>>>>>> b2df92e (first commit)
       } catch (err: any) {
         if (err.message && err.message.includes('404')) {
           return null;
@@ -121,57 +78,9 @@ const ProjectDetail: React.FC = () => {
       if (slug && /^\d+$/.test(slug)) {
         const correctSlug = lang === 'en' ? project.slugEn : project.slug;
         if (correctSlug) {
-<<<<<<< HEAD
           navigate(`/${correctSlug}`, { replace: true });
         }
       }
-=======
-          navigate(`/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${correctSlug}`, { replace: true });
-        }
-      }
-
-      const seoTitle = lang === 'en' && project.seoTitleEn ? project.seoTitleEn : project.seoTitle;
-      const seoDesc = lang === 'en' && project.seoDescriptionEn ? project.seoDescriptionEn : project.seoDescription;
-      const seoKw = lang === 'en' && project.seoKeywordsEn ? project.seoKeywordsEn : project.seoKeywords;
-      
-      const defaultTitle = lang === 'en' && project.titleEn ? project.titleEn : project.title;
-      const defaultDesc = lang === 'en' && project.descriptionEn ? project.descriptionEn : project.description;
-
-      document.title = seoTitle || defaultTitle || 'Victor Software';
-
-      // Update meta description
-      let metaDesc = document.querySelector('meta[name="description"]');
-      if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.setAttribute('name', 'description');
-        document.head.appendChild(metaDesc);
-      }
-      metaDesc.setAttribute('content', seoDesc || defaultDesc || '');
-
-      // Update meta keywords
-      let metaKw = document.querySelector('meta[name="keywords"]');
-      if (!metaKw) {
-        metaKw = document.createElement('meta');
-        metaKw.setAttribute('name', 'keywords');
-        document.head.appendChild(metaKw);
-      }
-      metaKw.setAttribute('content', seoKw || '');
-
-      // Update canonical link
-      let canonical = document.querySelector('link[rel="canonical"]');
-      if (!canonical) {
-        canonical = document.createElement('link');
-        canonical.setAttribute('rel', 'canonical');
-        document.head.appendChild(canonical);
-      }
-      const baseUrl = window.location.origin;
-      const correctSlug = lang === 'en' ? project.slugEn : project.slug;
-      if (correctSlug) {
-        canonical.setAttribute('href', `${baseUrl}/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${correctSlug}`);
-      } else {
-        canonical.setAttribute('href', `${baseUrl}/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${project.id}`);
-      }
->>>>>>> b2df92e (first commit)
     }
   }, [project, location.pathname]);
 
@@ -253,7 +162,6 @@ const ProjectDetail: React.FC = () => {
   const displayDescription =
     currentLang === 'en' && project.descriptionEn ? project.descriptionEn : project.description;
 
-<<<<<<< HEAD
   const seoTitle = currentLang === 'en' && project.seoTitleEn ? project.seoTitleEn : project.seoTitle;
   const seoDesc = currentLang === 'en' && project.seoDescriptionEn ? project.seoDescriptionEn : project.seoDescription;
   const seoKw = currentLang === 'en' && project.seoKeywordsEn ? project.seoKeywordsEn : project.seoKeywords;
@@ -285,28 +193,16 @@ const ProjectDetail: React.FC = () => {
         type="article"
         structuredData={structuredData}
       />
-=======
-  return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-200 selection:bg-blue-500/30">
->>>>>>> b2df92e (first commit)
       <Navbar isDark={isDark} toggleTheme={toggleTheme} />
 
       <main className="pt-24 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <button
-<<<<<<< HEAD
             onClick={() => navigate(`/${currentLang}/${getLocalizedSlug('danh-muc-website', currentLang)}`)}
             className="cursor-pointer flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors group"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             <span>{currentLang === 'en' ? 'Back to Portfolio' : 'Quay lại danh sách'}</span>
-=======
-            onClick={() => navigate(`/${getCurrentLang()}/${getLocalizedSlug('danh-muc-website', getCurrentLang())}`)}
-            className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors group"
-          >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            <span>Quay lại danh mục</span>
->>>>>>> b2df92e (first commit)
           </button>
 
           <div className="grid lg:grid-cols-2 gap-12 mb-16">

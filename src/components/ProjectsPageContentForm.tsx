@@ -1,15 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Loader2, Save } from 'lucide-react';
-<<<<<<< HEAD
 
 import { api } from '@/utils/api';
 import { Toast } from '@/components/Toast';
-=======
-import { getAuthHeader } from '../utils/auth';
-import { Toast } from './Toast';
-
-import { clearCache } from '../utils/cache';
->>>>>>> b2df92e (first commit)
 
 type ProjectsPageContent = {
   id?: number | null;
@@ -56,16 +49,8 @@ const ProjectsPageContentForm: React.FC = () => {
   const fetchContent = async () => {
     try {
       setLoading(true);
-<<<<<<< HEAD
       const data = await api.get<any>('/api/pages/projects');
       setFormData(data);
-=======
-      const response = await fetch('/api/pages/projects');
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data);
-      }
->>>>>>> b2df92e (first commit)
     } catch (error) {
       console.error('Failed to fetch content:', error);
       setMessage({ type: 'error', text: 'Không thể tải dữ liệu.' });
@@ -85,28 +70,9 @@ const ProjectsPageContentForm: React.FC = () => {
     setMessage(null);
 
     try {
-<<<<<<< HEAD
       const data = await api.post<any>('/api/pages/projects', formData);
       setFormData(data);
       setMessage({ type: 'success', text: 'Đã lưu nội dung thành công!' });
-=======
-      const response = await fetch('/api/pages/projects', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data);
-        setMessage({ type: 'success', text: 'Đã lưu nội dung thành công!' });
-      } else {
-        setMessage({ type: 'error', text: 'Lưu thất bại.' });
-      }
->>>>>>> b2df92e (first commit)
     } catch (error) {
       console.error('Failed to save content:', error);
       setMessage({ type: 'error', text: 'Lỗi kết nối server.' });

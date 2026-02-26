@@ -1,10 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-<<<<<<< HEAD
 import { SLUG_MAPPING } from '@/utils/localization';
-=======
-import { SLUG_MAPPING } from '../utils/localization';
->>>>>>> b2df92e (first commit)
 
 interface Article {
   id: number;
@@ -42,11 +38,7 @@ const Blog: React.FC<BlogProps> = ({ data, posts = [], lang = 'vi' }) => {
                 </h2>
                 <div className="h-1 w-20 bg-blue-600 rounded-full"></div>
             </div>
-<<<<<<< HEAD
             <Link to={`/${articlesSlug}`} className="hidden md:block text-blue-600 dark:text-blue-400 font-semibold hover:underline">
-=======
-            <Link to={`/${lang}/${articlesSlug}`} className="hidden md:block text-blue-600 dark:text-blue-400 font-semibold hover:underline">
->>>>>>> b2df92e (first commit)
                 {viewAllText}
             </Link>
         </div>
@@ -64,11 +56,7 @@ const Blog: React.FC<BlogProps> = ({ data, posts = [], lang = 'vi' }) => {
                  });
 
                  return (
-<<<<<<< HEAD
                   <Link key={post.id} to={`/${articlesSlug}/${postSlug}`} className="group cursor-pointer block">
-=======
-                  <Link key={post.id} to={`/${lang}/${articlesSlug}/${postSlug}`} className="group cursor-pointer block">
->>>>>>> b2df92e (first commit)
                       <div className="rounded-xl overflow-hidden mb-4 border border-slate-100 dark:border-slate-800 shadow-sm aspect-video">
                           <img 
                               src={post.image || 'https://placehold.co/600x400?text=No+Image'} 

@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
-<<<<<<< HEAD
 import { Menu, X, ChevronDown, Moon, Sun, Monitor, Smartphone, Globe, Search, BarChart, PenTool, DollarSign } from 'lucide-react';
 import { getLocalizedSlug, getSlugKey, getLang as getGlobalLang } from '@/utils/localization';
 import logo from '@/assets/logo.png';
-=======
-import { Menu, X, ChevronDown, Moon, Sun, Monitor, Smartphone, Globe, Search, BarChart, PenTool } from 'lucide-react';
-import logo from '../assets/logo.png';
-import { getLocalizedSlug, getSlugKey, getLang as getGlobalLang } from '../utils/localization';
->>>>>>> b2df92e (first commit)
 
 interface NavbarProps {
   isDark: boolean;
@@ -43,26 +37,13 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
   const handleNavigation = (path: string) => {
     setActiveNav(path);
     if (path.startsWith('/')) {
-<<<<<<< HEAD
       navigate(path);
-=======
-      if (path === '/') {
-        navigate(`/${lang}`);
-      } else {
-        navigate(path);
-      }
->>>>>>> b2df92e (first commit)
       setIsMobileMenuOpen(false);
       setActiveDropdown(null);
     } else {
       // Scroll to section on current page
-<<<<<<< HEAD
       if (location.pathname !== '/') {
         navigate('/');
-=======
-      if (location.pathname !== '/vi' && location.pathname !== '/en') {
-        navigate(`/${lang}`);
->>>>>>> b2df92e (first commit)
         setTimeout(() => {
           const element = document.getElementById(path);
           if (element) {
@@ -93,38 +74,22 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
     
     const parts = currentPath.split('/').filter(Boolean);
     
-<<<<<<< HEAD
     if (parts.length >= 1) {
       const currentSlug = parts[0];
       const key = getSlugKey(currentSlug);
       if (key) {
         const newSlug = getLocalizedSlug(key, nextLang);
         const newParts = [newSlug, ...parts.slice(1)];
-=======
-    if (parts.length >= 2) {
-      const currentSlug = parts[1];
-      const key = getSlugKey(currentSlug);
-      if (key) {
-        const newSlug = getLocalizedSlug(key, nextLang);
-        const newParts = [nextLang, newSlug, ...parts.slice(2)];
->>>>>>> b2df92e (first commit)
         const newUrl = `/${newParts.join('/')}${search}${hash}`;
         window.location.href = newUrl;
         return;
       }
     }
 
-<<<<<<< HEAD
     // For home or other paths, just reload to apply language change globally if needed, 
     // though state update might be enough. 
     // Re-navigating to current path to trigger re-renders.
     window.location.reload();
-=======
-    const rest = currentPath.replace(/^\/(vi|en|vn)/, '');
-    const basePath = rest ? `/${nextLang}${rest}` : `/${nextLang}`;
-    const newUrl = `${basePath}${search}${hash}`;
-    window.location.href = newUrl;
->>>>>>> b2df92e (first commit)
   };
 
   // Smooth scroll handler (for backward compatibility)
@@ -132,7 +97,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
     handleNavigation(id);
   };
 
-<<<<<<< HEAD
   // Sync language from storage or URL if needed
   useEffect(() => {
     // We no longer sync from URL prefix as it's removed.
@@ -142,24 +106,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       setLang(storedLang);
     }
   }, [location.pathname]);
-=======
-  // Sync language from URL if user navigates manually or via deep link
-  useEffect(() => {
-    const pathParts = location.pathname.split('/');
-    const urlLang = pathParts[1];
-    
-    // Support 'vn' as alias for 'vi'
-    const normalizedLang = urlLang === 'vn' ? 'vi' : urlLang;
-    
-    if ((normalizedLang === 'vi' || normalizedLang === 'en') && normalizedLang !== lang) {
-      setLang(normalizedLang as 'vi' | 'en');
-      localStorage.setItem('lang', normalizedLang);
-      localStorage.setItem('language', normalizedLang);
-      document.documentElement.lang = normalizedLang;
-      window.dispatchEvent(new Event('langchange'));
-    }
-  }, [location.pathname, lang]);
->>>>>>> b2df92e (first commit)
 
   useEffect(() => {
     if (location.pathname !== '/' ) {
@@ -195,10 +141,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       websiteCare: 'Chăm sóc Website',
       consultNow: 'Tư vấn ngay',
       freeConsult: 'Nhận tư vấn miễn phí',
-<<<<<<< HEAD
       priceList: 'Bảng giá',
-=======
->>>>>>> b2df92e (first commit)
     },
     en: {
       home: 'Home',
@@ -213,10 +156,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       websiteCare: 'Website Care',
       consultNow: 'Consult now',
       freeConsult: 'Free consultation',
-<<<<<<< HEAD
       priceList: 'Price List',
-=======
->>>>>>> b2df92e (first commit)
     },
   }[lang];
 
@@ -232,17 +172,10 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       key: 'design',
       title: labels.design,
       id: 'design',
-<<<<<<< HEAD
       dropdown: [
         { label: labels.priceList, icon: <DollarSign size={18} />, target: `/${getLocalizedSlug('thiet-ke-website', lang)}` },
         { label: labels.catalog, icon: <Monitor size={18} />, target: `/${getLocalizedSlug('danh-muc-website', lang)}` },
         { label: labels.featuredCustomers, icon: <Globe size={18} />, target: `/${getLocalizedSlug('khach-hang', lang)}` },
-=======
-      path: `/${lang}/${getLocalizedSlug('thiet-ke-website', lang)}`,
-      dropdown: [
-        { label: labels.catalog, icon: <Monitor size={18} />, target: `/${lang}/${getLocalizedSlug('danh-muc-website', lang)}` },
-        { label: labels.featuredCustomers, icon: <Globe size={18} />, target: `/${lang}/${getLocalizedSlug('khach-hang', lang)}` },
->>>>>>> b2df92e (first commit)
       ],
     },
     {
@@ -250,13 +183,8 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       title: labels.webServices,
       id: 'services',
       dropdown: [
-<<<<<<< HEAD
         { label: labels.seoConsulting, icon: <Search size={18} />, target: `/${getLocalizedSlug('seo-tong-the', lang)}` },
         { label: labels.websiteCare, icon: <PenTool size={18} />, target: `/${getLocalizedSlug('cham-soc-website', lang)}` },
-=======
-        { label: labels.seoConsulting, icon: <Search size={18} />, target: `/${lang}/${getLocalizedSlug('seo-tong-the', lang)}` },
-        { label: labels.websiteCare, icon: <PenTool size={18} />, target: `/${lang}/${getLocalizedSlug('cham-soc-website', lang)}` },
->>>>>>> b2df92e (first commit)
       ],
     },
     {
@@ -264,36 +192,22 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
       title: labels.marketing,
       id: 'marketing',
       dropdown: [
-<<<<<<< HEAD
         { label: 'TikTok Ads', icon: <Smartphone size={18} />, target: `/${getLocalizedSlug('tiktok-ads', lang)}` },
         { label: 'Facebook Ads', icon: <Globe size={18} />, target: `/${getLocalizedSlug('facebook-ads', lang)}` },
         { label: 'Google Ads', icon: <BarChart size={18} />, target: `/${getLocalizedSlug('google-ads', lang)}` },
-=======
-        { label: 'TikTok Ads', icon: <Smartphone size={18} />, target: `/${lang}/${getLocalizedSlug('tiktok-ads', lang)}` },
-        { label: 'Facebook Ads', icon: <Globe size={18} />, target: `/${lang}/${getLocalizedSlug('facebook-ads', lang)}` },
-        { label: 'Google Ads', icon: <BarChart size={18} />, target: `/${lang}/${getLocalizedSlug('google-ads', lang)}` },
->>>>>>> b2df92e (first commit)
       ],
     },
     {
       key: 'blog',
       title: labels.blog,
       id: 'blog',
-<<<<<<< HEAD
       path: `/${getLocalizedSlug('bai-viet', lang)}`,
-=======
-      path: `/${lang}/${getLocalizedSlug('bai-viet', lang)}`,
->>>>>>> b2df92e (first commit)
     },
     {
       key: 'contact',
       title: labels.contact,
       id: 'contact',
-<<<<<<< HEAD
       path: `/${getLocalizedSlug('lien-he', lang)}`,
-=======
-      path: `/${lang}/${getLocalizedSlug('lien-he', lang)}`,
->>>>>>> b2df92e (first commit)
     },
   ];
 
@@ -311,22 +225,11 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
           onClick={() => handleNavigation('/')}
           className="cursor-pointer group"
         >
-<<<<<<< HEAD
             <img 
               src="/assets/logo.png" 
               alt="Victor Software" 
               className="w-12 h-12 object-contain rounded-xl group-hover:scale-105 transition-transform duration-300"
             />
-=======
-            <div className="relative w-12 h-12 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-              <img 
-                src={logo} 
-                alt="Victor Software Logo" 
-                className="w-full h-full object-contain rounded-xl"
-                style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))' }}
-              />
-            </div>
->>>>>>> b2df92e (first commit)
         </div>
 
         {/* Desktop Menu */}
@@ -334,7 +237,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
           {menuItems.map((item) => (
             <div
               key={item.key}
-<<<<<<< HEAD
               className={`relative group px-3 py-2 rounded-full cursor-pointer ${isItemActive(item) ? 'bg-slate-100/70 dark:bg-slate-800/60' : ''}`}
               onMouseEnter={() => setActiveDropdown(item.key)}
               onMouseLeave={() => setActiveDropdown(null)}
@@ -350,23 +252,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
               }}
             >
               <div
-=======
-              className={`relative group px-3 py-2 rounded-full ${isItemActive(item) ? 'bg-slate-100/70 dark:bg-slate-800/60' : ''}`}
-              onMouseEnter={() => setActiveDropdown(item.key)}
-              onMouseLeave={() => setActiveDropdown(null)}
-            >
-              <button
-                onClick={() => {
-                  // If has path (like "Thiết kế web"), navigate directly
-                  if (item.path) {
-                    handleNavigation(item.path);
-                  } else if (!item.dropdown) {
-                    // If no dropdown, scroll to section
-                    handleNavigation(item.id);
-                  }
-                  // If has dropdown but no path, dropdown will handle hover
-                }}
->>>>>>> b2df92e (first commit)
                 className={`flex items-center gap-1 text-sm font-medium transition-colors ${
                   isItemActive(item)
                     ? 'text-blue-600 dark:text-blue-400'
@@ -375,11 +260,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
               >
                 {item.title}
                 {item.dropdown && <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />}
-<<<<<<< HEAD
               </div>
-=======
-              </button>
->>>>>>> b2df92e (first commit)
 
               {/* Dropdown */}
               {item.dropdown && activeDropdown === item.key && (
@@ -429,11 +310,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
         <div className="flex items-center gap-4">
           <button
             onClick={toggleLanguage}
-<<<<<<< HEAD
             className="cursor-pointer inline-flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors"
-=======
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors"
->>>>>>> b2df92e (first commit)
             aria-label="Toggle language"
             type="button"
           >
@@ -443,22 +320,14 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme }) => {
 
           <button
             onClick={toggleTheme}
-<<<<<<< HEAD
             className="cursor-pointer p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors"
-=======
-            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors"
->>>>>>> b2df92e (first commit)
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           
           <button 
             onClick={() => handleNavigation('contact')}
-<<<<<<< HEAD
             className="cursor-pointer hidden lg:block px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-800 text-white text-sm font-semibold rounded-full shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition-all duration-300"
-=======
-            className="hidden lg:block px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-800 text-white text-sm font-semibold rounded-full shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition-all duration-300"
->>>>>>> b2df92e (first commit)
           >
             {labels.consultNow}
           </button>

@@ -38,7 +38,6 @@ import {
   Layers,
   Filter
 } from 'lucide-react';
-<<<<<<< HEAD
 import { clearTokens, getRefreshToken } from '@/utils/auth';
 import { api } from '@/utils/api';
 import { SLUG_MAPPING } from '@/utils/localization';
@@ -59,25 +58,6 @@ import { ArticlesManagement } from '@/components/ArticlesManagement';
 import { ContactManagement } from '@/components/ContactManagement';
 import { GoogleReviewsManagement } from '@/components/GoogleReviewsManagement';
 import { Mail, Star } from 'lucide-react';
-=======
-import { clearTokens, getRefreshToken, getAuthHeader } from '../utils/auth';
-import { SLUG_MAPPING } from '../utils/localization';
-import { Toast, ToastMessage } from '../components/Toast';
-
-import WebDesignContentForm from '../components/WebDesignContentForm';
-import SeoOverallContentForm from '../components/SeoOverallContentForm';
-import HomeContentForm from '../components/HomeContentForm';
-import WebsiteCareContentForm from '../components/WebsiteCareContentForm';
-import TiktokAdsContentForm from '../components/TiktokAdsContentForm';
-import FacebookAdsContentForm from '../components/FacebookAdsContentForm';
-import { GoogleAdsContentForm } from '../components/GoogleAdsContentForm';
-import ProjectsPageContentForm from '../components/ProjectsPageContentForm';
-import ClientsPageContentForm from '../components/ClientsPageContentForm';
-import { QuoteModal } from '../components/QuoteModal';
-import { ArticlesManagement } from '../components/ArticlesManagement';
-import { ContactManagement } from '../components/ContactManagement';
-import { Mail } from 'lucide-react';
->>>>>>> b2df92e (first commit)
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 const toSlug = (str: string) => {
@@ -163,18 +143,8 @@ const AdminDashboard: React.FC = () => {
 
   const fetchLatestUnreadContacts = async () => {
     try {
-<<<<<<< HEAD
       const data = await api.get('/api/admin/contacts?status=UNREAD&size=5');
       setLatestUnreadContacts(data.content || []);
-=======
-      const res = await fetch(`/api/admin/contacts?status=UNREAD&size=5`, {
-        headers: getAuthHeader()
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setLatestUnreadContacts(data.content || []);
-      }
->>>>>>> b2df92e (first commit)
     } catch (error) {
       console.error('Failed to fetch unread contacts', error);
     }
@@ -203,11 +173,8 @@ const AdminDashboard: React.FC = () => {
   const [clientLoading, setClientLoading] = useState(false);
   const [clientError, setClientError] = useState<string | null>(null);
   const [clientCategories, setClientCategories] = useState<string[]>([]);
-<<<<<<< HEAD
   const [managedProjectCategories, setManagedProjectCategories] = useState<any[]>([]);
   const [managedClientCategories, setManagedClientCategories] = useState<any[]>([]);
-=======
->>>>>>> b2df92e (first commit)
   const [clientFilterCat, setClientFilterCat] = useState<string>('');
   const [clientSearch, setClientSearch] = useState('');
   const [clientSearchDebounced, setClientSearchDebounced] = useState('');
@@ -272,18 +239,8 @@ const AdminDashboard: React.FC = () => {
         url += `?${params.toString()}`;
       }
 
-<<<<<<< HEAD
       const data = await api.get(url);
       setDashboardStats(data);
-=======
-      const res = await fetch(url, {
-        headers: getAuthHeader()
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setDashboardStats(data);
-      }
->>>>>>> b2df92e (first commit)
     } catch (error) {
       console.error('Failed to fetch dashboard stats', error);
     }
@@ -314,24 +271,13 @@ const AdminDashboard: React.FC = () => {
       if (params.toString()) {
         url += `?${params.toString()}`;
       }
-<<<<<<< HEAD
       const data = await api.get(url);
       setVisitSeries(
-=======
-      const res = await fetch(url, { headers: getAuthHeader() });
-      if (res.ok) {
-        const data = await res.json();
-        setVisitSeries(
->>>>>>> b2df92e (first commit)
           (Array.isArray(data) ? data : []).map((d: any) => ({
             date: d.date,
             count: d.count || 0
           }))
         );
-<<<<<<< HEAD
-=======
-      }
->>>>>>> b2df92e (first commit)
     } catch (e) {
       console.error('Failed to fetch visit series', e);
     }
@@ -348,18 +294,8 @@ const AdminDashboard: React.FC = () => {
   const fetchRecentProjects = async () => {
     try {
       // Assuming the backend supports sort, otherwise defaults to ID desc usually
-<<<<<<< HEAD
       const data = await api.get('/api/admin/projects?page=0&size=5');
       setRecentProjects(data.content || []);
-=======
-      const res = await fetch('/api/admin/projects?page=0&size=5', {
-        headers: getAuthHeader()
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setRecentProjects(data.content || []);
-      }
->>>>>>> b2df92e (first commit)
     } catch (error) {
       console.error('Failed to fetch recent projects', error);
     }
@@ -374,18 +310,8 @@ const AdminDashboard: React.FC = () => {
 
   const fetchUnreadContactCount = async () => {
     try {
-<<<<<<< HEAD
       const data = await api.get('/api/admin/contacts/unread-count');
       setUnreadContactCount(data.count || 0);
-=======
-      const res = await fetch('/api/admin/contacts/unread-count', {
-        headers: getAuthHeader(),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setUnreadContactCount(data.count || 0);
-      }
->>>>>>> b2df92e (first commit)
     } catch (e) {
       console.error('Failed to fetch unread contact count', e);
     }
@@ -407,33 +333,11 @@ const AdminDashboard: React.FC = () => {
     }
     try {
       setIsExportingProjects(true);
-<<<<<<< HEAD
       const blob = await api.download('/api/admin/export/projects', {
         method: 'POST',
         body: JSON.stringify(selectedProjectIds),
       });
       
-=======
-      const res = await fetch('/api/admin/export/projects', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(selectedProjectIds),
-      });
-      
-      if (res.status === 401) {
-        setToast({ text: 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.', type: 'error' });
-        // Optional: redirect to login or clear tokens
-        clearTokens();
-        navigate('/admin/login');
-        return;
-      }
-
-      if (!res.ok) throw new Error('Export failed');
-      const blob = await res.blob();
->>>>>>> b2df92e (first commit)
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -452,32 +356,11 @@ const AdminDashboard: React.FC = () => {
   const handleExportClients = async () => {
     try {
       setIsExportingClients(true);
-<<<<<<< HEAD
       const blob = await api.download('/api/admin/export/clients', {
         method: 'POST',
         body: JSON.stringify(selectedClientIds),
       });
 
-=======
-      const res = await fetch('/api/admin/export/clients', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(selectedClientIds),
-      });
-
-      if (res.status === 401) {
-        setToast({ text: 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.', type: 'error' });
-        clearTokens();
-        navigate('/admin/login');
-        return;
-      }
-
-      if (!res.ok) throw new Error('Export failed');
-      const blob = await res.blob();
->>>>>>> b2df92e (first commit)
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -515,56 +398,21 @@ const AdminDashboard: React.FC = () => {
 
   const handleToggleFeatured = async (project: any, featured: boolean) => {
     try {
-<<<<<<< HEAD
       const saved = await api.put(`/api/admin/projects/${project.id}`, { ...project, featured });
       setProjects((prev) => prev.map((p) => (p.id === saved.id ? saved : p)));
       setToast({ type: 'success', text: 'Cập nhật trạng thái nổi bật thành công' });
     } catch (err: any) {
       setToast({ type: 'error', text: err.message || 'Lỗi kết nối' });
-=======
-      const res = await fetch(`/api/admin/projects/${project.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
-        body: JSON.stringify({ ...project, featured }),
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        setToast({ type: 'error', text: data.message || 'Không thể cập nhật trạng thái nổi bật' });
-        return;
-      }
-      const saved = await res.json();
-      setProjects((prev) => prev.map((p) => (p.id === saved.id ? saved : p)));
-      setToast({ type: 'success', text: 'Cập nhật trạng thái nổi bật thành công' });
-    } catch (err) {
-      setToast({ type: 'error', text: 'Lỗi kết nối' });
->>>>>>> b2df92e (first commit)
     }
   };
 
   const handleToggleClientFeatured = async (client: any, featured: boolean) => {
     try {
-<<<<<<< HEAD
       const saved = await api.put(`/api/admin/clients/${client.id}`, { ...client, featured });
       setClients((prev) => prev.map((c) => (c.id === saved.id ? saved : c)));
       setToast({ type: 'success', text: 'Cập nhật trạng thái nổi bật thành công' });
     } catch (err: any) {
       setToast({ type: 'error', text: err.message || 'Lỗi kết nối' });
-=======
-      const res = await fetch(`/api/admin/clients/${client.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
-        body: JSON.stringify({ ...client, featured }),
-      });
-      if (!res.ok) {
-        setToast({ type: 'error', text: 'Không thể cập nhật trạng thái nổi bật' });
-        return;
-      }
-      const saved = await res.json();
-      setClients((prev) => prev.map((c) => (c.id === saved.id ? saved : c)));
-      setToast({ type: 'success', text: 'Cập nhật trạng thái nổi bật thành công' });
-    } catch (err) {
-      setToast({ type: 'error', text: 'Lỗi kết nối' });
->>>>>>> b2df92e (first commit)
     }
   };
 
@@ -659,20 +507,7 @@ const AdminDashboard: React.FC = () => {
         if (projectFilterStatus) params.set('status', projectFilterStatus);
         if (projectFilterPriority) params.set('priority', projectFilterPriority);
         if (projectSearchDebounced) params.set('q', projectSearchDebounced);
-<<<<<<< HEAD
         const data = await api.get(`/api/admin/projects?${params.toString()}`);
-=======
-        const res = await fetch(`/api/admin/projects?${params.toString()}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeader(),
-          },
-        });
-        if (!res.ok) {
-          throw new Error('Không thể tải dự án');
-        }
-        const data = await res.json();
->>>>>>> b2df92e (first commit)
         setProjects(Array.isArray(data.content) ? data.content : []);
         setSelectedProjectIds([]);
         setProjectTotalElements(typeof data.totalElements === 'number' ? data.totalElements : 0);
@@ -690,7 +525,6 @@ const AdminDashboard: React.FC = () => {
     if (activeTab !== 'projects') return;
     const fetchCategories = async () => {
       try {
-<<<<<<< HEAD
         const data = await api.get('/api/admin/projects/categories');
         if (Array.isArray(data)) {
           setProjectCategories(data);
@@ -700,18 +534,6 @@ const AdminDashboard: React.FC = () => {
         if (Array.isArray(managedData)) {
           setManagedProjectCategories(managedData);
         }
-=======
-        const res = await fetch('/api/admin/projects/categories', {
-          headers: {
-            ...getAuthHeader(),
-          },
-        });
-        if (!res.ok) return;
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          setProjectCategories(data);
-        }
->>>>>>> b2df92e (first commit)
       } catch {
       }
     };
@@ -729,20 +551,7 @@ const AdminDashboard: React.FC = () => {
         params.set('size', String(clientSize));
         if (clientFilterCat) params.set('cat', clientFilterCat);
         if (clientSearchDebounced) params.set('q', clientSearchDebounced);
-<<<<<<< HEAD
         const data = await api.get(`/api/admin/clients?${params.toString()}`);
-=======
-        const res = await fetch(`/api/admin/clients?${params.toString()}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeader(),
-          },
-        });
-        if (!res.ok) {
-          throw new Error('Không thể tải khách hàng');
-        }
-        const data = await res.json();
->>>>>>> b2df92e (first commit)
         setClients(Array.isArray(data.content) ? data.content : []);
         setSelectedClientIds([]);
         setClientTotalElements(typeof data.totalElements === 'number' ? data.totalElements : 0);
@@ -760,7 +569,6 @@ const AdminDashboard: React.FC = () => {
     if (activeTab !== 'customers') return;
     const fetchCategories = async () => {
       try {
-<<<<<<< HEAD
         const data = await api.get('/api/admin/clients/categories');
         if (Array.isArray(data)) {
           setClientCategories(data);
@@ -770,18 +578,6 @@ const AdminDashboard: React.FC = () => {
         if (Array.isArray(managedData)) {
           setManagedClientCategories(managedData);
         }
-=======
-        const res = await fetch('/api/admin/clients/categories', {
-          headers: {
-            ...getAuthHeader(),
-          },
-        });
-        if (!res.ok) return;
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          setClientCategories(data);
-        }
->>>>>>> b2df92e (first commit)
       } catch {
       }
     };
@@ -794,17 +590,7 @@ const AdminDashboard: React.FC = () => {
     try {
       const refreshToken = getRefreshToken();
       if (refreshToken) {
-<<<<<<< HEAD
         await api.post('/api/auth/logout', { refreshToken });
-=======
-        await fetch('/api/auth/logout', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ refreshToken }),
-        });
->>>>>>> b2df92e (first commit)
       }
     } catch {
     } finally {
@@ -947,25 +733,18 @@ const AdminDashboard: React.FC = () => {
             active={activeTab === 'articles'}
             onClick={() => changeTab('articles')}
           />
-<<<<<<< HEAD
           <SidebarItem 
             icon={Star} 
             label="Đánh giá Google" 
             active={activeTab === 'google-reviews'}
             onClick={() => changeTab('google-reviews')}
           />
-=======
->>>>>>> b2df92e (first commit)
           <div className="pt-6 pb-2 px-4">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Nội dung</p>
           </div>
           <div
             onClick={() => setIsStaticPagesOpen((v) => !v)}
-<<<<<<< HEAD
             className="cursor-pointer flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
-=======
-            className="flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer transition-all duration-200 group text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
->>>>>>> b2df92e (first commit)
           >
             <div className="flex items-center space-x-3">
               <FileText className="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white" />
@@ -1109,15 +888,12 @@ const AdminDashboard: React.FC = () => {
             active={activeTab === 'settings'}
             onClick={() => changeTab('settings')}
           />
-<<<<<<< HEAD
           <SidebarItem 
             icon={Layers} 
             label="Quản lý danh mục" 
             active={activeTab === 'categories'}
             onClick={() => changeTab('categories')}
           />
-=======
->>>>>>> b2df92e (first commit)
         </div>
 
         <div className="p-4 border-t border-slate-200 dark:border-slate-800">
@@ -1279,11 +1055,8 @@ const AdminDashboard: React.FC = () => {
                     ? 'Quảng cáo Facebook'
                     : activeTab === 'static-google-ads'
                     ? 'Quảng cáo Google'
-<<<<<<< HEAD
                     : activeTab === 'google-reviews'
                     ? 'Quản lý đánh giá Google'
-=======
->>>>>>> b2df92e (first commit)
                     : 'Quản lý bài viết'}
                 </h1>
                 {activeTab === 'static-webdesign' ||
@@ -1974,17 +1747,11 @@ const AdminDashboard: React.FC = () => {
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Danh mục</label>
-<<<<<<< HEAD
                           <select
-=======
-                          <input
-                            type="text"
->>>>>>> b2df92e (first commit)
                             value={editingProject.cat || ''}
                             onChange={(e) =>
                               setEditingProject((prev: any) => ({ ...prev, cat: e.target.value }))
                             }
-<<<<<<< HEAD
                             className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm"
                           >
                             <option value="">-- Chọn danh mục --</option>
@@ -1994,11 +1761,6 @@ const AdminDashboard: React.FC = () => {
                               </option>
                             ))}
                           </select>
-=======
-                            placeholder="Ví dụ: Doanh nghiệp, Bán hàng..."
-                            className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm"
-                          />
->>>>>>> b2df92e (first commit)
                         </div>
                         <div className="space-y-2 flex items-center gap-2 pt-6">
                           <input
@@ -2334,7 +2096,6 @@ const AdminDashboard: React.FC = () => {
                             const payload = { ...editingProject };
                             try {
                               setIsSavingProject(true);
-<<<<<<< HEAD
                               let saved;
                               if (payload.id) {
                                 saved = await api.put(`/api/admin/projects/${payload.id}`, payload);
@@ -2342,27 +2103,6 @@ const AdminDashboard: React.FC = () => {
                                 saved = await api.post('/api/admin/projects', payload);
                               }
                               
-=======
-                              const method = payload.id ? 'PUT' : 'POST';
-                              const url =
-                                method === 'POST'
-                                  ? '/api/admin/projects'
-                                  : `/api/admin/projects/${payload.id}`;
-                              const res = await fetch(url, {
-                                method,
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                  ...getAuthHeader(),
-                                },
-                                body: JSON.stringify(payload),
-                              });
-                              if (!res.ok) {
-                                const data = await res.json().catch(() => ({}));
-                                setToast({ type: 'error', text: data.message || 'Lưu dự án thất bại' });
-                                return;
-                              }
-                              const saved = await res.json();
->>>>>>> b2df92e (first commit)
                               setShowProjectModal(false);
                               setEditingProject(null);
                               setProjects((prev) => {
@@ -2373,13 +2113,8 @@ const AdminDashboard: React.FC = () => {
                                 return [saved, ...prev];
                               });
                               setToast({ type: 'success', text: 'Lưu dự án thành công!' });
-<<<<<<< HEAD
                             } catch (error: any) {
                               setToast({ type: 'error', text: error.message || 'Lỗi kết nối server' });
-=======
-                            } catch {
-                              setToast({ type: 'error', text: 'Lỗi kết nối server' });
->>>>>>> b2df92e (first commit)
                             } finally {
                               setIsSavingProject(false);
                             }
@@ -2443,29 +2178,11 @@ const AdminDashboard: React.FC = () => {
                             onClick={async () => {
                               try {
                                 setIsDeleting(true);
-<<<<<<< HEAD
                                 await api.delete(`/api/admin/projects/${projectToDelete.id}`);
                                 setProjects((prev) => prev.filter((item) => item.id !== projectToDelete.id));
                                 setProjectTotalElements((prev) => (prev > 0 ? prev - 1 : 0));
                                 setShowDeleteConfirm(false);
                                 setProjectToDelete(null);
-=======
-                                const res = await fetch(`/api/admin/projects/${projectToDelete.id}`, {
-                                  method: 'DELETE',
-                                  headers: {
-                                    ...getAuthHeader(),
-                                  },
-                                });
-                                if (res.status === 204) {
-                                  setProjects((prev) => prev.filter((item) => item.id !== projectToDelete.id));
-                                  setProjectTotalElements((prev) => (prev > 0 ? prev - 1 : 0));
-                                  setShowDeleteConfirm(false);
-                                  setProjectToDelete(null);
-                                } else {
-                                  setProjectError('Có lỗi xảy ra khi xóa dự án');
-                                  setShowDeleteConfirm(false);
-                                }
->>>>>>> b2df92e (first commit)
                               } catch (err) {
                                 setProjectError('Có lỗi kết nối khi xóa dự án');
                                 setShowDeleteConfirm(false);
@@ -2802,7 +2519,6 @@ const AdminDashboard: React.FC = () => {
                             />
                         </div>
                         <div className="space-y-2">
-<<<<<<< HEAD
                           <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Danh mục</label>
                           <select
                             value={editingClient.category || ''}
@@ -2816,16 +2532,6 @@ const AdminDashboard: React.FC = () => {
                                </option>
                              ))}
                           </select>
-=======
-                            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Danh mục</label>
-                            <input
-                                type="text"
-                                value={editingClient.category || ''}
-                                onChange={(e) => setEditingClient((prev: any) => ({ ...prev, category: e.target.value }))}
-                                placeholder="Ví dụ: Doanh nghiệp, Bán lẻ..."
-                                className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm"
-                            />
->>>>>>> b2df92e (first commit)
                         </div>
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Slug (URL)</label>
@@ -2919,11 +2625,7 @@ const AdminDashboard: React.FC = () => {
                                   if (!e.target.files?.length) return;
                                   try {
                                     setIsUploading(true);
-<<<<<<< HEAD
                                     const newUrls: string[] = [];
-=======
-                                    const newUrls = [];
->>>>>>> b2df92e (first commit)
                                     for (let i = 0; i < e.target.files.length; i++) {
                                       const url = await handleImageUpload(e.target.files[i]);
                                       newUrls.push(url);
@@ -3066,7 +2768,6 @@ const AdminDashboard: React.FC = () => {
                             } catch {}
                             try {
                               setIsSavingClient(true);
-<<<<<<< HEAD
                               let saved;
                               if (payload.id) {
                                 saved = await api.put(`/api/admin/clients/${payload.id}`, payload);
@@ -3074,26 +2775,6 @@ const AdminDashboard: React.FC = () => {
                                 saved = await api.post('/api/admin/clients', payload);
                               }
 
-=======
-                              const method = payload.id ? 'PUT' : 'POST';
-                              const url =
-                                method === 'POST'
-                                  ? '/api/admin/clients'
-                                  : `/api/admin/clients/${payload.id}`;
-                              const res = await fetch(url, {
-                                method,
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                  ...getAuthHeader(),
-                                },
-                                body: JSON.stringify(payload),
-                              });
-                              if (!res.ok) {
-                                setToast({ type: 'error', text: 'Lưu khách hàng thất bại' });
-                                return;
-                              }
-                              const saved = await res.json();
->>>>>>> b2df92e (first commit)
                               setShowClientModal(false);
                               setEditingClient(null);
                               setClients((prev) => {
@@ -3169,31 +2850,12 @@ const AdminDashboard: React.FC = () => {
                             onClick={async () => {
                               try {
                                 setIsDeletingClient(true);
-<<<<<<< HEAD
                                 await api.delete(`/api/admin/clients/${clientToDelete.id}`);
                                 setClients((prev) => prev.filter((item) => item.id !== clientToDelete.id));
                                 setClientTotalElements((prev) => (prev > 0 ? prev - 1 : 0));
                                 setShowDeleteClientConfirm(false);
                                 setClientToDelete(null);
                                 setToast({ type: 'success', text: 'Xóa khách hàng thành công' });
-=======
-                                const res = await fetch(`/api/admin/clients/${clientToDelete.id}`, {
-                                  method: 'DELETE',
-                                  headers: {
-                                    ...getAuthHeader(),
-                                  },
-                                });
-                                if (res.status === 204) {
-                                  setClients((prev) => prev.filter((item) => item.id !== clientToDelete.id));
-                                  setClientTotalElements((prev) => (prev > 0 ? prev - 1 : 0));
-                                  setShowDeleteClientConfirm(false);
-                                  setClientToDelete(null);
-                                  setToast({ type: 'success', text: 'Xóa khách hàng thành công' });
-                                } else {
-                                  setToast({ type: 'error', text: 'Có lỗi xảy ra khi xóa khách hàng' });
-                                  setShowDeleteClientConfirm(false);
-                                }
->>>>>>> b2df92e (first commit)
                               } catch (err) {
                                 setToast({ type: 'error', text: 'Có lỗi kết nối khi xóa khách hàng' });
                                 setShowDeleteClientConfirm(false);
@@ -3221,15 +2883,11 @@ const AdminDashboard: React.FC = () => {
             )}
 
             {activeTab === 'articles' && (
-<<<<<<< HEAD
               <ArticlesManagement onToast={(msg: ToastMessage) => setToast(msg)} />
             )}
 
             {activeTab === 'google-reviews' && (
               <GoogleReviewsManagement />
-=======
-              <ArticlesManagement onToast={(msg) => setToast(msg)} />
->>>>>>> b2df92e (first commit)
             )}
 
             {activeTab === 'contacts' && (
@@ -3352,13 +3010,10 @@ const AdminDashboard: React.FC = () => {
               </div>
             )}
 
-<<<<<<< HEAD
             {activeTab === 'categories' && (
               <CategoryManagement />
             )}
 
-=======
->>>>>>> b2df92e (first commit)
             {activeTab === 'static-home' && (
               <div className="space-y-6">
                 <HomeContentForm />
@@ -3416,11 +3071,7 @@ const AdminDashboard: React.FC = () => {
           <button
             type="button"
             onClick={() => scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
-<<<<<<< HEAD
             className="cursor-pointer fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 shadow-lg shadow-blue-500/30 transition-all active:scale-95"
-=======
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 shadow-lg shadow-blue-500/30 transition-all active:scale-95"
->>>>>>> b2df92e (first commit)
           >
             <ArrowUp className="w-4 h-4" />
             <span className="text-sm font-semibold">Lên top</span>

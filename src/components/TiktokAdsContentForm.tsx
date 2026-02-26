@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-<<<<<<< HEAD
 //
 import { Loader2, Save, ImageIcon, Link as LinkIcon, Upload, Trash2 } from 'lucide-react';
 
@@ -9,16 +8,6 @@ import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import { Toast } from '@/components/Toast';
 import { getLocalizedSlug } from '@/utils/localization';
-=======
-import { clearCache } from '../utils/cache';
-import { Loader2, Save, ImageIcon, Link as LinkIcon, Upload, Trash2 } from 'lucide-react';
-import { getAuthHeader } from '../utils/auth';
-import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import { Toast } from './Toast';
-import { getLocalizedSlug } from '../utils/localization';
->>>>>>> b2df92e (first commit)
 
 type TiktokAdsContent = {
   id?: number | null;
@@ -122,16 +111,8 @@ const TiktokAdsContentForm: React.FC = () => {
   const fetchContent = async () => {
     try {
       setLoading(true);
-<<<<<<< HEAD
       const data = await api.get<any>('/api/pages/tiktok-ads');
       setFormData(data);
-=======
-      const response = await fetch('/api/pages/tiktok-ads');
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data);
-      }
->>>>>>> b2df92e (first commit)
     } catch (error) {
       console.error('Failed to fetch content:', error);
       setMessage({ type: 'error', text: 'Không thể tải dữ liệu.' });
@@ -146,30 +127,10 @@ const TiktokAdsContentForm: React.FC = () => {
     setMessage(null);
 
     try {
-<<<<<<< HEAD
       const saved = await api.post<any>('/api/pages/tiktok-ads', formData);
       setFormData(saved);
       setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
       //
-=======
-      const response = await fetch('/api/pages/tiktok-ads', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const saved = await response.json();
-        setFormData(saved);
-        setMessage({ type: 'success', text: 'Lưu nội dung thành công!' });
-        clearCache();
-      } else {
-        setMessage({ type: 'error', text: 'Có lỗi xảy ra khi lưu.' });
-      }
->>>>>>> b2df92e (first commit)
     } catch (error) {
       console.error('Save error:', error);
       setMessage({ type: 'error', text: 'Lỗi kết nối đến server.' });

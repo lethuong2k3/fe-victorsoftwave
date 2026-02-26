@@ -28,13 +28,8 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import ImageExtension from '@tiptap/extension-image';
 import { motion, AnimatePresence } from 'framer-motion';
-<<<<<<< HEAD
 import { api } from '@/utils/api';
 import { Toast, ToastMessage } from '@/components/Toast';
-=======
-import { getAuthHeader } from '../utils/auth';
-import { Toast, ToastMessage } from './Toast';
->>>>>>> b2df92e (first commit)
 
 // Helper for slugs
 const toSlug = (str: string) => {
@@ -287,18 +282,8 @@ export const ArticlesManagement: React.FC<ArticlesManagementProps> = ({ onToast 
       if (filterStatus) params.set('status', filterStatus);
       if (filterCategory) params.set('category', filterCategory);
 
-<<<<<<< HEAD
       const data = await api.get(`/api/admin/articles?${params.toString()}`);
       
-=======
-      const res = await fetch(`/api/admin/articles?${params.toString()}`, {
-        headers: { ...getAuthHeader() }
-      });
-
-      if (!res.ok) throw new Error('Failed to fetch articles');
-      
-      const data = await res.json();
->>>>>>> b2df92e (first commit)
       setArticles(data.content || []);
       setTotalElements(data.totalElements || 0);
       setTotalPages(data.totalPages || 0);
@@ -346,17 +331,8 @@ export const ArticlesManagement: React.FC<ArticlesManagementProps> = ({ onToast 
       // Validate featured count
       if (articleToSave.featured) {
         // Fetch all featured articles
-<<<<<<< HEAD
         try {
           const featuredData = await api.get('/api/admin/articles?featured=true&size=100');
-=======
-        const featuredRes = await fetch('/api/admin/articles?featured=true&size=100', {
-          headers: { ...getAuthHeader() }
-        });
-        
-        if (featuredRes.ok) {
-          const featuredData = await featuredRes.json();
->>>>>>> b2df92e (first commit)
           const featuredArticles = featuredData.content || [];
           
           // Check if we are exceeding the limit (3)
@@ -369,40 +345,20 @@ export const ArticlesManagement: React.FC<ArticlesManagementProps> = ({ onToast 
             setIsSaving(false);
             return;
           }
-<<<<<<< HEAD
         } catch (e) {
           console.error("Failed to validate featured articles", e);
         }
       }
 
-=======
-        }
-      }
-
-      const method = articleToSave.id ? 'PUT' : 'POST';
->>>>>>> b2df92e (first commit)
       const url = articleToSave.id 
         ? `/api/admin/articles/${articleToSave.id}`
         : '/api/admin/articles';
 
-<<<<<<< HEAD
       if (articleToSave.id) {
          await api.put(url, articleToSave);
       } else {
          await api.post(url, articleToSave);
       }
-=======
-      const res = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(articleToSave),
-      });
-
-      if (!res.ok) throw new Error('Failed to save article');
->>>>>>> b2df92e (first commit)
 
       onToast({ type: 'success', text: articleToSave.id ? 'Cập nhật bài viết thành công' : 'Thêm bài viết mới thành công' });
       setShowModal(false);
@@ -420,16 +376,7 @@ export const ArticlesManagement: React.FC<ArticlesManagementProps> = ({ onToast 
     if (!articleToDelete) return;
     try {
       setIsDeleting(true);
-<<<<<<< HEAD
       await api.delete(`/api/admin/articles/${articleToDelete.id}`);
-=======
-      const res = await fetch(`/api/admin/articles/${articleToDelete.id}`, {
-        method: 'DELETE',
-        headers: { ...getAuthHeader() }
-      });
-
-      if (!res.ok) throw new Error('Failed to delete');
->>>>>>> b2df92e (first commit)
 
       onToast({ type: 'success', text: 'Xóa bài viết thành công' });
       setShowDeleteConfirm(false);

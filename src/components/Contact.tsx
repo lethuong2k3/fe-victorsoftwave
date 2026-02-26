@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2 } from 'lucide-react';
-<<<<<<< HEAD
 import { api } from '@/utils/api';
 import { Toast, ToastMessage } from '@/components/Toast';
 import { contactSchema, ContactFormData } from '@/utils/validation';
-=======
-import { api } from '../utils/api';
-import { Toast, ToastMessage } from './Toast';
-import { contactSchema, ContactFormData } from '../utils/validation';
->>>>>>> b2df92e (first commit)
 
 interface ContactProps {
   data?: {
@@ -18,11 +12,8 @@ interface ContactProps {
     contactEmailLabel?: string;
     contactAddressLabel?: string;
     contactAddressValue?: string;
-<<<<<<< HEAD
     contactHotline?: string;
     contactEmail?: string;
-=======
->>>>>>> b2df92e (first commit)
   };
 }
 
@@ -33,11 +24,8 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
   const emailLabel = data?.contactEmailLabel || "Email";
   const addressLabel = data?.contactAddressLabel || "Địa chỉ";
   const addressValue = data?.contactAddressValue || "Tầng 12, Tòa nhà Bitexco, Q1, TP.HCM";
-<<<<<<< HEAD
   const hotline = data?.contactHotline || "0912 345 678";
   const email = data?.contactEmail || "contact@victorsoftware.com";
-=======
->>>>>>> b2df92e (first commit)
 
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
@@ -136,11 +124,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg">{hotlineLabel}</h4>
-<<<<<<< HEAD
                   <p className="text-slate-300">{hotline}</p>
-=======
-                  <p className="text-slate-300">0912 345 678</p>
->>>>>>> b2df92e (first commit)
                 </div>
               </div>
 
@@ -150,11 +134,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg">{emailLabel}</h4>
-<<<<<<< HEAD
                   <p className="text-slate-300">{email}</p>
-=======
-                  <p className="text-slate-300">contact@victorsoftware.com</p>
->>>>>>> b2df92e (first commit)
                 </div>
               </div>
 
@@ -229,11 +209,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
               <button
                 type="submit"
                 disabled={loading}
-<<<<<<< HEAD
                 className="cursor-pointer w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
-=======
-                className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
->>>>>>> b2df92e (first commit)
               >
                 {loading ? (
                   <>

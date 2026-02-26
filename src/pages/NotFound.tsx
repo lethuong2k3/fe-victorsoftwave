@@ -2,48 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Home as HomeIcon, Search as SearchIcon } from 'lucide-react';
-<<<<<<< HEAD
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import { getLang, Lang } from '@/utils/localization';
 import { useDarkMode } from '@/hooks/useDarkMode';
-=======
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang, Lang } from '../utils/localization';
-
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    if (
-      localStorage.theme === 'dark' ||
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
->>>>>>> b2df92e (first commit)
 
 const NotFound: React.FC = () => {
   const { isDark, toggleTheme } = useDarkMode();
@@ -62,7 +25,6 @@ const NotFound: React.FC = () => {
   const backHomeLabel = lang === 'en' ? 'Back to homepage' : 'Về trang chủ';
   const backPrevLabel = lang === 'en' ? 'Go back' : 'Quay lại';
 
-<<<<<<< HEAD
   const homePath = `/`;
 
   return (
@@ -72,23 +34,13 @@ const NotFound: React.FC = () => {
         description={description}
         type="website"
       />
-=======
-  const homePath = `/${lang}`;
-
-  return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
->>>>>>> b2df92e (first commit)
       <Navbar isDark={isDark} toggleTheme={toggleTheme} />
       <main className="flex-1 flex items-center justify-center pt-24 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
           <div className="flex items-center justify-between mb-8">
             <button
               onClick={() => navigate(-1)}
-<<<<<<< HEAD
               className="cursor-pointer inline-flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
-=======
-              className="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
->>>>>>> b2df92e (first commit)
             >
               <ArrowLeft className="w-4 h-4" />
               <span>{backPrevLabel}</span>
@@ -109,11 +61,7 @@ const NotFound: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button
                   onClick={() => navigate(homePath)}
-<<<<<<< HEAD
                   className="cursor-pointer inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 text-white text-sm font-semibold shadow-md hover:bg-blue-500 transition-colors"
-=======
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 text-white text-sm font-semibold shadow-md hover:bg-blue-500 transition-colors"
->>>>>>> b2df92e (first commit)
                 >
                   <HomeIcon className="w-4 h-4" />
                   <span>{backHomeLabel}</span>
@@ -138,11 +86,7 @@ const NotFound: React.FC = () => {
                       <div className="w-2 h-2 rounded-full bg-amber-400" />
                       <div className="w-2 h-2 rounded-full bg-emerald-400" />
                     </div>
-<<<<<<< HEAD
                     <span className="text-[10px] text-slate-400">www.victorsoftwave.com</span>
-=======
-                    <span className="text-[10px] text-slate-400">victorsoftwave.com</span>
->>>>>>> b2df92e (first commit)
                   </div>
                   <div className="space-y-2">
                     <div className="h-4 w-5/6 rounded-full bg-slate-200 dark:bg-slate-800" />

@@ -1,28 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
-<<<<<<< HEAD
 import { getLang, getLocalizedSlug } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
 import logo from '@/assets/logo.png';
-=======
-import logo from '../assets/logo.png';
-import { getLang, getLocalizedSlug } from '../utils/localization';
-import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
->>>>>>> b2df92e (first commit)
 
 const Footer: React.FC = () => {
   const lang = getLang();
   
   const { data: homeData } = useQuery({
     queryKey: ['home-content'],
-<<<<<<< HEAD
     queryFn: () => api.get('/api/pages/home'),
-=======
-    queryFn: () => fetcher('/api/pages/home'),
->>>>>>> b2df92e (first commit)
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
@@ -33,29 +22,17 @@ const Footer: React.FC = () => {
           
           <div className="col-span-1 md:col-span-1">
             <div className="mb-6">
-<<<<<<< HEAD
               <img 
                 src="/assets/logo.png" 
                 alt="Victor Software" 
                 className="w-14 h-14 object-contain rounded-xl"
               />
-=======
-              <div className="relative w-14 h-14 flex items-center justify-center">
-                <img 
-                  src={logo} 
-                  alt="Victor Software Logo" 
-                  className="w-full h-full object-contain rounded-xl"
-                  style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))' }}
-                />
-              </div>
->>>>>>> b2df92e (first commit)
             </div>
             <p className="text-slate-500 text-sm mb-6 leading-relaxed">
               Đối tác tin cậy trong hành trình chuyển đổi số của doanh nghiệp. Chúng tôi mang đến những giải pháp công nghệ tiên tiến nhất.
             </p>
             <div className="flex gap-4">
                 {homeData?.facebookUrl && (
-<<<<<<< HEAD
                   <a href={homeData.facebookUrl} target="_blank" rel="noopener noreferrer" className="cursor-pointer w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-blue-600 hover:text-white transition-all"><Facebook size={18} /></a>
                 )}
                 {homeData?.zaloUrl && (
@@ -68,15 +45,6 @@ const Footer: React.FC = () => {
                     </svg>
                   </a>
                 )}
-=======
-                  <a href={homeData.facebookUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-blue-600 hover:text-white transition-all"><Facebook size={18} /></a>
-                )}
-                {homeData?.zaloUrl && (
-                   <a href={homeData.zaloUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-blue-500 hover:text-white transition-all font-bold text-xs">Zalo</a>
-                )}
-                <a href="#" className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-pink-600 hover:text-white transition-all"><Instagram size={18} /></a>
-                <a href="#" className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-blue-500 hover:text-white transition-all"><Linkedin size={18} /></a>
->>>>>>> b2df92e (first commit)
             </div>
           </div>
 
@@ -84,30 +52,18 @@ const Footer: React.FC = () => {
             <h4 className="font-bold text-slate-900 dark:text-white mb-6">Dịch vụ</h4>
             <ul className="space-y-3 text-sm text-slate-500 dark:text-slate-400">
                 <li>
-<<<<<<< HEAD
                   <Link to={`/${getLocalizedSlug('thiet-ke-website', lang)}`} className="hover:text-blue-500">
-=======
-                  <Link to={`/${lang}/${getLocalizedSlug('thiet-ke-website', lang)}`} className="hover:text-blue-500">
->>>>>>> b2df92e (first commit)
                     Thiết kế Website
                   </Link>
                 </li>
                 <li><a href="#" className="hover:text-blue-500">Viết App Mobile</a></li>
                 <li>
-<<<<<<< HEAD
                   <Link to={`/${getLocalizedSlug('seo-tong-the', lang)}`} className="hover:text-blue-500">
-=======
-                  <Link to={`/${lang}/${getLocalizedSlug('seo-tong-the', lang)}`} className="hover:text-blue-500">
->>>>>>> b2df92e (first commit)
                     SEO Tổng thể
                   </Link>
                 </li>
                 <li>
-<<<<<<< HEAD
                   <Link to={`/${getLocalizedSlug('tiktok-ads', lang)}`} className="hover:text-blue-500">
-=======
-                  <Link to={`/${lang}/${getLocalizedSlug('tiktok-ads', lang)}`} className="hover:text-blue-500">
->>>>>>> b2df92e (first commit)
                     Chạy quảng cáo
                   </Link>
                 </li>
@@ -131,11 +87,7 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex">
                 <input type="email" placeholder="Email của bạn" className="bg-slate-100 dark:bg-slate-900 px-4 py-2 rounded-l-lg outline-none w-full text-sm dark:text-white" />
-<<<<<<< HEAD
                 <button className="cursor-pointer bg-blue-600 px-4 py-2 rounded-r-lg text-white text-sm font-medium hover:bg-blue-700">Gửi</button>
-=======
-                <button className="bg-blue-600 px-4 py-2 rounded-r-lg text-white text-sm font-medium hover:bg-blue-700">Gửi</button>
->>>>>>> b2df92e (first commit)
             </div>
           </div>
 

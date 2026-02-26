@@ -1,16 +1,9 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-<<<<<<< HEAD
 import AdminLogin from '@/pages/AdminLogin';
 import AdminDashboard from '@/pages/AdminDashboard';
 import PrivateRoute from '@/components/PrivateRoute';
 import GuestRoute from '@/components/GuestRoute';
-=======
-import AdminLogin from '../pages/AdminLogin';
-import AdminDashboard from '../pages/AdminDashboard';
-import PrivateRoute from '../components/PrivateRoute';
-import GuestRoute from '../components/GuestRoute';
->>>>>>> b2df92e (first commit)
 
 const PrivateRoutes: React.FC = () => {
   return (

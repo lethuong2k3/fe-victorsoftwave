@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Save, Globe, Loader2 } from 'lucide-react';
-<<<<<<< HEAD
 
 import { api } from '@/utils/api';
-=======
-import { getAuthHeader } from '../utils/auth';
->>>>>>> b2df92e (first commit)
 
 const SeoSettingsForm: React.FC = () => {
   const [activeLang, setActiveLang] = useState<'vi' | 'en'>('vi');
@@ -43,7 +39,6 @@ const SeoSettingsForm: React.FC = () => {
   const fetchSeoSettings = async () => {
     setLoading(true);
     try {
-<<<<<<< HEAD
       const data = await api.get<any>('/api/settings/seo');
       // Merge with default empty strings to avoid uncontrolled input warnings
       setFormData({
@@ -56,25 +51,6 @@ const SeoSettingsForm: React.FC = () => {
         mainKeywordVi: data.mainKeywordVi || '',
         mainKeywordEn: data.mainKeywordEn || ''
       });
-=======
-      const response = await fetch('/api/settings/seo', {
-        headers: getAuthHeader()
-      });
-      if (response.ok) {
-        const data = await response.json();
-        // Merge with default empty strings to avoid uncontrolled input warnings
-        setFormData({
-            seoTitleVi: data.seoTitleVi || '',
-            seoTitleEn: data.seoTitleEn || '',
-            seoKeywordsVi: data.seoKeywordsVi || '',
-            seoKeywordsEn: data.seoKeywordsEn || '',
-            seoDescriptionVi: data.seoDescriptionVi || '',
-            seoDescriptionEn: data.seoDescriptionEn || '',
-            mainKeywordVi: data.mainKeywordVi || '',
-            mainKeywordEn: data.mainKeywordEn || ''
-        });
-      }
->>>>>>> b2df92e (first commit)
     } catch (error) {
       console.error('Failed to fetch SEO settings:', error);
     } finally {
@@ -93,25 +69,8 @@ const SeoSettingsForm: React.FC = () => {
     setMessage(null);
 
     try {
-<<<<<<< HEAD
       await api.post('/api/settings/seo', formData);
       setMessage({ type: 'success', text: 'Đã lưu cài đặt SEO thành công!' });
-=======
-      const response = await fetch('/api/settings/seo', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader()
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (response.ok) {
-        setMessage({ type: 'success', text: 'Đã lưu cài đặt SEO thành công!' });
-      } else {
-        setMessage({ type: 'error', text: 'Lưu thất bại. Vui lòng thử lại.' });
-      }
->>>>>>> b2df92e (first commit)
     } catch (error) {
       setMessage({ type: 'error', text: 'Lỗi kết nối server.' });
     } finally {

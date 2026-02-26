@@ -12,13 +12,8 @@ import {
   RefreshCw,
   MoreHorizontal
 } from 'lucide-react';
-<<<<<<< HEAD
 import { api } from '@/utils/api';
 import { Toast, ToastMessage } from '@/components/Toast';
-=======
-import { api } from '../utils/api';
-import { Toast, ToastMessage } from './Toast';
->>>>>>> b2df92e (first commit)
 
 interface Contact {
   id: number;

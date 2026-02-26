@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Loader2, Save } from 'lucide-react';
-<<<<<<< HEAD
 import { api } from '@/utils/api';
-=======
-import { getAuthHeader } from '../utils/auth';
->>>>>>> b2df92e (first commit)
 import { Toast } from './Toast';
 
 type ClientsPageContent = {
@@ -48,16 +44,8 @@ const ClientsPageContentForm: React.FC = () => {
   const fetchContent = async () => {
     try {
       setLoading(true);
-<<<<<<< HEAD
       const data = await api.get<ClientsPageContent>('/api/pages/clients');
       setFormData(data);
-=======
-      const response = await fetch('/api/pages/clients');
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data);
-      }
->>>>>>> b2df92e (first commit)
     } catch (error) {
       console.error('Failed to fetch content:', error);
       setMessage({ type: 'error', text: 'Không thể tải dữ liệu.' });
@@ -73,7 +61,6 @@ const ClientsPageContentForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-<<<<<<< HEAD
     try {
       setSaving(true);
       await api.post('/api/pages/clients', formData);
@@ -81,31 +68,6 @@ const ClientsPageContentForm: React.FC = () => {
     } catch (error) {
       console.error('Error saving content:', error);
       setMessage({ type: 'error', text: 'Failed to save content' });
-=======
-    setSaving(true);
-    setMessage(null);
-
-    try {
-      const response = await fetch('/api/pages/clients', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data);
-        setMessage({ type: 'success', text: 'Đã lưu nội dung thành công!' });
-      } else {
-        setMessage({ type: 'error', text: 'Lưu thất bại.' });
-      }
-    } catch (error) {
-      console.error('Failed to save content:', error);
-      setMessage({ type: 'error', text: 'Lỗi kết nối server.' });
->>>>>>> b2df92e (first commit)
     } finally {
       setSaving(false);
     }
@@ -121,10 +83,7 @@ const ClientsPageContentForm: React.FC = () => {
 
   return (
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm mb-6">
-<<<<<<< HEAD
       <Toast message={message} onClose={() => setMessage(null)} />
-=======
->>>>>>> b2df92e (first commit)
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-bold text-slate-900 dark:text-white">Quản lý nội dung trang khách hàng</h3>
         <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">

@@ -1,18 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-<<<<<<< HEAD
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getLang, SLUG_MAPPING } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
-=======
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang, SLUG_MAPPING } from '../utils/localization';
-import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
->>>>>>> b2df92e (first commit)
 import { ArrowLeft, ExternalLink, CheckCircle2, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -54,10 +46,7 @@ const useDarkMode = () => {
 };
 
 import NotFound from './NotFound';
-<<<<<<< HEAD
 import SEO from '@/components/SEO';
-=======
->>>>>>> b2df92e (first commit)
 
 const ClientDetail: React.FC = () => {
   const { isDark, toggleTheme } = useDarkMode();
@@ -69,11 +58,7 @@ const ClientDetail: React.FC = () => {
     queryKey: ['client-detail', slug],
     queryFn: async () => {
       try {
-<<<<<<< HEAD
         return await api.get<Client>(`/api/clients/${slug}`);
-=======
-        return await fetcher<Client>(`/api/clients/${slug}`);
->>>>>>> b2df92e (first commit)
       } catch (error: any) {
         if (error.message.includes('404')) return null;
         throw error;
@@ -108,7 +93,6 @@ const ClientDetail: React.FC = () => {
     return <NotFound />;
   }
 
-<<<<<<< HEAD
   const structuredData = client ? {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -130,24 +114,14 @@ const ClientDetail: React.FC = () => {
           structuredData={structuredData}
         />
       )}
-=======
-  return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
->>>>>>> b2df92e (first commit)
       <Navbar isDark={isDark} toggleTheme={toggleTheme} />
       <main className="pt-24 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <button
             onClick={() => {
-<<<<<<< HEAD
               navigate(`/${SLUG_MAPPING['khach-hang'][lang]}`);
             }}
             className="cursor-pointer flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors group"
-=======
-              navigate(`/${lang}/${SLUG_MAPPING['khach-hang'][lang]}`);
-            }}
-            className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors group"
->>>>>>> b2df92e (first commit)
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             <span>{lang === 'en' ? 'Back to Clients' : 'Quay lại Khách hàng'}</span>

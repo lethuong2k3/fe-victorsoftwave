@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, User, ArrowLeft, Share2, Tag, Instagram } from 'lucide-react';
-<<<<<<< HEAD
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Toast, ToastMessage } from '@/components/Toast';
@@ -12,16 +11,6 @@ import { api } from '@/utils/api';
 import SEO from '@/components/SEO';
 import DOMPurify from 'dompurify';
 import { useDarkMode } from '@/hooks/useDarkMode';
-=======
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { Toast, ToastMessage } from '../components/Toast';
-import { getLang, getLocalizedSlug } from '../utils/localization';
-import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
-import { Helmet } from 'react-helmet-async';
-import DOMPurify from 'dompurify';
->>>>>>> b2df92e (first commit)
 
 interface Article {
   id: number;
@@ -49,19 +38,12 @@ const ArticleDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const lang = getLang();
-<<<<<<< HEAD
   const { isDark, toggleTheme } = useDarkMode();
-=======
->>>>>>> b2df92e (first commit)
   const [toast, setToast] = useState<ToastMessage | null>(null);
 
   const { data: article, isLoading, error } = useQuery({
     queryKey: ['article', slug],
-<<<<<<< HEAD
     queryFn: () => api.get<Article>(`/api/articles/slug/${slug}`),
-=======
-    queryFn: () => fetcher<Article>(`/api/articles/slug/${slug}`),
->>>>>>> b2df92e (first commit)
     enabled: !!slug,
     retry: false
   });
@@ -89,7 +71,6 @@ const ArticleDetailPage: React.FC = () => {
   const seoDesc = lang === 'en' ? (article.seoDescriptionEn || description) : (article.seoDescription || description);
   const seoKeywords = lang === 'en' ? article.seoKeywordsEn : article.seoKeywords;
 
-<<<<<<< HEAD
   const fullImageUrl = article.image 
     ? (article.image.startsWith('http') ? article.image : `https://www.victorsoftwave.com${article.image.startsWith('/') ? '' : '/'}${article.image}`)
     : '';
@@ -119,8 +100,6 @@ const ArticleDetailPage: React.FC = () => {
     }
   };
 
-=======
->>>>>>> b2df92e (first commit)
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString(lang === 'en' ? 'en-US' : 'vi-VN', {
       year: 'numeric',
@@ -129,11 +108,7 @@ const ArticleDetailPage: React.FC = () => {
     });
   };
 
-<<<<<<< HEAD
   const backLink = `/${getLocalizedSlug('bai-viet', lang)}`;
-=======
-  const backLink = `/${lang}/${getLocalizedSlug('bai-viet', lang)}`;
->>>>>>> b2df92e (first commit)
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -146,7 +121,6 @@ const ArticleDetailPage: React.FC = () => {
   return (
     <>
       <Toast message={toast} onClose={() => setToast(null)} />
-<<<<<<< HEAD
       <SEO 
         title={seoTitle}
         description={seoDesc}
@@ -159,29 +133,6 @@ const ArticleDetailPage: React.FC = () => {
 
       <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
         <Navbar isDark={isDark} toggleTheme={toggleTheme} />
-=======
-      <Helmet>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDesc} />
-        {seoKeywords && <meta name="keywords" content={seoKeywords} />}
-        
-        {/* Open Graph */}
-        <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={seoDesc} />
-        <meta property="og:image" content={article.image} />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:type" content="article" />
-        
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={seoTitle} />
-        <meta name="twitter:description" content={seoDesc} />
-        <meta name="twitter:image" content={article.image} />
-      </Helmet>
-
-      <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
-        <Navbar />
->>>>>>> b2df92e (first commit)
 
         <main className="pt-28 pb-20 px-4 md:px-8 max-w-5xl mx-auto">
           {/* Breadcrumb & Back */}

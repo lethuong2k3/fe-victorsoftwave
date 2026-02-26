@@ -1,10 +1,6 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-<<<<<<< HEAD
 import { isAuthenticated } from '@/utils/auth';
-=======
-import { isAuthenticated } from '../utils/auth';
->>>>>>> b2df92e (first commit)
 
 const PrivateRoute: React.FC = () => {
   const isAuth = isAuthenticated();

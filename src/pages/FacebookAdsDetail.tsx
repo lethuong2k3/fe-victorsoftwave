@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Smartphone, Target, TrendingUp, BarChart3, Users, CheckCircle2, ArrowRight } from 'lucide-react';
-<<<<<<< HEAD
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
@@ -10,41 +9,6 @@ import { getLang } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
 import { useDarkMode } from '@/hooks/useDarkMode';
-=======
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang } from '../utils/localization';
-import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
-
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
->>>>>>> b2df92e (first commit)
 
 const FacebookAdsDetail: React.FC = () => {
   const { isDark, toggleTheme } = useDarkMode();
@@ -78,11 +42,7 @@ const FacebookAdsDetail: React.FC = () => {
 
   const { data: content, isLoading: loading } = useQuery({
     queryKey: ['facebook-ads-content', lang],
-<<<<<<< HEAD
     queryFn: () => api.get<any>('/api/pages/facebook-ads', {
-=======
-    queryFn: () => fetcher<any>('/api/pages/facebook-ads', {
->>>>>>> b2df92e (first commit)
       headers: {
         'Accept-Language': lang,
       },
@@ -123,7 +83,6 @@ const FacebookAdsDetail: React.FC = () => {
     return () => window.removeEventListener('langchange', onLangChange);
   }, []);
 
-<<<<<<< HEAD
   const isEn = lang === 'en';
 
   const seoTitle =
@@ -154,40 +113,6 @@ const FacebookAdsDetail: React.FC = () => {
     }
   };
 
-=======
-  useEffect(() => {
-    if (!content) return;
-    const isEn = lang === 'en';
-    const title =
-      (isEn ? content.seoTitleEn : content.seoTitle) ||
-      content.seoTitle ||
-      '';
-    const description =
-      (isEn ? content.seoDescriptionEn : content.seoDescription) || content.seoDescription || '';
-    const keywords = (isEn ? content.seoKeywordsEn : content.seoKeywords) || content.seoKeywords || '';
-
-    if (title) document.title = title;
-
-    const upsertMeta = (name: string, value: string) => {
-      const trimmed = (value || '').trim();
-      if (!trimmed) return;
-      let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', name);
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', trimmed);
-    };
-
-    upsertMeta('description', description);
-    if (keywords) {
-      upsertMeta('keywords', keywords);
-    }
-  }, [content, lang]);
-
-  const isEn = lang === 'en';
->>>>>>> b2df92e (first commit)
   const heroTitlePrefix = isEn
     ? content?.heroTitlePrefixEn || ''
     : content?.heroTitlePrefix || '';
@@ -344,7 +269,6 @@ const FacebookAdsDetail: React.FC = () => {
   if (loading && !content) {
     return (
       <div className="min-h-screen relative overflow-x-hidden selection:bg-accent/30">
-<<<<<<< HEAD
         <SEO
           title={seoTitle}
           description={seoDescription}
@@ -352,8 +276,6 @@ const FacebookAdsDetail: React.FC = () => {
           type="article"
           image={heroImageUrl}
         />
-=======
->>>>>>> b2df92e (first commit)
         <div className="fixed inset-0 pointer-events-none z-[-1]">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/20 rounded-full blur-[100px] animate-pulse" />
           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 rounded-full blur-[100px] animate-pulse" />
@@ -385,7 +307,6 @@ const FacebookAdsDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden selection:bg-accent/30">
-<<<<<<< HEAD
       <SEO
         title={seoTitle}
         description={seoDescription}
@@ -394,8 +315,6 @@ const FacebookAdsDetail: React.FC = () => {
         type="article"
         structuredData={structuredData}
       />
-=======
->>>>>>> b2df92e (first commit)
       <div className="fixed inset-0 pointer-events-none z-[-1]">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/15 rounded-full blur-[100px] animate-pulse" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 rounded-full blur-[100px] animate-pulse" />
@@ -407,15 +326,9 @@ const FacebookAdsDetail: React.FC = () => {
         <section className="py-20 bg-gradient-to-b from-blue-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <button
-<<<<<<< HEAD
           onClick={() => navigate(`/`)}
           className="cursor-pointer flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
         >
-=======
-              onClick={() => navigate(`/${lang}`)}
-              className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
-            >
->>>>>>> b2df92e (first commit)
               <ArrowLeft size={20} />
               <span>{backToHomeLabel}</span>
             </button>
@@ -588,15 +501,9 @@ const FacebookAdsDetail: React.FC = () => {
                     {(suitableFor || '')
                       .replace(/\r\n/g, '\n')
                       .split('\n')
-<<<<<<< HEAD
                       .map((s: string) => s.trim())
                       .filter(Boolean)
                       .map((item: string, idx: number) => (
-=======
-                      .map((s) => s.trim())
-                      .filter(Boolean)
-                      .map((item, idx) => (
->>>>>>> b2df92e (first commit)
                         <div key={idx} className="flex items-start gap-3">
                           <CheckCircle2 size={18} className="mt-0.5 flex-shrink-0 text-blue-600 dark:text-blue-400" />
                           <span className="text-slate-700 dark:text-slate-300">
@@ -646,11 +553,7 @@ const FacebookAdsDetail: React.FC = () => {
 
                 <div className="lg:justify-self-end">
                   <button
-<<<<<<< HEAD
                     onClick={() => navigate(`/`)}
-=======
-                    onClick={() => navigate(`/${lang}`)}
->>>>>>> b2df92e (first commit)
                     className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-all shadow-lg shadow-blue-500/25"
                   >
                     {consultationCta} <ArrowRight size={18} />

@@ -1,23 +1,23 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Loader2, Save, FileText } from 'lucide-react';
-<<<<<<< HEAD
+import { Loader2, Save, FileText, Plus, Trash2, CheckCircle2 } from 'lucide-react';
 
 import { api } from '@/utils/api';
 import { getLocalizedSlug } from '@/utils/localization';
-=======
-import { getAuthHeader } from '../utils/auth';
-import { getLocalizedSlug } from '../utils/localization';
->>>>>>> b2df92e (first commit)
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import { Toast } from './Toast';
 
-<<<<<<< HEAD
 //
-=======
-import { clearCache } from '../utils/cache';
->>>>>>> b2df92e (first commit)
+
+type WebsiteCarePlan = {
+  id: string;
+  name: string;
+  price: string;
+  desc: string;
+  features: string[];
+  featured: boolean;
+};
 
 type WebsiteCareContent = {
   id?: number | null;
@@ -28,6 +28,7 @@ type WebsiteCareContent = {
   serviceDescriptionHtml: string;
   suitableFor: string;
   suggestionText: string;
+  plansJson: string;
   heroTitlePrefixEn: string;
   heroTitleHighlightEn: string;
   heroDescriptionEn: string;
@@ -35,6 +36,7 @@ type WebsiteCareContent = {
   serviceDescriptionHtmlEn: string;
   suitableForEn: string;
   suggestionTextEn: string;
+  plansJsonEn: string;
   seoTitle: string;
   seoKeywords: string;
   seoDescription: string;
@@ -43,7 +45,10 @@ type WebsiteCareContent = {
   seoKeywordsEn: string;
   seoDescriptionEn: string;
   primaryKeywordEn: string;
-<<<<<<< HEAD
+  plansTitle: string;
+  plansTitleEn: string;
+  plansDescription: string;
+  plansDescriptionEn: string;
   // Legacy fields for migration
   serviceIntro?: string;
   serviceSecondary?: string;
@@ -52,10 +57,6 @@ type WebsiteCareContent = {
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
-=======
-};
-
->>>>>>> b2df92e (first commit)
 const emptyContent: WebsiteCareContent = {
   heroTitlePrefix: '',
   heroTitleHighlight: '',
@@ -64,6 +65,7 @@ const emptyContent: WebsiteCareContent = {
   serviceDescriptionHtml: '',
   suitableFor: '',
   suggestionText: '',
+  plansJson: '[]',
   heroTitlePrefixEn: '',
   heroTitleHighlightEn: '',
   heroDescriptionEn: '',
@@ -71,6 +73,7 @@ const emptyContent: WebsiteCareContent = {
   serviceDescriptionHtmlEn: '',
   suitableForEn: '',
   suggestionTextEn: '',
+  plansJsonEn: '[]',
   seoTitle: '',
   seoKeywords: '',
   seoDescription: '',
@@ -79,16 +82,18 @@ const emptyContent: WebsiteCareContent = {
   seoKeywordsEn: '',
   seoDescriptionEn: '',
   primaryKeywordEn: '',
+  plansTitle: '',
+  plansTitleEn: '',
+  plansDescription: '',
+  plansDescriptionEn: '',
 };
 
 const WebsiteCareContentForm: React.FC = () => {
   const [activeLang, setActiveLang] = useState<'vi' | 'en'>('vi');
   const [formData, setFormData] = useState<WebsiteCareContent>(emptyContent);
-<<<<<<< HEAD
+  const [plans, setPlans] = useState<WebsiteCarePlan[]>([]);
+  const [plansEn, setPlansEn] = useState<WebsiteCarePlan[]>([]);
   const [loading, setLoading] = useState(false);
-=======
-  const [loading, setLoading] = useState(true);
->>>>>>> b2df92e (first commit)
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const activeLangRef = useRef<'vi' | 'en'>('vi');
@@ -118,7 +123,6 @@ const WebsiteCareContentForm: React.FC = () => {
 
   useEffect(() => {
     const fetchContent = async () => {
-<<<<<<< HEAD
       try {
         setLoading(true);
         const data = await api.get<WebsiteCareContent>('/api/pages/website-care');
@@ -133,6 +137,7 @@ const WebsiteCareContentForm: React.FC = () => {
           serviceDescriptionHtml: serviceHtmlVi,
           suitableFor: data.suitableFor || '',
           suggestionText: data.suggestionText || '',
+          plansJson: data.plansJson || '[]',
           heroTitlePrefixEn: data.heroTitlePrefixEn || '',
           heroTitleHighlightEn: data.heroTitleHighlightEn || '',
           heroDescriptionEn: data.heroDescriptionEn || '',
@@ -140,6 +145,7 @@ const WebsiteCareContentForm: React.FC = () => {
           serviceDescriptionHtmlEn: serviceHtmlEn,
           suitableForEn: data.suitableForEn || '',
           suggestionTextEn: data.suggestionTextEn || '',
+          plansJsonEn: data.plansJsonEn || '[]',
           seoTitle: data.seoTitle || '',
           seoKeywords: data.seoKeywords || '',
           seoDescription: data.seoDescription || '',
@@ -148,44 +154,21 @@ const WebsiteCareContentForm: React.FC = () => {
           seoKeywordsEn: data.seoKeywordsEn || '',
           seoDescriptionEn: data.seoDescriptionEn || '',
           primaryKeywordEn: data.primaryKeywordEn || '',
+          plansTitle: data.plansTitle || '',
+          plansTitleEn: data.plansTitleEn || '',
+          plansDescription: data.plansDescription || '',
+          plansDescriptionEn: data.plansDescriptionEn || '',
         });
+
+        try {
+          if (data.plansJson) setPlans(JSON.parse(data.plansJson));
+          if (data.plansJsonEn) setPlansEn(JSON.parse(data.plansJsonEn));
+        } catch (e) {
+          console.error("Error parsing plans JSON", e);
+        }
+
       } catch (error) {
         console.error('Error fetching content:', error);
-=======
-      setLoading(true);
-      try {
-        const response = await fetch('/api/pages/website-care');
-        if (response.ok) {
-          const data = await response.json();
-          const serviceHtmlVi =
-            data.serviceDescriptionHtml || `<p>${data.serviceIntro || ''}</p><p>${data.serviceSecondary || ''}</p>`;
-          const serviceHtmlEn = data.serviceDescriptionHtmlEn || '';
-          setFormData({
-            heroTitlePrefix: data.heroTitlePrefix || '',
-            heroTitleHighlight: data.heroTitleHighlight || '',
-            heroDescription: data.heroDescription || '',
-            heroImageUrl: data.heroImageUrl || '',
-            serviceDescriptionHtml: serviceHtmlVi,
-            suitableFor: data.suitableFor || '',
-            suggestionText: data.suggestionText || '',
-            heroTitlePrefixEn: data.heroTitlePrefixEn || '',
-            heroTitleHighlightEn: data.heroTitleHighlightEn || '',
-            heroDescriptionEn: data.heroDescriptionEn || '',
-            heroImageUrlEn: data.heroImageUrlEn || '',
-            serviceDescriptionHtmlEn: serviceHtmlEn,
-            suitableForEn: data.suitableForEn || '',
-            suggestionTextEn: data.suggestionTextEn || '',
-            seoTitle: data.seoTitle || '',
-            seoKeywords: data.seoKeywords || '',
-            seoDescription: data.seoDescription || '',
-            primaryKeyword: data.primaryKeyword || '',
-            seoTitleEn: data.seoTitleEn || '',
-            seoKeywordsEn: data.seoKeywordsEn || '',
-            seoDescriptionEn: data.seoDescriptionEn || '',
-            primaryKeywordEn: data.primaryKeywordEn || '',
-          });
-        }
->>>>>>> b2df92e (first commit)
       } finally {
         setLoading(false);
       }
@@ -287,6 +270,36 @@ const WebsiteCareContentForm: React.FC = () => {
     }
   };
 
+  const addPlan = () => {
+    const newPlan: WebsiteCarePlan = {
+      id: Date.now().toString(),
+      name: activeLang === 'vi' ? 'Gói Mới' : 'New Plan',
+      price: activeLang === 'vi' ? '0đ/tháng' : '$0/month',
+      desc: '',
+      features: activeLang === 'vi' ? ['Tính năng 1'] : ['Feature 1'],
+      featured: false,
+    };
+    if (activeLang === 'vi') setPlans([...plans, newPlan]);
+    else setPlansEn([...plansEn, newPlan]);
+  };
+
+  const removePlan = (id: string) => {
+    if (activeLang === 'vi') setPlans(plans.filter((p) => p.id !== id));
+    else setPlansEn(plansEn.filter((p) => p.id !== id));
+  };
+
+  const updatePlan = (id: string, field: keyof WebsiteCarePlan, value: any) => {
+    const updateList = (list: WebsiteCarePlan[]) =>
+      list.map((p) => (p.id === id ? { ...p, [field]: value } : p));
+    if (activeLang === 'vi') setPlans(updateList(plans));
+    else setPlansEn(updateList(plansEn));
+  };
+
+  const updatePlanFeatures = (id: string, featuresStr: string) => {
+    const features = featuresStr.split('\n').map((s) => s.trim()).filter(Boolean);
+    updatePlan(id, 'features', features);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -297,25 +310,11 @@ const WebsiteCareContentForm: React.FC = () => {
         if (activeLangRef.current === 'vi') payload.serviceDescriptionHtml = editor.getHTML();
         else payload.serviceDescriptionHtmlEn = editor.getHTML();
       }
-<<<<<<< HEAD
+      payload.plansJson = JSON.stringify(plans);
+      payload.plansJsonEn = JSON.stringify(plansEn);
+      
       await api.post('/api/pages/website-care', payload);
       setMessage({ type: 'success', text: 'Đã lưu nội dung Chăm sóc Website.' });
-=======
-      const response = await fetch('/api/pages/website-care', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify(payload),
-      });
-      if (response.ok) {
-        clearCache();
-        setMessage({ type: 'success', text: 'Đã lưu nội dung Chăm sóc Website.' });
-      } else {
-        setMessage({ type: 'error', text: 'Lưu thất bại. Vui lòng thử lại.' });
-      }
->>>>>>> b2df92e (first commit)
     } catch {
       setMessage({ type: 'error', text: 'Lỗi kết nối server.' });
     } finally {
@@ -335,10 +334,7 @@ const WebsiteCareContentForm: React.FC = () => {
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-<<<<<<< HEAD
       <Toast message={message} onClose={() => setMessage(null)} />
-=======
->>>>>>> b2df92e (first commit)
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -591,6 +587,146 @@ const WebsiteCareContentForm: React.FC = () => {
               rows={3}
               className="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="text-md font-semibold text-slate-800 dark:text-slate-200">
+              Gói dịch vụ ({activeLang.toUpperCase()})
+            </h4>
+            <button
+              type="button"
+              onClick={addPlan}
+              className="flex items-center gap-2 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm transition-colors"
+            >
+              <Plus size={16} /> Thêm gói
+            </button>
+          </div>
+
+          <div className="mb-6 space-y-4 border-b border-slate-100 dark:border-slate-800 pb-6">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                Tiêu đề phần Gói dịch vụ
+              </label>
+              <input
+                type="text"
+                name={activeLang === 'vi' ? 'plansTitle' : 'plansTitleEn'}
+                value={activeLang === 'vi' ? formData.plansTitle : formData.plansTitleEn}
+                onChange={handleChange}
+                className="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                placeholder={activeLang === 'vi' ? "Gói dịch vụ tham khảo" : "Reference Plans"}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                Mô tả phần Gói dịch vụ
+              </label>
+              <textarea
+                name={activeLang === 'vi' ? 'plansDescription' : 'plansDescriptionEn'}
+                value={activeLang === 'vi' ? formData.plansDescription : formData.plansDescriptionEn}
+                onChange={handleChange}
+                rows={2}
+                className="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                placeholder={activeLang === 'vi' ? "Mô tả ngắn gọn về các gói..." : "Short description of plans..."}
+              />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {(activeLang === 'vi' ? plans : plansEn).map((plan) => (
+              <div
+                key={plan.id}
+                className={`relative p-4 rounded-xl border ${
+                  plan.featured
+                    ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/20'
+                    : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900'
+                }`}
+              >
+                <div className="absolute top-2 right-2 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => removePlan(plan.id)}
+                    className="text-slate-400 hover:text-red-500 p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                    title="Xóa gói"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+
+                <div className="space-y-3 mt-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-500 mb-1">Tên gói</label>
+                    <input
+                      type="text"
+                      value={plan.name}
+                      onChange={(e) => updatePlan(plan.id, 'name', e.target.value)}
+                      className="w-full px-3 py-1.5 text-sm rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      placeholder="Tên gói..."
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-500 mb-1">Giá</label>
+                    <input
+                      type="text"
+                      value={plan.price}
+                      onChange={(e) => updatePlan(plan.id, 'price', e.target.value)}
+                      className="w-full px-3 py-1.5 text-sm rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      placeholder="Giá..."
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-500 mb-1">Mô tả</label>
+                    <textarea
+                      value={plan.desc}
+                      onChange={(e) => updatePlan(plan.id, 'desc', e.target.value)}
+                      rows={2}
+                      className="w-full px-3 py-1.5 text-sm rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      placeholder="Mô tả ngắn..."
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-500 mb-1">
+                      Tính năng (mỗi dòng 1 tính năng)
+                    </label>
+                    <textarea
+                      value={plan.features.join('\n')}
+                      onChange={(e) => updatePlanFeatures(plan.id, e.target.value)}
+                      rows={5}
+                      className="w-full px-3 py-1.5 text-sm font-mono rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 focus:border-transparent whitespace-pre"
+                      placeholder="- Tính năng 1&#10;- Tính năng 2"
+                    />
+                  </div>
+                  <label className="flex items-center gap-2 cursor-pointer group">
+                    <div className="relative flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={plan.featured}
+                        onChange={(e) => updatePlan(plan.id, 'featured', e.target.checked)}
+                        className="peer sr-only"
+                      />
+                      <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-teal-300 dark:peer-focus:ring-teal-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600"></div>
+                    </div>
+                    <span className="text-sm text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors">
+                      Nổi bật (Featured)
+                    </span>
+                  </label>
+                </div>
+              </div>
+            ))}
+            {(activeLang === 'vi' ? plans : plansEn).length === 0 && (
+              <div className="col-span-full py-12 flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/50 dark:bg-slate-900/20">
+                <FileText className="w-12 h-12 mb-3 opacity-20" />
+                <p>Chưa có gói dịch vụ nào</p>
+                <button
+                  type="button"
+                  onClick={addPlan}
+                  className="mt-2 text-teal-600 hover:text-teal-500 font-medium"
+                >
+                  + Thêm gói đầu tiên
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

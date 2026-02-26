@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useQuery } from '@tanstack/react-query';
@@ -16,21 +15,6 @@ import { useDarkMode } from '@/hooks/useDarkMode';
 const ContactPage: React.FC = () => {
   const lang = getLang();
   const { isDark, toggleTheme } = useDarkMode();
-=======
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { useQuery } from '@tanstack/react-query';
-import { fetcher, api } from '../utils/api';
-import { getLang } from '../utils/localization';
-import { Helmet } from 'react-helmet-async';
-import { Mail, Phone, MapPin, Send, Clock, MessageSquare, ArrowRight, Loader2 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { Toast, ToastMessage } from '../components/Toast';
-import { contactSchema, ContactFormData } from '../utils/validation';
-
-const ContactPage: React.FC = () => {
-  const lang = getLang();
->>>>>>> b2df92e (first commit)
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     phone: '',
@@ -50,11 +34,7 @@ const ContactPage: React.FC = () => {
     const validation = contactSchema.safeParse(formData);
     if (!validation.success) {
       const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
-<<<<<<< HEAD
       validation.error.errors.forEach((err: ZodIssue) => {
-=======
-      validation.error.errors.forEach(err => {
->>>>>>> b2df92e (first commit)
         if (err.path[0]) {
           newErrors[err.path[0] as keyof ContactFormData] = err.message;
         }
@@ -105,11 +85,7 @@ const ContactPage: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-<<<<<<< HEAD
     setFormData((prev: ContactFormData) => ({ ...prev, [name]: value }));
-=======
-    setFormData(prev => ({ ...prev, [name]: value }));
->>>>>>> b2df92e (first commit)
     // Clear error when user types
     if (errors[name as keyof ContactFormData]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
@@ -119,11 +95,7 @@ const ContactPage: React.FC = () => {
   // Reuse home data fetching to get contact info
   const { data: rawHomeData } = useQuery({
     queryKey: ['home-data', lang],
-<<<<<<< HEAD
     queryFn: () => api.get<any>('/api/pages/home'),
-=======
-    queryFn: () => fetcher<any>('/api/pages/home'),
->>>>>>> b2df92e (first commit)
   });
 
   // Process data
@@ -167,7 +139,6 @@ const ContactPage: React.FC = () => {
     workingTime: lang === 'en' ? 'Mon - Fri: 8:00 AM - 5:30 PM' : 'Thứ 2 - Thứ 6: 8:00 - 17:30',
   };
 
-<<<<<<< HEAD
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
@@ -205,17 +176,6 @@ const ContactPage: React.FC = () => {
       
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300 flex flex-col">
         <Navbar isDark={isDark} toggleTheme={toggleTheme} />
-=======
-  return (
-    <>
-      <Helmet>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDesc} />
-      </Helmet>
-      
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300 flex flex-col">
-        <Navbar />
->>>>>>> b2df92e (first commit)
         
         <main className="flex-grow pt-24 pb-20">
             {/* Hero Section */}
@@ -385,11 +345,7 @@ const ContactPage: React.FC = () => {
 
                                 <button 
                                     disabled={loading}
-<<<<<<< HEAD
                                     className="cursor-pointer w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-blue-500/50 flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
-=======
-                                    className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-blue-500/50 flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
->>>>>>> b2df92e (first commit)
                                 >
                                     {loading ? <Loader2 className="animate-spin" /> : <>{labels.send} <Send size={18} className="group-hover:translate-x-1 transition-transform" /></>}
                                 </button>

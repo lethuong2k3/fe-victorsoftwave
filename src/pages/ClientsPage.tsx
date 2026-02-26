@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Search, ArrowLeft } from 'lucide-react';
-<<<<<<< HEAD
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getLang, getLocalizedSlug } from '@/utils/localization';
@@ -10,41 +9,6 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import SEO from '@/components/SEO';
-=======
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang, getLocalizedSlug } from '../utils/localization';
-import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
-
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
->>>>>>> b2df92e (first commit)
 
 type Client = {
   id: number;
@@ -82,7 +46,6 @@ const ClientsPage: React.FC = () => {
   const navigate = useNavigate();
   const lang = getLang();
   
-<<<<<<< HEAD
   const [activeCat, setActiveCat] = useState(lang === 'en' ? 'All' : 'Tất cả');
   const [page, setPage] = useState(0);
 
@@ -124,36 +87,6 @@ const ClientsPage: React.FC = () => {
     queryKey: ['clients', page, queryCat],
     queryFn: () => api.get<ClientPageResponse>(`/api/clients?page=${page}&size=12&cat=${encodeURIComponent(queryCat)}`),
     placeholderData: (prev) => prev,
-=======
-  const [activeCat, setActiveCat] = useState('All');
-  const [page, setPage] = useState(0);
-
-  // Fetch Page Content (SEO, Title, Description)
-  const { data: pageContent } = useQuery({
-    queryKey: ['clients-page-content'],
-    queryFn: () => fetcher<ClientsPageContent>('/api/pages/clients'),
-  });
-
-  // Fetch Categories
-  const { data: categoriesData } = useQuery({
-    queryKey: ['client-categories'],
-    queryFn: () => fetcher<string[]>('/api/clients/categories'),
-  });
-
-  const categories = ['All', ...(categoriesData || [])];
-  
-  // Handle Category Selection
-  // Note: Since categories are stored as simple strings in backend, we display them directly.
-  // Ideally, we might want bilingual categories, but for now we use what's in the DB.
-  
-  const queryCat = activeCat === 'All' ? '' : activeCat;
-
-  // Fetch Clients
-  const { data: clientPage, isLoading: clientsLoading } = useQuery({
-    queryKey: ['clients', page, queryCat],
-    queryFn: () => fetcher<ClientPageResponse>(`/api/clients?page=${page}&size=12&cat=${encodeURIComponent(queryCat)}`),
-    keepPreviousData: true,
->>>>>>> b2df92e (first commit)
   });
 
   const clients = clientPage?.content || [];
@@ -178,7 +111,6 @@ const ClientsPage: React.FC = () => {
 
   const pageDescription = lang === 'en'
     ? (pageContent?.pageDescriptionEn || 'We are proud to accompany businesses on their digital transformation journey.')
-<<<<<<< HEAD
     : (pageContent?.pageDescription || 'Chúng tôi tự hào đồng hành cùng các doanh nghiệp trên hành trình chuyển đổi số.');
 
   const structuredData = {
@@ -196,7 +128,7 @@ const ClientsPage: React.FC = () => {
       "itemListElement": clients.map((client, index) => ({
         "@type": "ListItem",
         "position": index + 1,
-        "url": `https://www.victorsoftwave.com/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`,
+        "url": `https://www.victorsoftwave.com/${client.slug}`,
         "name": client.name
       }))
     }
@@ -211,43 +143,15 @@ const ClientsPage: React.FC = () => {
         type="website"
         structuredData={structuredData}
       />
-=======
-    : (pageContent?.pageDescription || 'Chúng tôi tự hào được đồng hành cùng các doanh nghiệp trên hành trình chuyển đổi số.');
-
-  useEffect(() => {
-    if (seoTitle) document.title = seoTitle;
-    const updateMeta = (name: string, content: string) => {
-      let tag = document.querySelector(`meta[name="${name}"]`);
-      if (!tag) {
-        tag = document.createElement('meta');
-        tag.setAttribute('name', name);
-        document.head.appendChild(tag);
-      }
-      tag.setAttribute('content', content);
-    };
-    if (seoDesc) updateMeta('description', seoDesc);
-    if (seoKeywords) updateMeta('keywords', seoKeywords);
-  }, [seoTitle, seoDesc, seoKeywords]);
-
-  return (
-    <div className={`min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 ${isDark ? 'dark' : ''}`}>
-
->>>>>>> b2df92e (first commit)
       <Navbar isDark={isDark} toggleTheme={toggleTheme} />
 
       <main className="pt-24 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <button
             onClick={() => {
-<<<<<<< HEAD
               navigate(`/`);
             }}
             className="cursor-pointer flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
-=======
-              navigate(`/${lang}`);
-            }}
-            className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
->>>>>>> b2df92e (first commit)
           >
             <ArrowLeft size={20} />
             <span>{lang === 'en' ? 'Back to Home' : 'Quay lại trang chủ'}</span>
@@ -313,11 +217,7 @@ const ClientsPage: React.FC = () => {
                       className="group relative bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-xl hover:border-blue-500/30 transition-all duration-300 aspect-[3/2]"
                       onClick={() => {
                         if (client.slug) {
-<<<<<<< HEAD
-                          navigate(`/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`);
-=======
-                          navigate(`/${lang}/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`);
->>>>>>> b2df92e (first commit)
+                          navigate(`/${client.slug}`);
                         }
                       }}
                     >
@@ -331,11 +231,7 @@ const ClientsPage: React.FC = () => {
                           onClick={(e) => {
                             e.stopPropagation();
                             if (client.slug) {
-<<<<<<< HEAD
-                              navigate(`/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`);
-=======
-                              navigate(`/${lang}/${getLocalizedSlug('khach-hang', lang)}/${client.slug}`);
->>>>>>> b2df92e (first commit)
+                              navigate(`/${client.slug}`);
                             }
                           }}
                           className="px-6 py-2 bg-white text-slate-900 rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"

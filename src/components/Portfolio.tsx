@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
 import { SLUG_MAPPING, getLocalizedSlug } from '@/utils/localization';
 import { api } from '@/utils/api';
-=======
-import { SLUG_MAPPING, getLocalizedSlug } from '../utils/localization';
->>>>>>> b2df92e (first commit)
 
 interface PortfolioProps {
   data?: {
@@ -26,12 +22,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ data, lang = 'vi' }) => {
   const description = data?.portfolioDescription || "Hơn 500+ khách hàng đã tin tưởng và đồng hành cùng Victor Software.";
 
   useEffect(() => {
-<<<<<<< HEAD
     api.get('/api/projects/featured')
-=======
-    fetch('/api/projects/featured')
-      .then((res) => res.json())
->>>>>>> b2df92e (first commit)
       .then((data) => {
         if (Array.isArray(data)) {
           setProjects(data);
@@ -65,11 +56,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ data, lang = 'vi' }) => {
             <button
               key={cat}
               onClick={() => setActiveCat(cat)}
-<<<<<<< HEAD
               className={`cursor-pointer px-5 py-2 rounded-full text-sm font-medium transition-all ${
-=======
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
->>>>>>> b2df92e (first commit)
                 activeCat === cat
                   ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
                   : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
@@ -101,11 +88,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ data, lang = 'vi' }) => {
                 onClick={() => {
                   const projectSlug = (lang === 'en' ? project.slugEn : project.slug);
                   if (projectSlug) {
-<<<<<<< HEAD
                     navigate(`/${getLocalizedSlug('danh-muc-website', lang)}/${projectSlug}`);
-=======
-                    navigate(`/${lang}/${getLocalizedSlug('danh-muc-website', lang)}/${projectSlug}`);
->>>>>>> b2df92e (first commit)
                   }
                 }}
               >
@@ -128,13 +111,8 @@ const Portfolio: React.FC<PortfolioProps> = ({ data, lang = 'vi' }) => {
         
         <div className="mt-12 text-center">
             <button 
-<<<<<<< HEAD
                 onClick={() => navigate(`/${SLUG_MAPPING['danh-muc-website'][lang]}`)}
                 className="cursor-pointer px-8 py-3 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 font-semibold transition-colors"
-=======
-                onClick={() => navigate(`/${lang}/${SLUG_MAPPING['danh-muc-website'][lang]}`)}
-                className="px-8 py-3 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 font-semibold transition-colors"
->>>>>>> b2df92e (first commit)
             >
                 {lang === 'en' ? 'View All Projects' : 'Xem toàn bộ dự án'}
             </button>

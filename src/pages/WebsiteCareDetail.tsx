@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ShieldCheck, Wrench, RefreshCw, Lock, Activity, Headphones, CheckCircle2, ArrowRight } from 'lucide-react';
-<<<<<<< HEAD
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
@@ -10,41 +9,6 @@ import { getLang } from '@/utils/localization';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/utils/api';
 import { useDarkMode } from '@/hooks/useDarkMode';
-=======
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { getLang } from '../utils/localization';
-import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../utils/api';
-
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
-      setIsDark(true);
-    }
-  };
-
-  return { isDark, toggleTheme };
-};
->>>>>>> b2df92e (first commit)
 
 const WebsiteCareDetail: React.FC = () => {
   const { isDark, toggleTheme } = useDarkMode();
@@ -58,27 +22,29 @@ const WebsiteCareDetail: React.FC = () => {
     serviceDescriptionHtml: string;
     suitableFor: string;
     suggestionText: string;
+    plansJson?: string;
     heroTitlePrefixEn: string;
     heroTitleHighlightEn: string;
     heroDescriptionEn: string;
     serviceDescriptionHtmlEn: string;
     suitableForEn: string;
     suggestionTextEn: string;
+    plansJsonEn?: string;
     seoTitle?: string;
     seoTitleEn?: string;
     seoDescription?: string;
     seoDescriptionEn?: string;
     seoKeywords?: string;
     seoKeywordsEn?: string;
+    plansTitle?: string;
+    plansTitleEn?: string;
+    plansDescription?: string;
+    plansDescriptionEn?: string;
   };
   
   const { data: content, isLoading: loading } = useQuery({
     queryKey: ['website-care-content', lang],
-<<<<<<< HEAD
     queryFn: () => api.get<any>('/api/pages/website-care', {
-=======
-    queryFn: () => fetcher<any>('/api/pages/website-care', {
->>>>>>> b2df92e (first commit)
       headers: { 'Accept-Language': lang }
     }),
     select: (data) => ({
@@ -88,18 +54,24 @@ const WebsiteCareDetail: React.FC = () => {
       serviceDescriptionHtml: data.serviceDescriptionHtml || '',
       suitableFor: data.suitableFor || '',
       suggestionText: data.suggestionText || '',
+      plansJson: data.plansJson,
       heroTitlePrefixEn: data.heroTitlePrefixEn || 'Website Care',
       heroTitleHighlightEn: data.heroTitleHighlightEn || 'Stable & Secure',
       heroDescriptionEn: data.heroDescriptionEn || 'Keep your website stable, secure, and fast with ongoing maintenance and support.',
       serviceDescriptionHtmlEn: data.serviceDescriptionHtmlEn || '',
       suitableForEn: data.suitableForEn || '',
       suggestionTextEn: data.suggestionTextEn || '',
+      plansJsonEn: data.plansJsonEn,
       seoTitle: data.seoTitle,
       seoTitleEn: data.seoTitleEn,
       seoDescription: data.seoDescription,
       seoDescriptionEn: data.seoDescriptionEn,
       seoKeywords: data.seoKeywords,
       seoKeywordsEn: data.seoKeywordsEn,
+      plansTitle: data.plansTitle,
+      plansTitleEn: data.plansTitleEn,
+      plansDescription: data.plansDescription,
+      plansDescriptionEn: data.plansDescriptionEn,
     })
   });
 
@@ -113,7 +85,6 @@ const WebsiteCareDetail: React.FC = () => {
     return () => window.removeEventListener('langchange', onLangChange);
   }, []);
 
-<<<<<<< HEAD
   const isEn = lang === 'en';
   
   const seoTitle =
@@ -126,41 +97,6 @@ const WebsiteCareDetail: React.FC = () => {
     (isEn ? content?.seoKeywordsEn : content?.seoKeywords) ||
     content?.seoKeywords ||
     '';
-=======
-  useEffect(() => {
-    if (!content) return;
-    const isEn = lang === 'en';
-    const title =
-      (isEn ? content.seoTitleEn : content.seoTitle) ||
-      content.seoTitle ||
-      (isEn ? 'Website Care Services - Victor Software' : 'Chăm sóc Website - Victor Software');
-    const description =
-      (isEn ? content.seoDescriptionEn : content.seoDescription) || content.seoDescription || '';
-    const keywords =
-      (isEn ? content.seoKeywordsEn : content.seoKeywords) ||
-      content.seoKeywords ||
-      '';
-
-    document.title = title;
-
-    const upsertMeta = (name: string, value: string) => {
-      const trimmed = (value || '').trim();
-      if (!trimmed) return;
-      let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', name);
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', trimmed);
-    };
-
-    upsertMeta('description', description);
-    if (keywords) {
-      upsertMeta('keywords', keywords);
-    }
-  }, [content, lang]);
->>>>>>> b2df92e (first commit)
 
   const highlights = [
     { icon: <Activity size={20} />, title: 'Giám sát vận hành', desc: 'Theo dõi uptime, lỗi, tốc độ và cảnh báo sớm.' },
@@ -182,7 +118,7 @@ const WebsiteCareDetail: React.FC = () => {
     'Báo cáo công việc theo tuần/tháng',
   ];
 
-  const plans = [
+  const defaultPlansVi = [
     {
       name: 'Cơ Bản',
       price: '1.500.000đ/tháng',
@@ -204,7 +140,43 @@ const WebsiteCareDetail: React.FC = () => {
     },
   ];
 
-<<<<<<< HEAD
+  const defaultPlansEn = [
+    {
+      name: 'Basic',
+      price: '$70/month',
+      desc: 'For small sites with infrequent updates.',
+      features: ['Regular Maintenance', 'Weekly Backups', 'Minor Fixes', 'Standard Support'],
+    },
+    {
+      name: 'Standard',
+      price: '$150/month',
+      desc: 'For business sites with regular activity.',
+      features: ['Uptime Monitoring', 'Bi-weekly Backups', 'Performance Tuning', 'Priority Support'],
+      featured: true,
+    },
+    {
+      name: 'Advanced',
+      price: '$250/month',
+      desc: 'For e-commerce or high-traffic sites.',
+      features: ['24/7 Monitoring', 'Daily Backups', 'Deep Optimization', 'SLA Support'],
+    },
+  ];
+
+  const dbPlans = React.useMemo(() => {
+    try {
+      const json = isEn ? content?.plansJsonEn : content?.plansJson;
+      if (json) {
+        const parsed = JSON.parse(json);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return null;
+  }, [content, isEn]);
+
+  const plans = dbPlans || (isEn ? defaultPlansEn : defaultPlansVi);
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -243,11 +215,6 @@ const WebsiteCareDetail: React.FC = () => {
           type="article"
           structuredData={structuredData}
         />
-=======
-  if (loading && !content) {
-    return (
-      <div className="min-h-screen relative overflow-x-hidden selection:bg-accent/30">
->>>>>>> b2df92e (first commit)
         <div className="fixed inset-0 pointer-events-none z-[-1]">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-teal-500/15 rounded-full blur-[100px] animate-pulse" />
           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[100px] animate-pulse" />
@@ -297,15 +264,12 @@ const WebsiteCareDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden selection:bg-accent/30">
-<<<<<<< HEAD
       <SEO
         title={seoTitle}
         description={seoDescription}
         keywords={seoKeywords}
         type="article"
       />
-=======
->>>>>>> b2df92e (first commit)
       <div className="fixed inset-0 pointer-events-none z-[-1]">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-teal-500/15 rounded-full blur-[100px] animate-pulse" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[100px] animate-pulse" />
@@ -317,59 +281,55 @@ const WebsiteCareDetail: React.FC = () => {
         <section className="py-20 bg-gradient-to-b from-teal-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <button
-<<<<<<< HEAD
               onClick={() => navigate(`/`)}
               className="cursor-pointer flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
-=======
-              onClick={() => navigate(`/${lang}`)}
-              className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
->>>>>>> b2df92e (first commit)
             >
               <ArrowLeft size={20} />
               <span>{lang === 'en' ? 'Back to Home' : 'Quay lại trang chủ'}</span>
             </button>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="max-w-4xl"
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-300 text-sm font-semibold mb-6">
-                <ShieldCheck size={16} />
-                <span>{lang === 'en' ? 'Website Care' : 'Chăm sóc Website'}</span>
-              </div>
+            <div className="max-w-4xl mr-auto text-left">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-300 text-sm font-semibold mb-6">
+                  <ShieldCheck size={16} />
+                  <span>{lang === 'en' ? 'Website Care' : 'Chăm sóc Website'}</span>
+                </div>
 
-              <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-slate-900 dark:text-white">
-                {(lang === 'en' ? content?.heroTitlePrefixEn : content?.heroTitlePrefix) || (lang === 'en' ? 'Website Care' : 'Chăm Sóc Website')}{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-500">
-                  {(lang === 'en' ? content?.heroTitleHighlightEn : content?.heroTitleHighlight) ||
-                    (lang === 'en' ? 'Stable & Secure' : 'Ổn Định & An Toàn')}
-                </span>
-              </h1>
+                <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-slate-900 dark:text-white">
+                  {(lang === 'en' ? content?.heroTitlePrefixEn : content?.heroTitlePrefix) || (lang === 'en' ? 'Website Care' : 'Chăm Sóc Website')}{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-500">
+                    {(lang === 'en' ? content?.heroTitleHighlightEn : content?.heroTitleHighlight) ||
+                      (lang === 'en' ? 'Stable & Secure' : 'Ổn Định & An Toàn')}
+                  </span>
+                </h1>
 
-              <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed mb-10">
-                {(lang === 'en' ? content?.heroDescriptionEn : content?.heroDescription) ||
-                  (lang === 'en'
-                    ? 'Keep your website stable, secure, and fast with ongoing maintenance and support.'
-                    : 'Duy trì website hoạt động ổn định, bảo mật và tối ưu hiệu suất. Hỗ trợ cập nhật nội dung và xử lý sự cố nhanh, giúp bạn tập trung vào kinh doanh.')}
-              </p>
+                <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed mb-10 max-w-2xl mx-auto">
+                  {(lang === 'en' ? content?.heroDescriptionEn : content?.heroDescription) ||
+                    (lang === 'en'
+                      ? 'Keep your website stable, secure, and fast with ongoing maintenance and support.'
+                      : 'Duy trì website hoạt động ổn định, bảo mật và tối ưu hiệu suất. Hỗ trợ cập nhật nội dung và xử lý sự cố nhanh, giúp bạn tập trung vào kinh doanh.')}
+                </p>
 
-              <div className="grid sm:grid-cols-3 gap-4">
-                {highlights.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm"
-                  >
-                    <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-semibold mb-2">
-                      {item.icon}
-                      <span>{item.title}</span>
+                <div className="grid sm:grid-cols-3 gap-4 text-left">
+                  {highlights.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm"
+                    >
+                      <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-semibold mb-2">
+                        {item.icon}
+                        <span>{item.title}</span>
+                      </div>
+                      <div className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</div>
                     </div>
-                    <div className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
           </div>
         </section>
 
@@ -415,12 +375,12 @@ const WebsiteCareDetail: React.FC = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-white">
-                {lang === 'en' ? 'Reference Plans' : 'Gói dịch vụ tham khảo'}
+                {(lang === 'en' ? content?.plansTitleEn : content?.plansTitle) || (lang === 'en' ? 'Reference Plans' : 'Gói dịch vụ tham khảo')}
               </h2>
               <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-                {lang === 'en'
+                {(lang === 'en' ? content?.plansDescriptionEn : content?.plansDescription) || (lang === 'en'
                   ? 'Customizable based on operational needs and update frequency.'
-                  : 'Có thể tùy chỉnh theo nhu cầu vận hành và mức độ cập nhật.'}
+                  : 'Có thể tùy chỉnh theo nhu cầu vận hành và mức độ cập nhật.')}
               </p>
             </div>
 
@@ -451,11 +411,7 @@ const WebsiteCareDetail: React.FC = () => {
                     ))}
                   </div>
                   <button
-<<<<<<< HEAD
                     onClick={() => navigate(`/`)}
-=======
-                    onClick={() => navigate(`/${lang}`)}
->>>>>>> b2df92e (first commit)
                     className={[
                       'w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold transition-all',
                       plan.featured
@@ -505,15 +461,9 @@ const WebsiteCareDetail: React.FC = () => {
                   {((lang === 'en' ? content?.suitableForEn : content?.suitableFor) || '')
                     .replace(/\r\n/g, '\n')
                     .split('\n')
-<<<<<<< HEAD
                     .map((s: string) => s.trim())
                     .filter(Boolean)
                     .map((item: string, idx: number) => (
-=======
-                    .map((s) => s.trim())
-                    .filter(Boolean)
-                    .map((item, idx) => (
->>>>>>> b2df92e (first commit)
                       <div key={idx} className="flex items-start gap-3">
                         <CheckCircle2 size={18} className="mt-0.5 flex-shrink-0 text-teal-600 dark:text-teal-400" />
                         <span className="text-slate-700 dark:text-slate-300">{item}</span>

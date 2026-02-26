@@ -79,18 +79,6 @@ const Footer: React.FC = () => {
                 <li><a href="#" className="hover:text-blue-500">Chính sách bảo mật</a></li>
             </ul>
           </div>
-
-          <div>
-            <h4 className="font-bold text-slate-900 dark:text-white mb-6">Đăng ký nhận tin</h4>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-              Nhận thông tin ưu đãi và kiến thức marketing mới nhất.
-            </p>
-            <div className="flex">
-                <input type="email" placeholder="Email của bạn" className="bg-slate-100 dark:bg-slate-900 px-4 py-2 rounded-l-lg outline-none w-full text-sm dark:text-white" />
-                <button className="cursor-pointer bg-blue-600 px-4 py-2 rounded-r-lg text-white text-sm font-medium hover:bg-blue-700">Gửi</button>
-            </div>
-          </div>
-
         </div>
 
         <div className="border-t border-slate-200 dark:border-slate-800 pt-8 text-center text-sm text-slate-500">

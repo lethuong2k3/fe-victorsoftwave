@@ -34,10 +34,12 @@ const FacebookAdsDetail: React.FC = () => {
     seoKeywords: string;
     seoDescription: string;
     primaryKeyword: string;
+    consultationLink: string;
     seoTitleEn: string;
     seoKeywordsEn: string;
     seoDescriptionEn: string;
     primaryKeywordEn: string;
+    consultationLinkEn: string;
   };
 
   const { data: content, isLoading: loading } = useQuery({
@@ -55,6 +57,7 @@ const FacebookAdsDetail: React.FC = () => {
       serviceDescriptionHtml: data.serviceDescriptionHtml || '',
       suitableFor: data.suitableFor || '',
       suggestionText: data.suggestionText || '',
+      consultationLink: data.consultationLink || '',
       heroTitlePrefixEn: data.heroTitlePrefixEn || '',
       heroTitleHighlightEn: data.heroTitleHighlightEn || '',
       heroDescriptionEn: data.heroDescriptionEn || '',
@@ -62,6 +65,7 @@ const FacebookAdsDetail: React.FC = () => {
       serviceDescriptionHtmlEn: data.serviceDescriptionHtmlEn || '',
       suitableForEn: data.suitableForEn || '',
       suggestionTextEn: data.suggestionTextEn || '',
+      consultationLinkEn: data.consultationLinkEn || '',
       seoTitle: data.seoTitle || '',
       seoKeywords: data.seoKeywords || '',
       seoDescription: data.seoDescription || '',
@@ -130,6 +134,7 @@ const FacebookAdsDetail: React.FC = () => {
     : content?.serviceDescriptionHtml || '';
   const suitableFor = isEn ? content?.suitableForEn || content?.suitableFor : content?.suitableFor;
   const suggestionText = isEn ? content?.suggestionTextEn || content?.suggestionText : content?.suggestionText;
+  const consultationLink = isEn ? content?.consultationLinkEn || content?.consultationLink : content?.consultationLink;
 
   const backToHomeLabel = isEn ? 'Back to homepage' : 'Quay lại trang chủ';
   const heroBadgeLabel = isEn ? 'Facebook Ads' : 'Quảng cáo Facebook';
@@ -553,8 +558,14 @@ const FacebookAdsDetail: React.FC = () => {
 
                 <div className="lg:justify-self-end">
                   <button
-                    onClick={() => navigate(`/`)}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-all shadow-lg shadow-blue-500/25"
+                    onClick={() => {
+                      if (consultationLink) {
+                        window.open(consultationLink, '_blank');
+                      } else {
+                        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className="cursor-pointer inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-all shadow-lg shadow-blue-500/25"
                   >
                     {consultationCta} <ArrowRight size={18} />
                   </button>

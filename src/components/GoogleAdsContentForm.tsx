@@ -32,10 +32,12 @@ type GoogleAdsContent = {
   seoKeywords: string;
   seoDescription: string;
   primaryKeyword: string;
+  consultationLink: string;
   seoTitleEn: string;
   seoKeywordsEn: string;
   seoDescriptionEn: string;
   primaryKeywordEn: string;
+  consultationLinkEn: string;
 };
 
 const emptyContent: GoogleAdsContent = {
@@ -46,6 +48,7 @@ const emptyContent: GoogleAdsContent = {
   serviceDescriptionHtml: '',
   suitableFor: '',
   suggestionText: '',
+  consultationLink: '',
   heroTitlePrefixEn: '',
   heroTitleHighlightEn: '',
   heroDescriptionEn: '',
@@ -53,6 +56,7 @@ const emptyContent: GoogleAdsContent = {
   serviceDescriptionHtmlEn: '',
   suitableForEn: '',
   suggestionTextEn: '',
+  consultationLinkEn: '',
   seoTitle: '',
   seoKeywords: '',
   seoDescription: '',
@@ -527,6 +531,19 @@ export const GoogleAdsContentForm: React.FC = () => {
                 value={activeLang === 'vi' ? formData.suggestionText : formData.suggestionTextEn}
                 onChange={handleChange}
                 rows={5}
+                className="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                Link liên hệ tư vấn
+              </label>
+              <input
+                type="text"
+                name={activeLang === 'vi' ? 'consultationLink' : 'consultationLinkEn'}
+                value={activeLang === 'vi' ? formData.consultationLink : formData.consultationLinkEn}
+                onChange={handleChange}
+                placeholder="https://zalo.me/..."
                 className="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
             </div>

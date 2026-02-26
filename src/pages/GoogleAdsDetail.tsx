@@ -37,10 +37,12 @@ const GoogleAdsDetail = () => {
       seoKeywords: data.seoKeywords || '',
       seoDescription: data.seoDescription || '',
       primaryKeyword: data.primaryKeyword || '',
+      consultationLink: data.consultationLink || '',
       seoTitleEn: data.seoTitleEn || '',
       seoKeywordsEn: data.seoKeywordsEn || '',
       seoDescriptionEn: data.seoDescriptionEn || '',
       primaryKeywordEn: data.primaryKeywordEn || '',
+      consultationLinkEn: data.consultationLinkEn || '',
     }),
   });
 
@@ -198,6 +200,9 @@ const GoogleAdsDetail = () => {
         'Ước tính ngân sách và dự báo ROI',
       ];
   const consultationCta = isEn ? 'Contact for consultation' : 'Liên hệ tư vấn';
+  const consultationLink = isEn
+    ? content?.consultationLinkEn || content?.consultationLink
+    : content?.consultationLink;
 
   if (loading && !content) {
     return (
@@ -388,8 +393,14 @@ const GoogleAdsDetail = () => {
               </ul>
               <div className="flex justify-center">
                 <button
-                  onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
+                  onClick={() => {
+                    if (consultationLink) {
+                      window.open(consultationLink, '_blank');
+                    } else {
+                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="cursor-pointer px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                 >
                   <span>{consultationCta}</span>
                   <ArrowRight size={18} />

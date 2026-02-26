@@ -19,6 +19,8 @@ public class FacebookAdsContent {
     private String heroTitlePrefixEn;
     private String heroTitleHighlightEn;
     private String heroDescriptionEn;
+    private String heroImageUrl;
+    private String heroImageUrlEn;
     
     @Column(columnDefinition = "TEXT")
     private String serviceDescriptionHtml;

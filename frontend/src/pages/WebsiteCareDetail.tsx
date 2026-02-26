@@ -22,12 +22,14 @@ const WebsiteCareDetail: React.FC = () => {
     serviceDescriptionHtml: string;
     suitableFor: string;
     suggestionText: string;
+    plansJson?: string;
     heroTitlePrefixEn: string;
     heroTitleHighlightEn: string;
     heroDescriptionEn: string;
     serviceDescriptionHtmlEn: string;
     suitableForEn: string;
     suggestionTextEn: string;
+    plansJsonEn?: string;
     seoTitle?: string;
     seoTitleEn?: string;
     seoDescription?: string;
@@ -48,12 +50,14 @@ const WebsiteCareDetail: React.FC = () => {
       serviceDescriptionHtml: data.serviceDescriptionHtml || '',
       suitableFor: data.suitableFor || '',
       suggestionText: data.suggestionText || '',
+      plansJson: data.plansJson,
       heroTitlePrefixEn: data.heroTitlePrefixEn || 'Website Care',
       heroTitleHighlightEn: data.heroTitleHighlightEn || 'Stable & Secure',
       heroDescriptionEn: data.heroDescriptionEn || 'Keep your website stable, secure, and fast with ongoing maintenance and support.',
       serviceDescriptionHtmlEn: data.serviceDescriptionHtmlEn || '',
       suitableForEn: data.suitableForEn || '',
       suggestionTextEn: data.suggestionTextEn || '',
+      plansJsonEn: data.plansJsonEn,
       seoTitle: data.seoTitle,
       seoTitleEn: data.seoTitleEn,
       seoDescription: data.seoDescription,
@@ -106,7 +110,7 @@ const WebsiteCareDetail: React.FC = () => {
     'Báo cáo công việc theo tuần/tháng',
   ];
 
-  const plans = [
+  const defaultPlansVi = [
     {
       name: 'Cơ Bản',
       price: '1.500.000đ/tháng',
@@ -127,6 +131,43 @@ const WebsiteCareDetail: React.FC = () => {
       features: ['Giám sát & cảnh báo', 'Sao lưu hằng ngày', 'Tối ưu chuyên sâu', 'Hỗ trợ nhanh theo SLA'],
     },
   ];
+
+  const defaultPlansEn = [
+    {
+      name: 'Basic',
+      price: '$70/month',
+      desc: 'For small sites with infrequent updates.',
+      features: ['Regular Maintenance', 'Weekly Backups', 'Minor Fixes', 'Standard Support'],
+    },
+    {
+      name: 'Standard',
+      price: '$150/month',
+      desc: 'For business sites with regular activity.',
+      features: ['Uptime Monitoring', 'Bi-weekly Backups', 'Performance Tuning', 'Priority Support'],
+      featured: true,
+    },
+    {
+      name: 'Advanced',
+      price: '$250/month',
+      desc: 'For e-commerce or high-traffic sites.',
+      features: ['24/7 Monitoring', 'Daily Backups', 'Deep Optimization', 'SLA Support'],
+    },
+  ];
+
+  const dbPlans = React.useMemo(() => {
+    try {
+      const json = isEn ? content?.plansJsonEn : content?.plansJson;
+      if (json) {
+        const parsed = JSON.parse(json);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return null;
+  }, [content, isEn]);
+
+  const plans = dbPlans || (isEn ? defaultPlansEn : defaultPlansVi);
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -239,47 +280,48 @@ const WebsiteCareDetail: React.FC = () => {
               <span>{lang === 'en' ? 'Back to Home' : 'Quay lại trang chủ'}</span>
             </button>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="max-w-4xl"
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-300 text-sm font-semibold mb-6">
-                <ShieldCheck size={16} />
-                <span>{lang === 'en' ? 'Website Care' : 'Chăm sóc Website'}</span>
-              </div>
+            <div className="max-w-4xl mx-auto text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-300 text-sm font-semibold mb-6">
+                  <ShieldCheck size={16} />
+                  <span>{lang === 'en' ? 'Website Care' : 'Chăm sóc Website'}</span>
+                </div>
 
-              <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-slate-900 dark:text-white">
-                {(lang === 'en' ? content?.heroTitlePrefixEn : content?.heroTitlePrefix) || (lang === 'en' ? 'Website Care' : 'Chăm Sóc Website')}{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-500">
-                  {(lang === 'en' ? content?.heroTitleHighlightEn : content?.heroTitleHighlight) ||
-                    (lang === 'en' ? 'Stable & Secure' : 'Ổn Định & An Toàn')}
-                </span>
-              </h1>
+                <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-slate-900 dark:text-white">
+                  {(lang === 'en' ? content?.heroTitlePrefixEn : content?.heroTitlePrefix) || (lang === 'en' ? 'Website Care' : 'Chăm Sóc Website')}{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-500">
+                    {(lang === 'en' ? content?.heroTitleHighlightEn : content?.heroTitleHighlight) ||
+                      (lang === 'en' ? 'Stable & Secure' : 'Ổn Định & An Toàn')}
+                  </span>
+                </h1>
 
-              <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed mb-10">
-                {(lang === 'en' ? content?.heroDescriptionEn : content?.heroDescription) ||
-                  (lang === 'en'
-                    ? 'Keep your website stable, secure, and fast with ongoing maintenance and support.'
-                    : 'Duy trì website hoạt động ổn định, bảo mật và tối ưu hiệu suất. Hỗ trợ cập nhật nội dung và xử lý sự cố nhanh, giúp bạn tập trung vào kinh doanh.')}
-              </p>
+                <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed mb-10 max-w-2xl mx-auto">
+                  {(lang === 'en' ? content?.heroDescriptionEn : content?.heroDescription) ||
+                    (lang === 'en'
+                      ? 'Keep your website stable, secure, and fast with ongoing maintenance and support.'
+                      : 'Duy trì website hoạt động ổn định, bảo mật và tối ưu hiệu suất. Hỗ trợ cập nhật nội dung và xử lý sự cố nhanh, giúp bạn tập trung vào kinh doanh.')}
+                </p>
 
-              <div className="grid sm:grid-cols-3 gap-4">
-                {highlights.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm"
-                  >
-                    <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-semibold mb-2">
-                      {item.icon}
-                      <span>{item.title}</span>
+                <div className="grid sm:grid-cols-3 gap-4 text-left">
+                  {highlights.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm"
+                    >
+                      <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-semibold mb-2">
+                        {item.icon}
+                        <span>{item.title}</span>
+                      </div>
+                      <div className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</div>
                     </div>
-                    <div className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
           </div>
         </section>
 

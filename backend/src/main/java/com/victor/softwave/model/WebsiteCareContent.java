@@ -19,6 +19,8 @@ public class WebsiteCareContent {
     private String heroTitlePrefixEn;
     private String heroTitleHighlightEn;
     private String heroDescriptionEn;
+    private String heroImageUrl;
+    private String heroImageUrlEn;
     
     @Column(columnDefinition = "TEXT")
     private String serviceDescriptionHtml;
@@ -37,6 +39,13 @@ public class WebsiteCareContent {
     
     @Column(columnDefinition = "TEXT")
     private String suggestionTextEn;
+
+    // Plans (stored as JSON)
+    @Column(columnDefinition = "TEXT")
+    private String plansJson;
+
+    @Column(columnDefinition = "TEXT")
+    private String plansJsonEn;
 
     // SEO
     private String seoTitle;

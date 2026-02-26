@@ -45,6 +45,10 @@ type WebsiteCareContent = {
   seoKeywordsEn: string;
   seoDescriptionEn: string;
   primaryKeywordEn: string;
+  plansTitle: string;
+  plansTitleEn: string;
+  plansDescription: string;
+  plansDescriptionEn: string;
   // Legacy fields for migration
   serviceIntro?: string;
   serviceSecondary?: string;
@@ -78,6 +82,10 @@ const emptyContent: WebsiteCareContent = {
   seoKeywordsEn: '',
   seoDescriptionEn: '',
   primaryKeywordEn: '',
+  plansTitle: '',
+  plansTitleEn: '',
+  plansDescription: '',
+  plansDescriptionEn: '',
 };
 
 const WebsiteCareContentForm: React.FC = () => {
@@ -146,6 +154,10 @@ const WebsiteCareContentForm: React.FC = () => {
           seoKeywordsEn: data.seoKeywordsEn || '',
           seoDescriptionEn: data.seoDescriptionEn || '',
           primaryKeywordEn: data.primaryKeywordEn || '',
+          plansTitle: data.plansTitle || '',
+          plansTitleEn: data.plansTitleEn || '',
+          plansDescription: data.plansDescription || '',
+          plansDescriptionEn: data.plansDescriptionEn || '',
         });
 
         try {
@@ -590,6 +602,35 @@ const WebsiteCareContentForm: React.FC = () => {
             >
               <Plus size={16} /> Thêm gói
             </button>
+          </div>
+
+          <div className="mb-6 space-y-4 border-b border-slate-100 dark:border-slate-800 pb-6">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                Tiêu đề phần Gói dịch vụ
+              </label>
+              <input
+                type="text"
+                name={activeLang === 'vi' ? 'plansTitle' : 'plansTitleEn'}
+                value={activeLang === 'vi' ? formData.plansTitle : formData.plansTitleEn}
+                onChange={handleChange}
+                className="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                placeholder={activeLang === 'vi' ? "Gói dịch vụ tham khảo" : "Reference Plans"}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                Mô tả phần Gói dịch vụ
+              </label>
+              <textarea
+                name={activeLang === 'vi' ? 'plansDescription' : 'plansDescriptionEn'}
+                value={activeLang === 'vi' ? formData.plansDescription : formData.plansDescriptionEn}
+                onChange={handleChange}
+                rows={2}
+                className="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                placeholder={activeLang === 'vi' ? "Mô tả ngắn gọn về các gói..." : "Short description of plans..."}
+              />
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">

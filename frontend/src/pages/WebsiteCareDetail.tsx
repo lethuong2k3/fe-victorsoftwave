@@ -36,6 +36,10 @@ const WebsiteCareDetail: React.FC = () => {
     seoDescriptionEn?: string;
     seoKeywords?: string;
     seoKeywordsEn?: string;
+    plansTitle?: string;
+    plansTitleEn?: string;
+    plansDescription?: string;
+    plansDescriptionEn?: string;
   };
   
   const { data: content, isLoading: loading } = useQuery({
@@ -64,6 +68,10 @@ const WebsiteCareDetail: React.FC = () => {
       seoDescriptionEn: data.seoDescriptionEn,
       seoKeywords: data.seoKeywords,
       seoKeywordsEn: data.seoKeywordsEn,
+      plansTitle: data.plansTitle,
+      plansTitleEn: data.plansTitleEn,
+      plansDescription: data.plansDescription,
+      plansDescriptionEn: data.plansDescriptionEn,
     })
   });
 
@@ -280,7 +288,7 @@ const WebsiteCareDetail: React.FC = () => {
               <span>{lang === 'en' ? 'Back to Home' : 'Quay lại trang chủ'}</span>
             </button>
 
-            <div className="max-w-4xl mx-auto text-center">
+            <div className="max-w-4xl mr-auto text-left">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -367,12 +375,12 @@ const WebsiteCareDetail: React.FC = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-white">
-                {lang === 'en' ? 'Reference Plans' : 'Gói dịch vụ tham khảo'}
+                {(lang === 'en' ? content?.plansTitleEn : content?.plansTitle) || (lang === 'en' ? 'Reference Plans' : 'Gói dịch vụ tham khảo')}
               </h2>
               <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-                {lang === 'en'
+                {(lang === 'en' ? content?.plansDescriptionEn : content?.plansDescription) || (lang === 'en'
                   ? 'Customizable based on operational needs and update frequency.'
-                  : 'Có thể tùy chỉnh theo nhu cầu vận hành và mức độ cập nhật.'}
+                  : 'Có thể tùy chỉnh theo nhu cầu vận hành và mức độ cập nhật.')}
               </p>
             </div>
 

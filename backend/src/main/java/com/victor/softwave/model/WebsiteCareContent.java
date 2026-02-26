@@ -21,26 +21,35 @@ public class WebsiteCareContent {
     private String heroDescriptionEn;
     private String heroImageUrl;
     private String heroImageUrlEn;
-    
+
     @Column(columnDefinition = "TEXT")
     private String serviceDescriptionHtml;
-    
+
     @Column(columnDefinition = "TEXT")
     private String serviceDescriptionHtmlEn;
-    
+
     @Column(columnDefinition = "TEXT")
     private String suitableFor;
-    
+
     @Column(columnDefinition = "TEXT")
     private String suitableForEn;
-    
+
     @Column(columnDefinition = "TEXT")
     private String suggestionText;
-    
+
     @Column(columnDefinition = "TEXT")
     private String suggestionTextEn;
 
     // Plans (stored as JSON)
+    private String plansTitle;
+    private String plansTitleEn;
+
+    @Column(columnDefinition = "TEXT")
+    private String plansDescription;
+
+    @Column(columnDefinition = "TEXT")
+    private String plansDescriptionEn;
+
     @Column(columnDefinition = "TEXT")
     private String plansJson;
 

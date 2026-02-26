@@ -1,124 +1,46 @@
-[33mcommit 121a252ef736035a81e08c11ef7b1dd567705c96[m
-Author: lethuong2k3 <leanhthuong2k3@gmail.com>
-Date:   Tue Feb 10 23:36:31 2026 +0700
-
-    Cleanup-root-files-and-update-domain
-
- delete mode 100644 .dockerignore
- delete mode 100644 Dockerfile
- delete mode 100644 docker-publish.bat
- delete mode 100644 index.html
- delete mode 100644 metadata.json
- delete mode 100644 nginx.conf
- delete mode 100644 package-lock.json
- delete mode 100644 package.json
- delete mode 100644 postcss.config.js
- delete mode 100644 public/logo-circle.png
- delete mode 100644 public/logo.png
- delete mode 100644 public/robots.txt
- delete mode 100644 public/sitemap.xml
- delete mode 100644 src/App.tsx
- delete mode 100644 src/assets/logo.png
- delete mode 100644 src/components/ArticlesManagement.tsx
- delete mode 100644 src/components/Blog.tsx
- delete mode 100644 src/components/ClientsPageContentForm.tsx
- delete mode 100644 src/components/Contact.tsx
- delete mode 100644 src/components/ContactManagement.tsx
- delete mode 100644 src/components/FacebookAdsContentForm.tsx
- delete mode 100644 src/components/FloatingContact.tsx
- delete mode 100644 src/components/Footer.tsx
- delete mode 100644 src/components/GoogleAdsContentForm.tsx
- delete mode 100644 src/components/GoogleReviews.tsx
- delete mode 100644 src/components/GoogleReviewsManagement.tsx
- delete mode 100644 src/components/GuestRoute.tsx
- delete mode 100644 src/components/Hero.tsx
- delete mode 100644 src/components/HomeContentForm.tsx
- delete mode 100644 src/components/Marketing.tsx
- delete mode 100644 src/components/Navbar.tsx
- delete mode 100644 src/components/Portfolio.tsx
- delete mode 100644 src/components/PrivateRoute.tsx
- delete mode 100644 src/components/ProjectsPageContentForm.tsx
- delete mode 100644 src/components/QuoteModal.tsx
- delete mode 100644 src/components/SEO.tsx
- delete mode 100644 src/components/ScrollToTop.tsx
- delete mode 100644 src/components/SeoOverallContentForm.tsx
- delete mode 100644 src/components/SeoSettingsForm.tsx
- delete mode 100644 src/components/Services.tsx
- delete mode 100644 src/components/TiktokAdsContentForm.tsx
- delete mode 100644 src/components/Toast.tsx
- delete mode 100644 src/components/WebDesignContentForm.tsx
- delete mode 100644 src/components/WebsiteCareContentForm.tsx
- delete mode 100644 src/hooks/useDarkMode.ts
- delete mode 100644 src/index.css
- delete mode 100644 src/index.tsx
- delete mode 100644 src/pages/AdminDashboard.tsx
- delete mode 100644 src/pages/AdminLogin.tsx
- delete mode 100644 src/pages/ArticleDetailPage.tsx
- delete mode 100644 src/pages/ArticlesPage.tsx
- delete mode 100644 src/pages/ClientDetail.tsx
- delete mode 100644 src/pages/ClientsPage.tsx
- delete mode 100644 src/pages/ContactPage.tsx
- delete mode 100644 src/pages/FacebookAdsDetail.tsx
- delete mode 100644 src/pages/GoogleAdsDetail.tsx
- delete mode 100644 src/pages/Home.tsx
- delete mode 100644 src/pages/NotFound.tsx
- delete mode 100644 src/pages/PortfolioPage.tsx
- delete mode 100644 src/pages/ProjectDetail.tsx
- delete mode 100644 src/pages/SeoDetail.tsx
- delete mode 100644 src/pages/TikTokDetail.tsx
- delete mode 100644 src/pages/WebDesignDetail.tsx
- delete mode 100644 src/pages/WebsiteCareDetail.tsx
- delete mode 100644 src/router/PrivateRoutes.tsx
- delete mode 100644 src/router/PublicRoutes.tsx
- delete mode 100644 src/utils/api.ts
- delete mode 100644 src/utils/auth.ts
- delete mode 100644 src/utils/localization.ts
- delete mode 100644 src/utils/validation.ts
- delete mode 100644 src/vite-env.d.ts
- delete mode 100644 tailwind.config.js
- delete mode 100644 tsconfig.json
- delete mode 100644 tsconfig.node.json
- delete mode 100644 vite.config.ts
-
-[33mcommit e50d2fc6755a8c96789536606bac0d20252d7515[m
-Author: lethuong2k3 <leanhthuong2k3@gmail.com>
-Date:   Mon Feb 9 13:13:35 2026 +0700
-
-    Update_frontend_changes
-
- delete mode 100644 postcss.config.js
- delete mode 100644 src/index.css
- delete mode 100644 tailwind.config.js
-
-[33mcommit 53d54779e766386f6e16edb34dfdf164ee676dbf[m
-Author: lethuong2k3 <leanhthuong2k3@gmail.com>
-Date:   Mon Feb 9 11:58:47 2026 +0700
-
-    Init_frontend
-
- delete mode 100644 .dockerignore
- delete mode 100644 Dockerfile
- delete mode 100644 components/FloatingContact.tsx
- delete mode 100644 components/Footer.tsx
- delete mode 100644 components/Hero.tsx
- delete mode 100644 components/HomeContentForm.tsx
- delete mode 100644 components/Marketing.tsx
- delete mode 100644 components/QuoteModal.tsx
- delete mode 100644 nginx.conf
- delete mode 100644 pages/AdminDashboard.tsx
- delete mode 100644 pages/ContactPage.tsx
- delete mode 100644 pages/FacebookAdsDetail.tsx
- delete mode 100644 pages/GoogleAdsDetail.tsx
- delete mode 100644 pages/Home.tsx
- delete mode 100644 pages/WebDesignDetail.tsx
- delete mode 100644 router/PublicRoutes.tsx
- delete mode 100644 src/components/ImageWithFallback.tsx
- delete mode 100644 src/utils/cache.ts
-
-[33mcommit e074a3f7bf9acd05ee3098de66a2f6dfaa37fea4[m
-Author: lethuong2k3 <leanhthuong2k3@gmail.com>
-Date:   Wed Feb 4 19:30:14 2026 +0700
-
-    Update_gitignore_and_remove_env_production
-
- delete mode 100644 .env.production
+[33mdbdeb28[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Update_frontend_components_pages_and_config
+[33m6b45d77[m Update_project_fixes
+[33me217287[m fix
+[33me379754[m chore
+[33m8175919[m Fix_backend_docker_build_and_update_project_structure
+[33me7eec2b[m Merge_remote_changes
+[33m121a252[m Cleanup-root-files-and-update-domain
+[33m2aa6627[m Update_frontend_and_backend_domain
+[33mecc8168[m Update_domain_and_fix_structure
+[33m77e26a2[m fix:_Resolve_console_errors_and_cleanup_hooks
+[33ma5a5e1b[m feat:_Standardize_SEO,_fix_Tailwind_v4_config,_and_update_Nginx
+[33m41e6ee3[m Fix_Tailwind_v4_missing_styles_add_explicit_config_and_sources
+[33m4b86bcc[m Fix_Tailwind_v4_PostCSS_configuration
+[33m716aa74[m Migrate_Tailwind_from_CDN_to_Build_Process
+[33m55c89b5[m Update_nginx_config_for_Facebook_SEO_proxy
+[33mba08d17[m Update_default_OG_image_to_logo_png
+[33mdb60978[m Enhance_Open_Graph_tags_for_better_Facebook_sharing_preview
+[33mbf390a6[m Fix_Contact_section_in_Homepage_not_updating_with_Admin_data
+[33m73577dd[m Update_SEO_files_sitemap_and_robots
+[33m2f3eca9[m Perf_optimizations
+[33m1229d31[m Fix_default_language_to_be_Vietnamese_ignoring_browser_settings
+[33me3969e3[m Remove_navigation_link_from_Web_Design_dropdown_parent_item
+[33m9bf3d52[m Add_Price_List_item_to_Web_Design_dropdown
+[33m634dff8[m Fix_double_API_call_to_home_by_unifying_queryKey
+[33m83300ca[m Add_robots_txt
+[33me50d2fc[m Update_frontend_changes
+[33m92c2db6[m chore-optimize-INP-performance-and-migrate-tailwind
+[33m92f737a[m Add_ARG_and_ENV_to_Dockerfile_for_Vite_build
+[33m08cf1d5[m Fix_Nginx_port_configuration_for_Railway
+[33mbb9061b[m Fix_build_error_use_legacy_peer_deps
+[33m3b22dfc[m Add_Docker_deployment_configuration_for_Railway
+[33m53d5477[m Init_frontend
+[33m2ebda7d[m fix_image_404s
+[33m127926e[m Update_api_ts_with_fallback_production_URL
+[33m1bb3cf4[m Update_frontend_to_use_VITE_API_URL_and_fix_lang_params
+[33me074a3f[m Update_gitignore_and_remove_env_production
+[33m4516324[m Fix_Add_env_production_to_ensure_VITE_API_URL_is_set_during_build
+[33m3d59e32[m Refactor_API_URLs_to_use_VITE_API_URL
+[33m42c15d0[m feat-nginx-proxy
+[33mc31cbce[m refactor-admin-login-api
+[33m06933aa[m refactor-env-config
+[33m3a0d24e[m fix-port-env
+[33mcb120e8[m fix-tiptap-deps
+[33mc054330[m fix-docker-deps
+[33m2c46b66[m docker-config
+[33mb2df92e[m first commit

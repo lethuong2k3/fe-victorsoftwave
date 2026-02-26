@@ -717,6 +717,44 @@ export const ArticlesManagement: React.FC<ArticlesManagementProps> = ({ onToast 
 
                        <div>
                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                           Slug / Đường dẫn ({editorLang === 'vi' ? 'Tiếng Việt' : 'English'})
+                         </label>
+                         <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={editorLang === 'vi' ? (editingArticle.slug || '') : (editingArticle.slugEn || '')}
+                              onChange={(e) => setEditingArticle(prev => ({
+                                ...prev,
+                                [editorLang === 'vi' ? 'slug' : 'slugEn']: e.target.value
+                              }))}
+                              placeholder={toSlug(editorLang === 'vi' ? (editingArticle.title || '') : (editingArticle.titleEn || ''))}
+                              className="flex-1 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-mono text-slate-600"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const currentTitle = editorLang === 'vi' ? editingArticle.title : editingArticle.titleEn;
+                                if (currentTitle) {
+                                  const newSlug = toSlug(currentTitle);
+                                  setEditingArticle(prev => ({
+                                    ...prev,
+                                    [editorLang === 'vi' ? 'slug' : 'slugEn']: newSlug
+                                  }));
+                                }
+                              }}
+                              className="px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                              title="Tạo từ tiêu đề"
+                            >
+                              <Undo className="w-4 h-4" />
+                            </button>
+                         </div>
+                         <p className="text-xs text-slate-500 mt-1">
+                           Để trống sẽ tự động tạo từ tiêu đề. Ví dụ: galaxy-s26-ultra-so-keo-iphone-17-pro-max
+                         </p>
+                       </div>
+
+                       <div>
+                         <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                            Mô tả ngắn ({editorLang === 'vi' ? 'Tiếng Việt' : 'English'})
                          </label>
                          <textarea

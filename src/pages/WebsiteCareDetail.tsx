@@ -411,33 +411,19 @@ const WebsiteCareDetail: React.FC = () => {
                     ))}
                   </div>
                   {plan.link ? (
-                    plan.link.startsWith('http') ? (
-                      <a
-                        href={plan.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={[
-                          'w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold transition-all cursor-pointer hover:scale-[1.02]',
-                          plan.featured
-                            ? 'bg-teal-600 hover:bg-teal-700 text-white shadow-lg shadow-teal-500/25'
-                            : 'border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900',
-                        ].join(' ')}
-                      >
-                        {lang === 'en' ? 'Get a Quote' : 'Nhận báo giá'} <ArrowRight size={18} />
-                      </a>
-                    ) : (
-                      <button
-                        onClick={() => navigate(plan.link)}
-                        className={[
-                          'w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold transition-all cursor-pointer hover:scale-[1.02]',
-                          plan.featured
-                            ? 'bg-teal-600 hover:bg-teal-700 text-white shadow-lg shadow-teal-500/25'
-                            : 'border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900',
-                        ].join(' ')}
-                      >
-                        {lang === 'en' ? 'Get a Quote' : 'Nhận báo giá'} <ArrowRight size={18} />
-                      </button>
-                    )
+                    <a
+                      href={plan.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={[
+                        'w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold transition-all cursor-pointer hover:scale-[1.02]',
+                        plan.featured
+                          ? 'bg-teal-600 hover:bg-teal-700 text-white shadow-lg shadow-teal-500/25'
+                          : 'border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900',
+                      ].join(' ')}
+                    >
+                      {lang === 'en' ? 'Get a Quote' : 'Nhận báo giá'} <ArrowRight size={18} />
+                    </a>
                   ) : (
                     <button
                       onClick={() => navigate(`/`)}

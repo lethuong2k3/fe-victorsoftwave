@@ -88,7 +88,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ data, lang = 'vi' }) => {
                 onClick={() => {
                   const projectSlug = (lang === 'en' ? project.slugEn : project.slug);
                   if (projectSlug) {
-                    navigate(`/${getLocalizedSlug('danh-muc-website', lang)}/${projectSlug}`);
+                    navigate(`/${projectSlug}`);
                   }
                 }}
               >

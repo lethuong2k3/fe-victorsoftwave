@@ -17,6 +17,7 @@ type WebsiteCarePlan = {
   desc: string;
   features: string[];
   featured: boolean;
+  link?: string;
 };
 
 type WebsiteCareContent = {
@@ -278,6 +279,7 @@ const WebsiteCareContentForm: React.FC = () => {
       desc: '',
       features: activeLang === 'vi' ? ['Tính năng 1'] : ['Feature 1'],
       featured: false,
+      link: '',
     };
     if (activeLang === 'vi') setPlans([...plans, newPlan]);
     else setPlansEn([...plansEn, newPlan]);
@@ -683,6 +685,16 @@ const WebsiteCareContentForm: React.FC = () => {
                       rows={2}
                       className="w-full px-3 py-1.5 text-sm rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                       placeholder="Mô tả ngắn..."
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-500 mb-1">Đường link nhận báo giá</label>
+                    <input
+                      type="text"
+                      value={plan.link || ''}
+                      onChange={(e) => updatePlan(plan.id, 'link', e.target.value)}
+                      className="w-full px-3 py-1.5 text-sm rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      placeholder="Ví dụ: /lien-he hoặc https://..."
                     />
                   </div>
                   <div>

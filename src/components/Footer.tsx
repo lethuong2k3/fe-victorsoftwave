@@ -107,7 +107,7 @@ const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to={`/${getLocalizedSlug('du-an', lang)}`} className="hover:text-blue-500">
+                  <Link to={`/${getLocalizedSlug('danh-muc-website', lang)}`} className="hover:text-blue-500">
                     Dự án
                   </Link>
                 </li>
@@ -124,12 +124,12 @@ const Footer: React.FC = () => {
             <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4">
               Cần tư vấn triển khai? Chúng tôi sẵn sàng hỗ trợ.
             </p>
-            <button
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            <Link
+              to={`/${getLocalizedSlug('lien-he', lang)}`}
               className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors"
             >
               Liên hệ tư vấn
-            </button>
+            </Link>
           </div>
         </div>
 

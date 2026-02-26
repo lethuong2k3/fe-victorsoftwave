@@ -393,13 +393,7 @@ const GoogleAdsDetail = () => {
               </ul>
               <div className="flex justify-center">
                 <button
-                  onClick={() => {
-                    if (consultationLink) {
-                      window.open(consultationLink, '_blank');
-                    } else {
-                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
+                  onClick={() => navigate(`/${getLocalizedSlug('lien-he', lang)}`)}
                   className="cursor-pointer px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                 >
                   <span>{consultationCta}</span>

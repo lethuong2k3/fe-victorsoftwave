@@ -558,13 +558,7 @@ const FacebookAdsDetail: React.FC = () => {
 
                 <div className="lg:justify-self-end">
                   <button
-                    onClick={() => {
-                      if (consultationLink) {
-                        window.open(consultationLink, '_blank');
-                      } else {
-                        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
+                    onClick={() => navigate(`/${getLocalizedSlug('lien-he', lang)}`)}
                     className="cursor-pointer inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-all shadow-lg shadow-blue-500/25"
                   >
                     {consultationCta} <ArrowRight size={18} />

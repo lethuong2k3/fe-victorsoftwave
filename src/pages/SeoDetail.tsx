@@ -376,8 +376,8 @@ const SeoDetail: React.FC = () => {
                     : 'Gửi website và ngành hàng, chúng tôi sẽ audit nhanh và đề xuất lộ trình phù hợp.'}
                 </div>
                 <button
-                  onClick={() => navigate(`/`)}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-full transition-all shadow-lg shadow-orange-500/25"
+                  onClick={() => navigate(`/${getLocalizedSlug('lien-he', lang)}`)}
+                  className="cursor-pointer inline-flex items-center gap-2 px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-full transition-all shadow-lg shadow-orange-500/25"
                 >
                   {isEn ? 'Contact Us' : 'Liên hệ tư vấn'} <ArrowRight size={18} />
                 </button>

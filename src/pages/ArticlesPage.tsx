@@ -96,19 +96,36 @@ const ArticlesPage: React.FC = () => {
         
         <main className="pt-24 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-12 text-center">
+          <div className="mb-16 text-center relative z-10">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-blue-500/20 dark:bg-blue-400/10 rounded-full blur-3xl -z-10 pointer-events-none"
+            />
+            
+            <motion.span 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-block py-1 px-4 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-6 uppercase tracking-wider"
+            >
+              {lang === 'en' ? 'Blog & News' : 'Tin Tức & Sự Kiện'}
+            </motion.span>
+            
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4"
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-blue-800 to-slate-900 dark:from-white dark:via-blue-200 dark:to-white mb-6 leading-tight"
             >
-              {lang === 'en' ? 'Blog & News' : 'Tin Tức & Bài Viết'}
+              {lang === 'en' ? 'Latest Insights & Updates' : 'Thông Tin & Kiến Thức Mới Nhất'}
             </motion.h1>
+            
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto"
+              transition={{ delay: 0.2 }}
+              className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed"
             >
               {seoDesc}
             </motion.p>
@@ -144,7 +161,10 @@ const ArticlesPage: React.FC = () => {
                       transition={{ delay: index * 0.1 }}
                       className="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full"
                     >
-                      <div className="relative overflow-hidden h-56">
+                      <div 
+                        className="relative overflow-hidden h-56 cursor-pointer"
+                        onClick={() => navigate(detailPath)}
+                      >
                         <img 
                           src={article.image || 'https://via.placeholder.com/800x400'} 
                           alt={title}
@@ -167,7 +187,10 @@ const ArticlesPage: React.FC = () => {
                           </span>
                         </div>
 
-                        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <h2 
+                          onClick={() => navigate(detailPath)}
+                          className="text-xl font-bold text-slate-900 dark:text-white mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors cursor-pointer"
+                        >
                           {title}
                         </h2>
                         
@@ -177,7 +200,7 @@ const ArticlesPage: React.FC = () => {
 
                         <button 
                           onClick={() => navigate(detailPath)}
-                          className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 group-hover:gap-3 transition-all mt-auto"
+                          className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 group-hover:gap-3 transition-all mt-auto cursor-pointer"
                         >
                           {lang === 'en' ? 'Read More' : 'Đọc tiếp'}
                           <ArrowRight className="w-4 h-4" />
